@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
 
 void main() {
   runApp(const MyApp());
