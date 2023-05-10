@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() {
   runApp(const MyApp());
+}
+
+class ChartSampleData {
+  ChartSampleData({
+    required this.xValue,
+    required this.yValue,
+    required this.secondSeriesYValue,
+    this.thirdSeriesYValue,
+  });
+  final double xValue;
+  final double yValue;
+  final int secondSeriesYValue;
+  final int? thirdSeriesYValue;
 }
 
 class MyApp extends StatelessWidget {
@@ -50,6 +64,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<ChartSampleData>? chartData;
+
+  @override
+  void initState() {
+    super.initState();
+    chartData = <ChartSampleData>[
+      ChartSampleData(xValue: 1, yValue: 240, secondSeriesYValue: 236),
+      ChartSampleData(xValue: 2, yValue: 250, secondSeriesYValue: 242),
+      ChartSampleData(xValue: 3, yValue: 281, secondSeriesYValue: 313),
+      ChartSampleData(xValue: 4, yValue: 358, secondSeriesYValue: 359),
+      ChartSampleData(xValue: 5, yValue: 237, secondSeriesYValue: 272)
+    ];
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -60,6 +87,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  List<ColumnSeries<ChartSampleData, num>> getDefaultNumericSeries() {
+    return <ColumnSeries<ChartSampleData, num>>[
+      ///first series named "Australia".
+      ColumnSeries<ChartSampleData, num>(
+          dataSource: chartData!,
+          color: const Color.fromRGBO(237, 221, 76, 1),
+          name: 'Australia',
+          xValueMapper: (ChartSampleData sales, _) => sales.xValue as num,
+          yValueMapper: (ChartSampleData sales, _) => sales.secondSeriesYValue),
+
+      ///second series named "India".
+      ColumnSeries<ChartSampleData, num>(
+          dataSource: chartData!,
+          color: const Color.fromRGBO(2, 109, 213, 1),
+          xValueMapper: (ChartSampleData sales, _) => sales.xValue as num,
+          yValueMapper: (ChartSampleData sales, _) => sales.yValue,
+          name: 'India'),
+    ];
   }
 
   @override
@@ -79,31 +126,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        child: SfCartesianChart(
+          title: ChartTitle(text: 'Tourism - Number of arrivals'),
+          legend: Legend(isVisible: true),
+          primaryXAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0),
+          ),
+          series: getDefaultNumericSeries(),
+          tooltipBehavior: TooltipBehavior(enable: true),
         ),
       ),
       floatingActionButton: FloatingActionButton(
