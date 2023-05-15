@@ -5,19 +5,6 @@ void main() {
   runApp(const MyApp());
 }
 
-class ChartSampleData {
-  ChartSampleData({
-    required this.xValue,
-    required this.yValue,
-    required this.secondSeriesYValue,
-    this.thirdSeriesYValue,
-  });
-  final double xValue;
-  final double yValue;
-  final int secondSeriesYValue;
-  final int? thirdSeriesYValue;
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -49,7 +36,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const BarChart(),
+      body: const BarChart(
+        barChartLabel: BarChartLabel(
+          labelTextStyle: TextStyle(color: Colors.green),
+          numAxisPoints: 12,
+          xAxisLabelValue: 2,
+          yAxisLabelValue: 20,
+          barChartWidth: 600,
+          barChartHeight: 600,
+        ),
+      ),
     );
   }
 }
