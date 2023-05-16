@@ -71,7 +71,7 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   ///
   /// The [barChart] parameter is the corresponding [BarChart] widget.
   /// The [children] parameter is a list of child widgets to render.
-  const RBarChartRenderer({
+  RBarChartRenderer({
     Key? key,
     this.barChart,
     required List<Widget> children,
