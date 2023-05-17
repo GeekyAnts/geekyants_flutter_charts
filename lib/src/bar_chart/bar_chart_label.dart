@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 /// A widget that represents the axes labels of a bar chart.
 ///
@@ -188,17 +189,44 @@ class RenderBarChartLabel extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
+    List<double> label = [];
+    double screenSize = 3 * size.width;
+    double getStart = 0;
+    double getEnd = 5.0;
+
+    // To make the bar axes responsive
+    final double count = math.max(screenSize / 100, 1.0);
+    double interval = (getEnd - getStart) / (screenSize / 100);
+    final List<double> intervalDivisions = <double>[10, 5, 2, 1];
+    late double currentInterval;
+    num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
+
+    for (final double intervalDivision in intervalDivisions) {
+      currentInterval = v * intervalDivision;
+
+      if (count < ((getEnd - getStart) / currentInterval)) {
+        break;
+      }
+      interval = currentInterval;
+    }
 
     final double chartWidth = size.width - 10.0 * 6;
     final double chartHeight = size.height - 10.0;
     final double chartTop = (size.height - chartHeight) / 2 + 10.0;
     final double chartLeft = (size.width - chartWidth) / 2;
 
+    // Axes Value
+    for (double i = getStart; i <= getEnd; i += interval) {
+      label.add(i);
+    }
     // Draw x-axis points
-    for (int i = 0; i <= numAxisPoints; i++) {
+    final int numAxisPoints = label.length;
+    final double barWidth = chartWidth / numAxisPoints;
+
+    for (int i = 0; i < numAxisPoints; i++) {
       final double x = chartLeft + i * barWidth;
       TextSpan span = TextSpan(
-        text: '${i * xAxisLabelValue}',
+        text: '${label[i]}',
         style: labelTextStyle,
       );
       TextPainter tp = TextPainter(
@@ -219,12 +247,11 @@ class RenderBarChartLabel extends RenderBox {
 
       tp.paint(canvas, Offset(rulerTextLeft, rulerTextTop));
     }
-
     // Draw y-axis points
-    for (int i = 0; i <= numAxisPoints; i++) {
+    for (int i = 0; i < numAxisPoints; i++) {
       final double y = chartTop + chartHeight - i * chartHeight / numAxisPoints;
       TextSpan span = TextSpan(
-        text: '${i * yAxisLabelValue}',
+        text: '${label[i]}',
         style: labelTextStyle,
       );
       TextPainter tp = TextPainter(
