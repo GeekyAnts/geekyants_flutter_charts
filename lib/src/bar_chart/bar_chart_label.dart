@@ -241,11 +241,22 @@ class RenderBarChartLabel extends RenderBox {
     tp.paint(canvas, Offset(x, y));
   }
 
-  /// Sets the size of the render box.
+  /// Computes the size of the render box.
   ///
-  /// The layout constraints are used to constrain the size of the render box.
+  /// The [constraints] parameter represents the layout constraints
+  /// used to constrain the size of the render box.
+  ///
+  /// Returns the computed size of the render box.
+  @override
+  Size computeDryLayout(BoxConstraints constraints) {
+    final double chartWidth = constraints.maxWidth - 10.0 * 6;
+    final double chartHeight = constraints.maxHeight - 10.0;
+
+    return Size(chartWidth, chartHeight);
+  }
+
   @override
   void performLayout() {
-    size = constraints.constrain(Size(barChartWidth, barChartHeight));
+    size = computeDryLayout(constraints);
   }
 }
