@@ -230,8 +230,8 @@ class RenderBarChartLabel extends RenderBox {
   /// Returns the computed size of the render box.
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final double chartWidth = constraints.maxWidth - 10.0 * 6;
-    final double chartHeight = constraints.maxHeight - 10.0;
+    final double chartWidth = constraints.maxWidth;
+    final double chartHeight = constraints.maxHeight;
 
     return Size(chartWidth, chartHeight);
   }

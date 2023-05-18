@@ -164,8 +164,8 @@ class RenderBarChartRulers extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final double chartWidth = constraints.maxWidth - 10.0 * 6;
-    final double chartHeight = constraints.maxHeight - 10.0;
+    final double chartWidth = constraints.maxWidth;
+    final double chartHeight = constraints.maxHeight;
 
     return Size(chartWidth, chartHeight);
   }
