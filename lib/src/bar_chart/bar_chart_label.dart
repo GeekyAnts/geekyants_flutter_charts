@@ -10,9 +10,6 @@ class BarChartLabel extends LeafRenderObjectWidget {
   /// The number of axis points on the chart.
   final int numAxisPoints;
 
-  /// The width of each bar on the chart.
-  final double barWidth;
-
   /// TextStyle for label text
   final TextStyle labelTextStyle;
 
@@ -25,7 +22,6 @@ class BarChartLabel extends LeafRenderObjectWidget {
   /// Creates a [BarChartLabel] widget.
   ///
   /// The [numAxisPoints] parameter specifies the number of axis points on the chart.
-  /// The [barWidth] parameter specifies the width of each bar on the chart.
   /// The [labelTextStyle] parameter specifies the style of the label text.
   /// The [barChartWidth] parameter specifies the width of the entire bar chart.
   /// The [barChartHeight] parameter specifies the height of the entire bar chart.
@@ -36,14 +32,14 @@ class BarChartLabel extends LeafRenderObjectWidget {
       this.labelTextStyle = const TextStyle(color: Colors.black, fontSize: 12),
       this.barChartHeight = 600,
       this.barChartWidth = 1500})
-      : barWidth = (barChartWidth) / numAxisPoints,
+      :
+        // barWidth = (barChartWidth) / numAxisPoints,
         super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartLabel(
         numAxisPoints: numAxisPoints,
-        barWidth: barWidth,
         labelTextStyle: labelTextStyle,
         barChartHeight: barChartHeight,
         barChartWidth: barChartWidth);
@@ -54,7 +50,6 @@ class BarChartLabel extends LeafRenderObjectWidget {
       BuildContext context, covariant RenderBarChartLabel renderObject) {
     renderObject
       ..numAxisPoints = numAxisPoints
-      ..barWidth = barWidth
       ..labelTextStyle = labelTextStyle
       ..barChartHeight = barChartHeight
       ..barChartWidth = barChartWidth;
@@ -68,18 +63,15 @@ class BarChartLabel extends LeafRenderObjectWidget {
 /// the horizontal and vertical axes of the chart.
 class RenderBarChartLabel extends RenderBox {
   int renderNumAxisPoints;
-  double renderBarWidth;
   TextStyle renderLabelTextStyle;
   double renderBarChartWidth;
   double renderBarChartHeight;
   RenderBarChartLabel(
       {required int numAxisPoints,
-      required double barWidth,
       required TextStyle labelTextStyle,
       required double barChartHeight,
       required double barChartWidth})
       : renderNumAxisPoints = numAxisPoints,
-        renderBarWidth = barWidth,
         renderLabelTextStyle = labelTextStyle,
         renderBarChartWidth = barChartWidth,
         renderBarChartHeight = barChartHeight,
@@ -92,17 +84,6 @@ class RenderBarChartLabel extends RenderBox {
   set numAxisPoints(int value) {
     if (renderNumAxisPoints != value) {
       renderNumAxisPoints = value;
-      markNeedsPaint();
-    }
-  }
-
-  /// The width of the bars.
-
-  double get barWidth => renderBarWidth;
-
-  set barWidth(double value) {
-    if (renderBarWidth != value) {
-      renderBarWidth = value;
       markNeedsPaint();
     }
   }
@@ -156,10 +137,9 @@ class RenderBarChartLabel extends RenderBox {
 
     final List<double> labelX = calculateLabelValues(0, 5.0, dx, 100);
     final int numAxisPoints = labelX.length;
-    final double barWidth = chartWidth / numAxisPoints;
 
     for (int i = 0; i < numAxisPoints; i++) {
-      final double x = chartLeft + i * barWidth;
+      final double x = chartLeft + i * chartWidth / numAxisPoints;
       _paintLabel(
           canvas,
           labelTextStyle,
@@ -196,7 +176,8 @@ class RenderBarChartLabel extends RenderBox {
   List<double> calculateLabelValues(
       double getStart, double getEnd, double sizeValue, double intervalSize) {
     final List<double> labelValues = [];
-    final double count = math.max(sizeValue / intervalSize, 1.0);
+    final double count = (sizeValue / intervalSize);
+    // final double count = math.max(sizeValue / intervalSize, 1.0);
     double interval = (getEnd - getStart) / (sizeValue / intervalSize);
     final List<double> intervalDivisions = [10, 5, 2, 1];
     late double currentInterval;
