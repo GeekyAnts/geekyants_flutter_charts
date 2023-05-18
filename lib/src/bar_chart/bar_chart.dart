@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
 import 'bar_chart_label.dart';
+import 'bar_chart_axes.dart';
+import 'bar_chart_rulers.dart';
 import 'bar_chart_painter.dart';
 
 /// A widget that displays a bar chart.
@@ -22,13 +24,22 @@ class BarChart extends StatefulWidget {
   /// Creates a bar chart.
   ///
   /// The [barChartLabel] parameter is optional and defaults to [BarChartLabel()].
+  /// The [barChartAxes] and [barChartRulers] parameters are optional and can be used to customize the chart's axes and rulers.
   const BarChart({
     Key? key,
     this.barChartLabel = const BarChartLabel(),
+    this.barChartAxes = const BarChartAxes(),
+    this.barChartRulers = const BarChartRulers(),
   }) : super(key: key);
 
   /// The label widget to display on the bar chart.
   final BarChartLabel barChartLabel;
+
+  /// The axes to display on the bar chart.
+  final BarChartAxes barChartAxes;
+
+  /// The rulers to display on the bar chart.
+  final BarChartRulers barChartRulers;
 
   @override
   State<BarChart> createState() => _BarChartState();
@@ -53,6 +64,8 @@ class _BarChartState extends State<BarChart> {
   List<Widget> _buildChildWidgets(BuildContext context) {
     _barChartWidgets.clear();
     _addChild(widget.barChartLabel);
+    _addChild(widget.barChartAxes);
+    _addChild(widget.barChartRulers);
     return _barChartWidgets;
   }
 

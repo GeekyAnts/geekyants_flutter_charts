@@ -36,16 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const BarChart(
-        barChartLabel: BarChartLabel(
-          labelTextStyle: TextStyle(color: Colors.green),
-          numAxisPoints: 12,
-          xAxisLabelValue: 2,
-          yAxisLabelValue: 20,
-          barChartWidth: 600,
-          barChartHeight: 600,
-        ),
-      ),
+      body: const BarChart(),
     );
   }
 }
