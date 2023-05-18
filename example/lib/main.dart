@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,16 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const BarChart(
-        barChartLabel: BarChartLabel(
-          labelTextStyle: TextStyle(color: Colors.green),
-          numAxisPoints: 12,
-          xAxisLabelValue: 2,
-          yAxisLabelValue: 20,
-          barChartWidth: 600,
-          barChartHeight: 600,
-        ),
-      ),
+      body: SfCartesianChart(),
     );
   }
 }
