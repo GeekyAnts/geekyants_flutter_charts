@@ -7,93 +7,28 @@ import 'dart:math' as math;
 /// on a bar chart. The number of axis points, the width, and height
 /// of the bar chart can be customized.
 class BarChartRulers extends LeafRenderObjectWidget {
-  /// The number of axis points on the chart.
-  final int numAxisPoints;
-
-  /// The width of the bar chart.
-  final double barChartWidth;
-
-  /// The height of the bar chart.
-  final double barChartHeight;
-
   /// Creates a [BarChartRulers] widget.
   ///
-  /// The [numAxisPoints], [barChartWidth], and [barChartHeight] arguments
-  /// are optional and default to 10, 1500, and 600 respectively.
   const BarChartRulers({
     Key? key,
-    this.numAxisPoints = 10,
-    this.barChartHeight = 600,
-    this.barChartWidth = 1500,
   }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderBarChartRulers(
-      numAxisPoints: numAxisPoints,
-      barChartHeight: barChartHeight,
-      barChartWidth: barChartWidth,
-    );
+    return RenderBarChartRulers();
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartRulers renderObject) {
-    renderObject
-      ..numAxisPoints = numAxisPoints
-      ..barChartHeight = barChartHeight
-      ..barChartWidth = barChartWidth;
+    renderObject;
   }
 }
 
 /// A render object that handles the rendering of rulers for a bar chart.
 class RenderBarChartRulers extends RenderBox {
-  int renderNumAxisPoints;
-  double renderBarChartWidth;
-  double renderBarChartHeight;
-
-  /// The number of axis points on the chart.
-  int get numAxisPoints => renderNumAxisPoints;
-
-  set numAxisPoints(int value) {
-    if (renderNumAxisPoints != value) {
-      renderNumAxisPoints = value;
-      markNeedsPaint();
-    }
-  }
-
-  /// The width of the bar chart.
-  double get barChartWidth => renderBarChartWidth;
-
-  set barChartWidth(double value) {
-    if (renderBarChartWidth != value) {
-      renderBarChartWidth = value;
-      markNeedsLayout();
-    }
-  }
-
-  /// The height of the bar chart.
-  double get barChartHeight => renderBarChartHeight;
-
-  set barChartHeight(double value) {
-    if (renderBarChartHeight != value) {
-      renderBarChartHeight = value;
-      markNeedsLayout();
-    }
-  }
-
   /// Creates a [RenderBarChartRulers] object.
   ///
-  /// The [numAxisPoints], [barChartWidth], and [barChartHeight] arguments
-  /// are required.
-  RenderBarChartRulers({
-    required int numAxisPoints,
-    required double barChartHeight,
-    required double barChartWidth,
-  })  : renderNumAxisPoints = numAxisPoints,
-        renderBarChartWidth = barChartWidth,
-        renderBarChartHeight = barChartHeight,
-        super();
 
   @override
   void paint(PaintingContext context, Offset offset) {
