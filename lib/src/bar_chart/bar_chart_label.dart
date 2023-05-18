@@ -135,7 +135,7 @@ class RenderBarChartLabel extends RenderBox {
     final double chartTop = (dy - chartHeight) / 2 + 10.0;
     final double chartLeft = (dx - chartWidth) / 2;
 
-    final List<double> labelX = calculateLabelValues(0, 5.0, dx, 100);
+    final List<double> labelX = calculateLabelValues(0, 5.5, chartWidth, 100);
     final int numAxisPoints = labelX.length;
 
     for (int i = 0; i < numAxisPoints; i++) {
@@ -146,10 +146,11 @@ class RenderBarChartLabel extends RenderBox {
           labelX[i].toString(),
           TextAlign.center,
           x - labelTextStyle.fontSize! / 2,
-          chartTop + chartHeight + 8);
+          chartTop + chartHeight + 8,
+          chartWidth);
     }
 
-    final List<double> labelY = calculateLabelValues(0, 5.0, dy, 100);
+    final List<double> labelY = calculateLabelValues(0, 5.5, chartWidth, 100);
     final int numAxisPointsY = labelY.length;
 
     for (int i = 0; i < numAxisPointsY; i++) {
@@ -161,7 +162,8 @@ class RenderBarChartLabel extends RenderBox {
           labelY[i].toString(),
           TextAlign.center,
           chartLeft - labelTextStyle.fontSize! - 8,
-          y - labelTextStyle.fontSize! / 2);
+          y - labelTextStyle.fontSize! / 2,
+          chartLeft);
     }
   }
 
@@ -176,8 +178,8 @@ class RenderBarChartLabel extends RenderBox {
   List<double> calculateLabelValues(
       double getStart, double getEnd, double sizeValue, double intervalSize) {
     final List<double> labelValues = [];
-    final double count = (sizeValue / intervalSize);
-    // final double count = math.max(sizeValue / intervalSize, 1.0);
+    // final double count = (sizeValue / intervalSize);
+    final double count = math.max(sizeValue / intervalSize, 1.0);
     double interval = (getEnd - getStart) / (sizeValue / intervalSize);
     final List<double> intervalDivisions = [10, 5, 2, 1];
     late double currentInterval;
@@ -208,7 +210,7 @@ class RenderBarChartLabel extends RenderBox {
   /// the [x] parameter specifies the x-coordinate of the label's position,
   /// and the [y] parameter specifies the y-coordinate of the label's position.
   void _paintLabel(Canvas canvas, TextStyle style, String text, TextAlign align,
-      double x, double y) {
+      double x, double y, double width) {
     final TextSpan span = TextSpan(
       text: text,
       style: style,
@@ -218,7 +220,7 @@ class RenderBarChartLabel extends RenderBox {
       textAlign: align,
       textDirection: TextDirection.ltr,
     );
-    tp.layout();
+    tp.layout(maxWidth: width); // Use maxWidth to restrict the label's width
     tp.paint(canvas, Offset(x, y));
   }
 

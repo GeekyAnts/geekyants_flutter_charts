@@ -105,10 +105,10 @@ class RenderBarChartRulers extends RenderBox {
     final double chartTop = (dy - chartHeight) / 2 + 10.0;
     final double chartLeft = (dx - chartWidth) / 2;
 
-    final List<double> labelX = calculateLabelValues(0, 5.0, dx, 100);
+    final List<double> labelX = calculateLabelValues(0, 5.5, dx, 100);
     final int numAxisPoints = labelX.length;
 
-    final List<double> labelY = calculateLabelValues(0, 5.0, dy, 100);
+    final List<double> labelY = calculateLabelValues(0, 5.5, dx, 100);
     final int numAxisPointsY = labelY.length;
 
     final Paint axisPaint = Paint()
@@ -116,7 +116,7 @@ class RenderBarChartRulers extends RenderBox {
       ..strokeWidth = 0.5
       ..strokeCap = StrokeCap.round;
 
-    for (int i = 1; i < numAxisPoints; i++) {
+    for (int i = 1; i <= numAxisPoints; i++) {
       final double x = chartLeft + i * chartWidth / numAxisPoints;
       canvas.drawLine(
         Offset(x, chartTop + chartHeight + 5),
@@ -125,12 +125,12 @@ class RenderBarChartRulers extends RenderBox {
       );
     }
 
-    for (int i = 1; i < numAxisPointsY; i++) {
+    for (int i = 1; i <= numAxisPointsY; i++) {
       final double y =
           chartTop + chartHeight - i * chartHeight / numAxisPointsY;
       canvas.drawLine(
         Offset(chartLeft - 5, y),
-        Offset(chartLeft + chartWidth - (chartWidth / numAxisPoints), y),
+        Offset(chartLeft + chartWidth, y),
         axisPaint,
       );
     }
