@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_axes.dart';
 
 /// A render object that displays a horizontal bar chart with axes and labels.
 class RenderRBarChart extends RenderBox
@@ -23,14 +24,7 @@ class RenderRBarChart extends RenderBox
   /// )
   /// ```
   ///
-  /// The children widgets can be any widgets that extend [RenderBox] and can be
-  /// rendered inside the bar chart. For example, you can use [RenderBox] widgets
-  /// such as [RenderRect] or [RenderParagraph] to display bars or labels.
-  ///
-  /// The bar chart will automatically layout and position the children according
-  /// to its own constraints and layout rules.
-  double fontSize;
-  RenderRBarChart({required this.fontSize});
+
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
@@ -48,18 +42,24 @@ class RenderRBarChart extends RenderBox
   @override
   void performLayout() {
     size = computeDryLayout(constraints);
+    double barChartOffset = 0;
 
     RenderBox? child = firstChild;
     while (child != null) {
       final childParentData = child.parentData as MultiChildLayoutParentData;
-      child
-          .layout(BoxConstraints(maxHeight: size.height, maxWidth: size.width));
+      child.layout(
+        BoxConstraints(maxHeight: size.height, maxWidth: size.width),
+        parentUsesSize: true,
+      );
 
-      childParentData.offset = const Offset(0, 0);
-
+      if (child is RenderParagraph) {
+        barChartOffset = child.size.height;
+        childParentData.offset = const Offset(0, 0);
+      } else if (child is RenderBarChartAxes) {
+        childParentData.offset = Offset(0, barChartOffset);
+      }
       child = childParentData.nextSibling;
     }
-    print("Title Size: $fontSize");
   }
 
   @override

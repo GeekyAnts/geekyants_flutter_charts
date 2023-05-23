@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
+
 /// A widget that represents the axes of a bar chart.
 ///
 /// This widget draws the horizontal and vertical axes of a bar chart. It takes
@@ -15,12 +17,16 @@ class BarChartAxes extends LeafRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
+    BarChartScope scope = BarChartScope.of(context);
+
     return RenderBarChartAxes();
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartAxes renderObject) {
+    BarChartScope scope = BarChartScope.of(context);
+    print(scope.fontSize);
     renderObject;
   }
 }
@@ -36,6 +42,7 @@ class RenderBarChartAxes extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    print(offset);
     final Canvas canvas = context.canvas;
     double dx = size.width;
     double dy = size.height;

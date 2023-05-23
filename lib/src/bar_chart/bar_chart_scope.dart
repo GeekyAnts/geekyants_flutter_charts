@@ -9,7 +9,9 @@ class BarChartScope extends InheritedWidget {
   ///
   /// The [child] parameter is required and represents the child widget
   /// that will have access to the [BarChartScope].
-  const BarChartScope({required Widget child, Key? key})
+  ///
+  final double? fontSize;
+  const BarChartScope({required Widget child, Key? key, this.fontSize})
       : super(key: key, child: child);
 
   /// Retrieves the nearest [BarChartScope] instance from the given [context].

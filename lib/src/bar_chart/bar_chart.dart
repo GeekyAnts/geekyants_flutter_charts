@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
-import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_title.dart';
 
 import 'bar_chart_label.dart';
 import 'bar_chart_axes.dart';
@@ -26,14 +25,14 @@ class BarChart extends StatefulWidget {
   ///
   /// The [barChartLabel] parameter is optional and defaults to [BarChartLabel()].
   /// The [barChartAxes] and [barChartRulers] parameters are optional and can be used to customize the chart's axes and rulers.
-  const BarChart(
-      {Key? key,
-      this.titleWidgetSize = 20.0,
-      this.barChartLabel = const BarChartLabel(),
-      this.barChartAxes = const BarChartAxes(),
-      this.barChartRulers = const BarChartRulers(),
-      this.barChartTitle = const BarChartTitleText()})
-      : super(key: key);
+  const BarChart({
+    Key? key,
+    this.titleWidgetSize = 20.0,
+    this.barChartLabel = const BarChartLabel(),
+    this.barChartAxes = const BarChartAxes(),
+    this.barChartRulers = const BarChartRulers(),
+    this.title,
+  }) : super(key: key);
 
   /// The label widget to display on the bar chart.
   final BarChartLabel barChartLabel;
@@ -44,7 +43,7 @@ class BarChart extends StatefulWidget {
   /// The rulers to display on the bar chart.
   final BarChartRulers barChartRulers;
 
-  final Widget barChartTitle;
+  final Widget? title;
 
   final double titleWidgetSize;
 
@@ -63,16 +62,22 @@ class _BarChartState extends State<BarChart> {
   }
 
   /// Adds a child widget to the bar chart.
-  void _addChild(Widget child) {
-    _barChartWidgets.add(BarChartScope(child: child));
+  void _addChild(Widget child, {double? fontSize}) {
+    _barChartWidgets.add(BarChartScope(
+      fontSize: fontSize,
+      child: child,
+    ));
   }
 
   /// Builds the child widgets of the bar chart.
   List<Widget> _buildChildWidgets(BuildContext context) {
+    Text title = widget.title as Text;
     _barChartWidgets.clear();
+    _addChild(widget.title ?? const Text(""));
     _addChild(widget.barChartLabel);
-    _addChild(widget.barChartAxes);
+    _addChild(widget.barChartAxes, fontSize: title.style?.fontSize);
     _addChild(widget.barChartRulers);
+
     return _barChartWidgets;
   }
 
@@ -81,23 +86,8 @@ class _BarChartState extends State<BarChart> {
     return Stack(
       children: [
         RBarChartRenderer(
-          barChartTitle: widget.titleWidgetSize,
           barChart: widget,
           children: _buildChildWidgets(context),
-        ),
-        SizedBox(
-          height: widget.titleWidgetSize,
-        ),
-        PreferredSize(
-          preferredSize:
-              Size(MediaQuery.of(context).size.width, widget.titleWidgetSize),
-          child: Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Align(
-                alignment: Alignment.topCenter, child: widget.barChartTitle),
-          ),
         ),
       ],
     );
@@ -112,7 +102,6 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   /// The [children] parameter is a list of child widgets to render.
   RBarChartRenderer({
     Key? key,
-    required this.barChartTitle,
     this.barChart,
     required List<Widget> children,
   }) : super(key: key, children: children);
@@ -120,17 +109,14 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   /// The corresponding bar chart widget.
   final BarChart? barChart;
 
-  final double barChartTitle;
-
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderRBarChart(fontSize: barChartTitle);
+    return RenderRBarChart();
     // return RenderRBarChart();
   }
 
   @override
   void updateRenderObject(BuildContext context, RenderRBarChart renderObject) {
-    renderObject.fontSize = barChartTitle;
     super.updateRenderObject(context, renderObject);
   }
 }
