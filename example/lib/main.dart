@@ -37,7 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const BarChart(),
+      body: const BarChart(
+        titleWidgetSize: 200,
+      ),
     );
   }
 }

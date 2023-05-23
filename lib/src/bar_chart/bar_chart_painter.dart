@@ -29,7 +29,8 @@ class RenderRBarChart extends RenderBox
   ///
   /// The bar chart will automatically layout and position the children according
   /// to its own constraints and layout rules.
-
+  double fontSize;
+  RenderRBarChart({required this.fontSize});
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
@@ -58,6 +59,7 @@ class RenderRBarChart extends RenderBox
 
       child = childParentData.nextSibling;
     }
+    print("Title Size: $fontSize");
   }
 
   @override
