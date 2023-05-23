@@ -58,6 +58,7 @@ class RenderRBarChart extends RenderBox
       } else if (child is RenderBarChartAxes) {
         childParentData.offset = Offset(0, barChartOffset);
       }
+      print(child);
       child = childParentData.nextSibling;
     }
   }
