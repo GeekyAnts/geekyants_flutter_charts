@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
 import 'bar_chart_label.dart';
-import 'bar_chart_axes.dart';
-import 'bar_chart_rulers.dart';
 import 'bar_chart_painter.dart';
 
 /// A widget that displays a bar chart.
@@ -24,28 +22,16 @@ class BarChart extends StatefulWidget {
   /// Creates a bar chart.
   ///
   /// The [barChartLabel] parameter is optional and defaults to [BarChartLabel()].
-  /// The [barChartAxes] and [barChartRulers] parameters are optional and can be used to customize the chart's axes and rulers.
   const BarChart({
     Key? key,
-    this.titleWidgetSize = 20.0,
     this.barChartLabel = const BarChartLabel(),
-    this.barChartAxes = const BarChartAxes(),
-    this.barChartRulers = const BarChartRulers(),
     this.title,
   }) : super(key: key);
 
   /// The label widget to display on the bar chart.
   final BarChartLabel barChartLabel;
 
-  /// The axes to display on the bar chart.
-  final BarChartAxes barChartAxes;
-
-  /// The rulers to display on the bar chart.
-  final BarChartRulers barChartRulers;
-
   final Widget? title;
-
-  final double titleWidgetSize;
 
   @override
   State<BarChart> createState() => _BarChartState();
@@ -73,10 +59,8 @@ class _BarChartState extends State<BarChart> {
   List<Widget> _buildChildWidgets(BuildContext context) {
     Text title = widget.title as Text;
     _barChartWidgets.clear();
-    _addChild(widget.title ?? const Text(""));
-    _addChild(widget.barChartLabel);
-    _addChild(widget.barChartAxes, fontSize: title.style?.fontSize);
-    _addChild(widget.barChartRulers);
+    _addChild(widget.title!);
+    _addChild(widget.barChartLabel, fontSize: title.style?.fontSize);
 
     return _barChartWidgets;
   }
@@ -100,7 +84,7 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   ///
   /// The [barChart] parameter is the corresponding [BarChart] widget.
   /// The [children] parameter is a list of child widgets to render.
-  RBarChartRenderer({
+  const RBarChartRenderer({
     Key? key,
     this.barChart,
     required List<Widget> children,
@@ -112,7 +96,6 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderRBarChart();
-    // return RenderRBarChart();
   }
 
   @override

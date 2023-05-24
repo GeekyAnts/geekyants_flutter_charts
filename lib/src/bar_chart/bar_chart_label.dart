@@ -17,9 +17,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
   const BarChartLabel({
     Key? key,
     this.textStyle = const TextStyle(color: Colors.black, fontSize: 12),
-  }) :
-        // barWidth = (barChartWidth) / numAxisPoints,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -65,36 +63,55 @@ class RenderBarChartLabel extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-    double dx = size.width;
-    double dy = size.height;
-    final double chartWidth = dx - 10.0 * 6;
-    final double chartHeight = dy - 10.0;
-    final double chartTop = (dy - chartHeight) / 2 + 10.0;
-    final double chartLeft = (dx - chartWidth) / 2;
+    final double chartWidth = size.width - 10.0 * 6;
+    final double chartHeight = size.height - offset.dy;
+    final double chartTop = offset.dy;
+    final double chartLeft = (size.width - chartWidth) / 2;
+    final List<double> axesValue =
+        calculateLabelValues(0, 5.5, chartWidth, 100);
+    final int numAxisPoints = axesValue.length;
+    final double barWidth = chartWidth / numAxisPoints;
 
-    final List<double> labelX = calculateLabelValues(0, 5.5, chartWidth, 100);
-    final int numAxisPoints = labelX.length;
-
+    // Draw x-axis points
     for (int i = 0; i < numAxisPoints; i++) {
-      final double x = chartLeft + i * chartWidth / numAxisPoints;
-      _paintLabel(canvas, textStyle, labelX[i].toString(), TextAlign.center,
-          x - textStyle.fontSize! / 2, chartTop + chartHeight + 8, chartWidth);
+      final double x = chartLeft + i * barWidth;
+      TextSpan span = TextSpan(
+        text: axesValue[i].toString(),
+        style: const TextStyle(color: Colors.black, fontSize: 12),
+      );
+      TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+
+      // calculate position of ruler text
+      double rulerTextTop = chartTop + chartHeight + 8;
+      double rulerTextLeft = x - tp.width / 2;
+
+      // adjust position of ruler text if it is too close to y-axis
+      if (rulerTextLeft < chartLeft) {
+        rulerTextLeft = chartLeft;
+      }
+
+      tp.paint(canvas, Offset(rulerTextLeft, rulerTextTop));
     }
 
-    final List<double> labelY = calculateLabelValues(0, 5.5, chartWidth, 100);
-    final int numAxisPointsY = labelY.length;
-
-    for (int i = 0; i < numAxisPointsY; i++) {
-      final double y =
-          chartTop + chartHeight - i * chartHeight / numAxisPointsY;
-      _paintLabel(
-          canvas,
-          textStyle,
-          labelY[i].toString(),
-          TextAlign.center,
-          chartLeft - textStyle.fontSize! - 8,
-          y - textStyle.fontSize! / 2,
-          chartLeft);
+    // Draw y-axis points
+    for (int i = 0; i < numAxisPoints; i++) {
+      final double y = chartTop + chartHeight - i * chartHeight / numAxisPoints;
+      TextSpan span = TextSpan(
+        text: axesValue[i].toString(),
+        style: const TextStyle(color: Colors.black, fontSize: 12),
+      );
+      TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+      tp.paint(canvas, Offset(chartLeft - tp.width - 8, y - tp.height / 2));
     }
   }
 
@@ -105,7 +122,7 @@ class RenderBarChartLabel extends RenderBox {
   /// the [sizeValue] parameter specifies the size value,
   /// and the [intervalSize] parameter specifies the interval size.
   ///
-  /// Returns a list of calculated label values.
+  /// Returns a list of calculated label values. Note: getStart and getEnd should have atleast difference of 3
   List<double> calculateLabelValues(
       double getStart, double getEnd, double sizeValue, double intervalSize) {
     final List<double> labelValues = [];
@@ -130,29 +147,6 @@ class RenderBarChartLabel extends RenderBox {
     }
 
     return labelValues;
-  }
-
-  /// Paints a label on the canvas.
-  ///
-  /// The [canvas] parameter represents the canvas to paint on,
-  /// the [style] parameter specifies the text style,
-  /// the [text] parameter is the label text to paint,
-  /// the [align] parameter specifies the text alignment,
-  /// the [x] parameter specifies the x-coordinate of the label's position,
-  /// and the [y] parameter specifies the y-coordinate of the label's position.
-  void _paintLabel(Canvas canvas, TextStyle style, String text, TextAlign align,
-      double x, double y, double width) {
-    final TextSpan span = TextSpan(
-      text: text,
-      style: style,
-    );
-    final TextPainter tp = TextPainter(
-      text: span,
-      textAlign: align,
-      textDirection: TextDirection.ltr,
-    );
-    tp.layout(maxWidth: width); // Use maxWidth to restrict the label's width
-    tp.paint(canvas, Offset(x, y));
   }
 
   /// Computes the size of the render box.

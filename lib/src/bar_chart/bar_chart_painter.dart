@@ -1,5 +1,5 @@
 import 'package:flutter/rendering.dart';
-import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_axes.dart';
+import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
 
 /// A render object that displays a horizontal bar chart with axes and labels.
 class RenderRBarChart extends RenderBox
@@ -51,14 +51,12 @@ class RenderRBarChart extends RenderBox
         BoxConstraints(maxHeight: size.height, maxWidth: size.width),
         parentUsesSize: true,
       );
-
       if (child is RenderParagraph) {
         barChartOffset = child.size.height;
-        childParentData.offset = const Offset(0, 0);
-      } else if (child is RenderBarChartAxes) {
+        childParentData.offset = const Offset(0, 10);
+      } else if (child is RenderBarChartLabel) {
         childParentData.offset = Offset(0, barChartOffset);
       }
-      print(child);
       child = childParentData.nextSibling;
     }
   }
