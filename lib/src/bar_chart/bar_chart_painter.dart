@@ -51,7 +51,7 @@ class RenderRBarChart extends RenderBox
         BoxConstraints(maxHeight: size.height, maxWidth: size.width),
         parentUsesSize: true,
       );
-      if (child is RenderParagraph) {
+      if (child is BarChartTextTitleRenderObject) {
         barChartOffset = child.size.height;
         childParentData.offset = const Offset(0, 10);
       } else if (child is RenderBarChartLabel) {

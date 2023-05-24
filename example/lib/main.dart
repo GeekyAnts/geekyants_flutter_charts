@@ -36,12 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const BarChart(
-        title: Text(
-          "Hello",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: const BarChart(),
     );
   }
 }
