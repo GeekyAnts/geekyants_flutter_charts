@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_axes.dart';
+import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_rulers.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
 import 'bar_chart_label.dart';
@@ -26,6 +28,8 @@ class BarChart extends StatefulWidget {
   const BarChart({
     Key? key,
     this.barChartLabel = const BarChartLabel(),
+    this.barChartAxes = const BarChartAxes(),
+    this.barChartRulers = const BarChartRulers(),
     this.title = const BarChartTextTitle(
         text: 'Flutter Chart Base',
         textStyle: TextStyle(fontSize: 100, color: Colors.black)),
@@ -36,6 +40,12 @@ class BarChart extends StatefulWidget {
 
   /// The title widget to display on the bar chart.
   final BarChartTextTitle title;
+
+  /// Widget to display X and Y axes on the bar chart.
+  final BarChartAxes barChartAxes;
+
+  /// Widget to display x and y axes rulers on the bar chart
+  final BarChartRulers barChartRulers;
 
   @override
   State<BarChart> createState() => _BarChartState();
@@ -55,9 +65,8 @@ class _BarChartState extends State<BarChart> {
   ///
   /// The [child] parameter is the widget to be added.
   /// The [fontSize] parameter is the font size for the child widget.
-  void _addChild(Widget child, {double? fontSize}) {
+  void _addChild(Widget child) {
     _barChartWidgets.add(BarChartScope(
-      fontSize: fontSize,
       child: child,
     ));
   }
@@ -68,8 +77,9 @@ class _BarChartState extends State<BarChart> {
   List<Widget> _buildChildWidgets(BuildContext context) {
     _barChartWidgets.clear();
     _addChild(widget.title);
-    _addChild(widget.barChartLabel, fontSize: widget.title.textStyle.fontSize);
-
+    _addChild(widget.barChartLabel);
+    _addChild(widget.barChartAxes);
+    _addChild(widget.barChartRulers);
     return _barChartWidgets;
   }
 

@@ -129,7 +129,6 @@ class RenderBarChartLabel extends RenderBox {
   List<double> calculateLabelValues(
       double getStart, double getEnd, double sizeValue, double intervalSize) {
     final List<double> labelValues = [];
-    // final double count = (sizeValue / intervalSize);
     final double count = math.max(sizeValue / intervalSize, 1.0);
     double interval = (getEnd - getStart) / (sizeValue / intervalSize);
     final List<double> intervalDivisions = [10, 5, 2, 1];
