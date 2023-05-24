@@ -63,18 +63,26 @@ class RenderBarChartLabel extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-    final double chartWidth = size.width - 10.0 * 6;
-    final double chartHeight = size.height - offset.dy;
-    final double chartTop = offset.dy;
-    final double chartLeft = (size.width - chartWidth) / 2;
-    final List<double> axesValue =
-        calculateLabelValues(0, 5.5, chartWidth, 100);
-    final int numAxisPoints = axesValue.length;
-    final double barWidth = chartWidth / numAxisPoints;
+    final double chartWidth = size.width;
+    final double chartHeight = size.height - offset.dy - 30;
+    double xAxisLabelHeight = 0;
+    double xAxisPadding = 10;
+
+    List<double> axesValue = [];
+
+    Offset a = Offset(40, size.height - xAxisPadding - 12);
+    Offset b = Offset(size.width - 10, size.height - xAxisPadding - 12);
+    axesValue = calculateLabelValues(0, 5.5, chartWidth, 100);
+    Offset newLinePointA = Offset(a.dx - 20, a.dy);
+    canvas.drawLine(newLinePointA, b, Paint()..color = Colors.blueAccent);
 
     // Draw x-axis points
-    for (int i = 0; i < numAxisPoints; i++) {
-      final double x = chartLeft + i * barWidth;
+    for (int i = 0; i < axesValue.length; i++) {
+      double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
+          b.dx * (i / (axesValue.length - 1));
+      double y = a.dy * (1 - ((i) / (axesValue.length - 1))) +
+          b.dy * (i / (axesValue.length - 1));
+
       TextSpan span = TextSpan(
         text: axesValue[i].toString(),
         style: const TextStyle(color: Colors.black, fontSize: 12),
@@ -85,22 +93,30 @@ class RenderBarChartLabel extends RenderBox {
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-
-      // calculate position of ruler text
-      double rulerTextTop = chartTop + chartHeight + 8;
-      double rulerTextLeft = x - tp.width / 2;
-
-      // adjust position of ruler text if it is too close to y-axis
-      if (rulerTextLeft < chartLeft) {
-        rulerTextLeft = chartLeft;
-      }
-
-      tp.paint(canvas, Offset(rulerTextLeft, rulerTextTop));
+      tp.paint(canvas, Offset(x - (tp.width / 2), y));
+      xAxisLabelHeight = tp.height;
     }
 
+    // Draw x-axis points
+
+    axesValue = calculateYLabelValues(0, 5.5, chartHeight * 3, 100);
+
+    a = Offset(xAxisPadding, offset.dy);
+    b = Offset(xAxisPadding, chartHeight + offset.dy - xAxisPadding);
+    Offset newLinePointBForY = Offset(a.dx + 20, a.dy);
+    canvas.drawLine(newLinePointBForY, Offset(b.dx + 20, b.dy + 30),
+        Paint()..color = Colors.blueAccent);
+    Offset temp = a;
+    a = b;
+    b = temp;
+
     // Draw y-axis points
-    for (int i = 0; i < numAxisPoints; i++) {
-      final double y = chartTop + chartHeight - i * chartHeight / numAxisPoints;
+    for (int i = 0; i < axesValue.length; i++) {
+      double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
+          b.dx * (i / (axesValue.length - 1));
+      double y = a.dy * (1 - ((i) / (axesValue.length - 1))) +
+          b.dy * (i / (axesValue.length - 1));
+
       TextSpan span = TextSpan(
         text: axesValue[i].toString(),
         style: const TextStyle(color: Colors.black, fontSize: 12),
@@ -111,7 +127,7 @@ class RenderBarChartLabel extends RenderBox {
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, Offset(chartLeft - tp.width - 8, y - tp.height / 2));
+      tp.paint(canvas, Offset(x, y));
     }
   }
 
@@ -124,6 +140,40 @@ class RenderBarChartLabel extends RenderBox {
   ///
   /// Returns a list of calculated label values. Note: getStart and getEnd should have atleast difference of 3
   List<double> calculateLabelValues(
+      double getStart, double getEnd, double sizeValue, double intervalSize) {
+    final List<double> labelValues = [];
+    // final double count = (sizeValue / intervalSize);
+    final double count = math.max(sizeValue / 100, 1.0);
+    double interval = (getEnd - getStart) / (sizeValue / 100);
+    final List<double> intervalDivisions = [10, 5, 2, 1];
+    late double currentInterval;
+    num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
+
+    for (final double intervalDivision in intervalDivisions) {
+      currentInterval = v * intervalDivision;
+
+      if (count < ((getEnd - getStart) / currentInterval)) {
+        break;
+      }
+      interval = currentInterval;
+    }
+
+    for (double i = getStart; i <= getEnd; i += interval) {
+      labelValues.add(i);
+    }
+
+    return labelValues;
+  }
+
+  /// Calculates the label values for the chart.
+  ///
+  /// The [getStart] parameter specifies the start value,
+  /// the [getEnd] parameter specifies the end value,
+  /// the [sizeValue] parameter specifies the size value,
+  /// and the [intervalSize] parameter specifies the interval size.
+  ///
+  /// Returns a list of calculated label values. Note: getStart and getEnd should have atleast difference of 3
+  List<double> calculateYLabelValues(
       double getStart, double getEnd, double sizeValue, double intervalSize) {
     final List<double> labelValues = [];
     // final double count = (sizeValue / intervalSize);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,13 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: const BarChart(
         title: Text(
           "Hello",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 10),
         ),
       ),
     );

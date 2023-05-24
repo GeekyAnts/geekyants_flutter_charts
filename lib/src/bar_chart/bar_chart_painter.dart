@@ -19,7 +19,6 @@ class RenderRBarChart extends RenderBox
   /// ```dart
   /// RenderRBarChart(
   ///   children: [
-  ///     // Add children widgets here
   ///   ],
   /// )
   /// ```
@@ -53,7 +52,7 @@ class RenderRBarChart extends RenderBox
       );
       if (child is RenderParagraph) {
         barChartOffset = child.size.height;
-        childParentData.offset = const Offset(0, 10);
+        childParentData.offset = const Offset(0, 0);
       } else if (child is RenderBarChartLabel) {
         childParentData.offset = Offset(0, barChartOffset);
       }
