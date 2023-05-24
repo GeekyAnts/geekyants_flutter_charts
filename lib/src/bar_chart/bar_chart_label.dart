@@ -67,16 +67,19 @@ class RenderBarChartLabel extends RenderBox {
     final double chartHeight = size.height - offset.dy;
     final double chartTop = offset.dy;
     final double chartLeft = (size.width - chartWidth) / 2;
-    final List<double> axesValue =
+    final List<double> axesValueX =
         calculateLabelValues(0, 5.5, chartWidth, 100);
-    final int numAxisPoints = axesValue.length;
-    final double barWidth = chartWidth / numAxisPoints;
-
+    final int numAxisPointsX = axesValueX.length;
+    final double barWidth = chartWidth / numAxisPointsX;
+    final List<double> axesValueY =
+        calculateLabelValues(0, 5.5, chartWidth, 100);
+    final int numAxisPointsY = axesValueY.length;
+    final double barHeight = chartHeight / numAxisPointsY;
     // Draw x-axis points
-    for (int i = 0; i < numAxisPoints; i++) {
+    for (int i = 0; i < numAxisPointsX; i++) {
       final double x = chartLeft + i * barWidth;
       TextSpan span = TextSpan(
-        text: axesValue[i].toString(),
+        text: axesValueX[i].toString(),
         style: const TextStyle(color: Colors.black, fontSize: 12),
       );
       TextPainter tp = TextPainter(
@@ -99,10 +102,10 @@ class RenderBarChartLabel extends RenderBox {
     }
 
     // Draw y-axis points
-    for (int i = 0; i < numAxisPoints; i++) {
-      final double y = chartTop + chartHeight - i * chartHeight / numAxisPoints;
+    for (int i = 0; i < numAxisPointsY; i++) {
+      final double y = chartTop + chartHeight - i * barHeight;
       TextSpan span = TextSpan(
-        text: axesValue[i].toString(),
+        text: axesValueY[i].toString(),
         style: const TextStyle(color: Colors.black, fontSize: 12),
       );
       TextPainter tp = TextPainter(
