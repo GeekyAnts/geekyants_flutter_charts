@@ -69,14 +69,11 @@ class RenderBarChartLabel extends RenderBox {
     double xAxisPadding = 10;
 
     List<double> axesValue = [];
-
+    // Draw x-axis points
     Offset a = Offset(40, size.height - xAxisPadding - 12);
     Offset b = Offset(size.width - 10, size.height - xAxisPadding - 12);
     axesValue = calculateLabelValues(0, 5.5, chartWidth, 100);
-    Offset newLinePointA = Offset(a.dx - 20, a.dy);
-    canvas.drawLine(newLinePointA, b, Paint()..color = Colors.blueAccent);
 
-    // Draw x-axis points
     for (int i = 0; i < axesValue.length; i++) {
       double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
           b.dx * (i / (axesValue.length - 1));
@@ -95,22 +92,25 @@ class RenderBarChartLabel extends RenderBox {
       tp.layout();
       tp.paint(canvas, Offset(x - (tp.width / 2), y));
       xAxisLabelHeight = tp.height;
+      if (i >= 1) {
+        canvas.drawLine(
+          Offset(x, y - (tp.height / 2) + 10),
+          Offset(x, y - (tp.height / 2) - 5),
+          Paint(),
+        );
+      }
     }
 
-    // Draw x-axis points
+    // Draw y-axis points
 
     axesValue = calculateYLabelValues(0, 5.5, chartHeight * 3, 100);
 
     a = Offset(xAxisPadding, offset.dy);
     b = Offset(xAxisPadding, chartHeight + offset.dy - xAxisPadding);
-    Offset newLinePointBForY = Offset(a.dx + 20, a.dy);
-    canvas.drawLine(newLinePointBForY, Offset(b.dx + 20, b.dy + 30),
-        Paint()..color = Colors.blueAccent);
     Offset temp = a;
     a = b;
     b = temp;
 
-    // Draw y-axis points
     for (int i = 0; i < axesValue.length; i++) {
       double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
           b.dx * (i / (axesValue.length - 1));
@@ -128,6 +128,13 @@ class RenderBarChartLabel extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
+      if (i >= 1) {
+        canvas.drawLine(
+          Offset(x - (tp.width / 2) + 45, y - (tp.height / 2) + 15),
+          Offset(x + (tp.width / 2) + 9, y - (tp.height / 2) + 15),
+          Paint(),
+        );
+      }
     }
   }
 
