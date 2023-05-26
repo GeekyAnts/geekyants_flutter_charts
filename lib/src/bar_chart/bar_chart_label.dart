@@ -94,8 +94,8 @@ class RenderBarChartLabel extends RenderBox {
       xAxisLabelHeight = tp.height;
       if (i >= 1) {
         canvas.drawLine(
-          Offset(x, y - (tp.height / 2) + 10),
-          Offset(x, y - (tp.height / 2) - 5),
+          Offset(x, y - (tp.height / 2) + 4),
+          Offset(x, y - (tp.height / 2) - 7),
           Paint(),
         );
       }
@@ -130,8 +130,8 @@ class RenderBarChartLabel extends RenderBox {
       tp.paint(canvas, Offset(x, y));
       if (i >= 1) {
         canvas.drawLine(
-          Offset(x - (tp.width / 2) + 45, y - (tp.height / 2) + 15),
-          Offset(x + (tp.width / 2) + 9, y - (tp.height / 2) + 15),
+          Offset(x - (tp.width / 2) + 40, y - (tp.height / 2) + 15),
+          Offset(x + (tp.width / 2) + 12, y - (tp.height / 2) + 15),
           Paint(),
         );
       }

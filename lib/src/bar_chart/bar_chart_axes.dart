@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 /// A widget that represents the axes labels of a bar chart.
 ///
@@ -7,29 +6,22 @@ import 'dart:math' as math;
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
 class BarChartAxes extends LeafRenderObjectWidget {
-  /// TextStyle for label text
-  final TextStyle textStyle;
-
   /// Creates a [BarChartAxes] widget.
   ///
-  /// The [textStyle] parameter specifies the style of the label text.
 
   const BarChartAxes({
     Key? key,
-    this.textStyle = const TextStyle(color: Colors.black, fontSize: 12),
   }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderBarChartAxes(
-      textStyle: textStyle,
-    );
+    return RenderBarChartAxes();
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartAxes renderObject) {
-    renderObject.textStyle = textStyle;
+    renderObject;
   }
 }
 
@@ -39,22 +31,7 @@ class BarChartAxes extends LeafRenderObjectWidget {
 /// the chart, as well as the number of axis points and the bar width. It then draws
 /// the horizontal and vertical axes of the chart.
 class RenderBarChartAxes extends RenderBox {
-  TextStyle rendertextStyle;
-  RenderBarChartAxes({
-    required TextStyle textStyle,
-  })  : rendertextStyle = textStyle,
-        super();
-
-  /// The text styles for label text
-
-  TextStyle get textStyle => rendertextStyle;
-
-  set textStyle(TextStyle value) {
-    if (rendertextStyle != value) {
-      rendertextStyle = value;
-      markNeedsPaint();
-    }
-  }
+  RenderBarChartAxes();
 
   /// Paints the axes of the bar chart.
   ///
@@ -70,17 +47,17 @@ class RenderBarChartAxes extends RenderBox {
 
     // To draw x axes
 
-    Offset a = Offset(40, size.height - xAxisPadding - 12);
-    Offset b = Offset(chartWidth - 10, size.height - xAxisPadding - 12);
-    Offset newLinePointA = Offset(a.dx - 20, a.dy);
+    Offset a = Offset(48, size.height - xAxisPadding - 25);
+    Offset b = Offset(chartWidth - 10, size.height - xAxisPadding - 25);
+    Offset newLinePointA = Offset(a.dx - 18, a.dy);
     canvas.drawLine(newLinePointA, b, Paint()..color = Colors.blueAccent);
 
     // To draw y axes
 
-    a = Offset(xAxisPadding, offset.dy);
-    b = Offset(xAxisPadding, chartHeight + offset.dy - xAxisPadding);
+    a = Offset(xAxisPadding + 10, offset.dy);
+    b = Offset(xAxisPadding + 10, chartHeight + offset.dy - xAxisPadding);
     Offset newLinePointBForY = Offset(a.dx + 20, a.dy + 7);
-    canvas.drawLine(newLinePointBForY, Offset(b.dx + 20, b.dy + 28),
+    canvas.drawLine(newLinePointBForY, Offset(b.dx + 20, b.dy + 16),
         Paint()..color = Colors.blueAccent);
   }
 
