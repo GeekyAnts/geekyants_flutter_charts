@@ -16,8 +16,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
 
   const BarChartLabel({
     Key? key,
-    this.xAxisRulerHeight = 5,
-    this.yAxisRulerHeight = 5,
+    this.xAxisRulerHeight = 10,
+    this.yAxisRulerHeight = 10,
   }) : super(key: key);
 
   @override
@@ -95,7 +95,7 @@ class RenderBarChartLabel extends RenderBox {
         textStyle: labelTextStyle, value: xAxesLabel.last.value.toString());
 
     // To Draw X Axis Label points
-    Offset a = Offset(starLabelSize.width + yAxisRulerHeight,
+    Offset a = Offset((starLabelSize.width / 2) + yAxisRulerHeight,
         size.height - starLabelSize.height);
     Offset b = Offset((size.width - (endLabelSize.width)),
         size.height - starLabelSize.height);
@@ -117,6 +117,11 @@ class RenderBarChartLabel extends RenderBox {
       tp.paint(canvas, Offset(x, y));
       heightOfXAxisLabel = tp.height;
       widthOfXAxisLabel = tp.width;
+      // To Draw x axis ruler offset
+      canvas.drawLine(
+          Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
+          Offset(x + (widthOfXAxisLabel / 2), y - (heightOfXAxisLabel / 2)),
+          Paint()..color = Colors.purple);
     }
 
     starLabelSize = getLabelSize(
@@ -129,7 +134,8 @@ class RenderBarChartLabel extends RenderBox {
     b = Offset(
         xAxisLabelOffset,
         (graphHeight + offset.dy - (heightOfXAxisLabel * 2)) -
-            xAxisRulerHeight);
+            xAxisRulerHeight +
+            (heightOfXAxisLabel / 2));
 
     Offset temp = a;
     a = b;
@@ -150,6 +156,16 @@ class RenderBarChartLabel extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
+      // To Draw Y axis ruler offset
+
+      canvas.drawLine(
+          Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
+              y + (heightOfXAxisLabel / 2)),
+          Offset(x + widthOfXAxisLabel, y + (heightOfXAxisLabel / 2)),
+          Paint()..color = Colors.orange);
+
+      widthOfYAxisLabel = tp.width;
+      heightOfYAxisLabel = tp.height;
     }
   }
 
