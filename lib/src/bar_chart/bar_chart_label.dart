@@ -118,8 +118,10 @@ class RenderBarChartLabel extends RenderBox {
       // To Draw x axis ruler offset
       // TODO: Setting up offset
       canvas.drawLine(
-          Offset(x + yAxisRulerHeight, y - tp.height - 8),
-          Offset(x + yAxisRulerHeight, y - tp.height + 2),
+          Offset(x + yAxisRulerHeight,
+              y - (widthOfXAxisLabel + xAxisRulerHeight) + 2),
+          Offset(x + yAxisRulerHeight,
+              y - (widthOfXAxisLabel - xAxisRulerHeight) + 2),
           Paint()..color = Colors.blue);
     }
     // To draw Y-axis
