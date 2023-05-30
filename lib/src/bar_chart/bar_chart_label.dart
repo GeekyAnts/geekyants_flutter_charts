@@ -79,6 +79,7 @@ class RenderBarChartLabel extends RenderBox {
     double widthOfXAxisLabel = 0;
     double widthOfYAxisLabel = 0;
     double xAxisLabelOffset = 0;
+    double yAxisLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
     List<AxesLabel> yAxesLabel = [];
     calculateLabelValues(0.0, 5.5, graphWidth, 100, xAxesLabel);
@@ -94,8 +95,9 @@ class RenderBarChartLabel extends RenderBox {
         textStyle: labelTextStyle, value: xAxesLabel.last.value.toString());
 
     // To Draw X Axis Label points
-    Offset a = Offset(starLabelSize.width, size.height);
-    Offset b = Offset(size.width - (endLabelSize.width), size.height);
+    Offset a = Offset(starLabelSize.width, size.height - starLabelSize.height);
+    Offset b = Offset(
+        size.width - (endLabelSize.width), size.height - starLabelSize.height);
 
     for (int i = 0; i < xAxesLabel.length; i++) {
       double x = a.dx * (1 - (i / (xAxesLabel.length - 1))) +
@@ -111,24 +113,15 @@ class RenderBarChartLabel extends RenderBox {
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, Offset(x, y - tp.height));
+      tp.paint(canvas, Offset(x, y));
       heightOfXAxisLabel = tp.height;
       widthOfXAxisLabel = tp.width;
-
       // To Draw x axis ruler offset
       canvas.drawLine(
-          Offset(x + (heightOfXAxisLabel / 2),
-              y - (widthOfXAxisLabel + xAxisRulerHeight) + 2),
-          Offset(x + (heightOfXAxisLabel / 2),
-              y - (widthOfXAxisLabel - xAxisRulerHeight) + 2),
-          Paint()..color = Colors.blue);
+          Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
+          Offset(x + (widthOfXAxisLabel / 2), y - (heightOfXAxisLabel / 2)),
+          Paint()..color = Colors.purple);
     }
-    // To draw Y-axis
-
-    canvas.drawLine(
-        Offset(a.dx + xAxisRulerHeight, offset.dy),
-        Offset(a.dx + xAxisRulerHeight, size.height - heightOfXAxisLabel),
-        Paint()..color = Colors.deepOrangeAccent);
 
     starLabelSize = getLabelSize(
         textStyle: labelTextStyle, value: yAxesLabel.first.value.toString());
@@ -171,13 +164,6 @@ class RenderBarChartLabel extends RenderBox {
       widthOfYAxisLabel = tp.width;
       heightOfYAxisLabel = tp.height;
     }
-    // To draw X-axis
-    canvas.drawLine(
-        Offset(a.dx + widthOfYAxisLabel + xAxisRulerHeight,
-            a.dy + (heightOfYAxisLabel / 2)),
-        Offset(size.width - (widthOfYAxisLabel / 2),
-            a.dy + (heightOfYAxisLabel / 2)),
-        Paint()..color = Colors.grey);
   }
 
   void calculateLabelValues(double getStart, double getEnd, double sizeValue,
