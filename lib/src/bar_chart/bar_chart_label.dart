@@ -95,9 +95,10 @@ class RenderBarChartLabel extends RenderBox {
         textStyle: labelTextStyle, value: xAxesLabel.last.value.toString());
 
     // To Draw X Axis Label points
-    Offset a = Offset(starLabelSize.width, size.height - starLabelSize.height);
-    Offset b = Offset(
-        size.width - (endLabelSize.width), size.height - starLabelSize.height);
+    Offset a = Offset(starLabelSize.width + yAxisRulerHeight,
+        size.height - starLabelSize.height);
+    Offset b = Offset((size.width - (endLabelSize.width)),
+        size.height - starLabelSize.height);
 
     for (int i = 0; i < xAxesLabel.length; i++) {
       double x = a.dx * (1 - (i / (xAxesLabel.length - 1))) +
@@ -116,11 +117,6 @@ class RenderBarChartLabel extends RenderBox {
       tp.paint(canvas, Offset(x, y));
       heightOfXAxisLabel = tp.height;
       widthOfXAxisLabel = tp.width;
-      // To Draw x axis ruler offset
-      canvas.drawLine(
-          Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
-          Offset(x + (widthOfXAxisLabel / 2), y - (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.purple);
     }
 
     starLabelSize = getLabelSize(
@@ -131,7 +127,9 @@ class RenderBarChartLabel extends RenderBox {
     // To Draw Y Axis Label points
     a = Offset(xAxisLabelOffset, offset.dy);
     b = Offset(
-        xAxisLabelOffset, graphHeight + offset.dy - (heightOfXAxisLabel * 2));
+        xAxisLabelOffset,
+        (graphHeight + offset.dy - (heightOfXAxisLabel * 2)) -
+            xAxisRulerHeight);
 
     Offset temp = a;
     a = b;
@@ -152,17 +150,6 @@ class RenderBarChartLabel extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
-
-      // To Draw Y axis ruler offset
-
-      canvas.drawLine(
-          Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
-              y + (heightOfXAxisLabel / 2)),
-          Offset(x + widthOfXAxisLabel, y + (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.orange);
-
-      widthOfYAxisLabel = tp.width;
-      heightOfYAxisLabel = tp.height;
     }
   }
 
