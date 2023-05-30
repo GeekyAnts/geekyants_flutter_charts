@@ -7,51 +7,31 @@ import 'dart:math' as math;
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
 class BarChartLabel extends LeafRenderObjectWidget {
-  final double heightOfXAxisLabel;
   final double xAxisRulerHeight;
   final double yAxisRulerHeight;
-  final double xAxisLabelOffset;
-  final double widthOfYAxisLabel;
-  final double heightOfYAxisLabel;
-  final double widthOfXAxisLabel;
 
   /// Creates a [BarChartLabel] widget.
   ///
   /// The [textStyle] parameter specifies the style of the label text.
 
-  const BarChartLabel(
-      {Key? key,
-      this.heightOfXAxisLabel = 0,
-      this.xAxisRulerHeight = 5,
-      this.yAxisRulerHeight = 5,
-      this.xAxisLabelOffset = 0,
-      this.widthOfYAxisLabel = 0,
-      this.heightOfYAxisLabel = 0,
-      this.widthOfXAxisLabel = 0})
-      : super(key: key);
+  const BarChartLabel({
+    Key? key,
+    this.xAxisRulerHeight = 5,
+    this.yAxisRulerHeight = 5,
+  }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartLabel(
-        heightOfXAxisLabel: heightOfXAxisLabel,
-        heightOfYAxisLabel: heightOfYAxisLabel,
-        widthOfXAxisLabel: widthOfXAxisLabel,
-        widthOfYAxisLabel: widthOfYAxisLabel,
-        xAxisLabelOffset: xAxisLabelOffset,
-        xAxisRulerHeight: xAxisRulerHeight,
-        yAxisRulerHeight: yAxisRulerHeight);
+        xAxisRulerHeight: xAxisRulerHeight, yAxisRulerHeight: yAxisRulerHeight);
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartLabel renderObject) {
     renderObject
-      ..heightOfXAxisLabel = heightOfXAxisLabel
       ..xAxisRulerHeight = xAxisRulerHeight
-      ..yAxisRulerHeight = yAxisRulerHeight
-      ..xAxisLabelOffset = xAxisLabelOffset
-      ..widthOfYAxisLabel = widthOfYAxisLabel
-      ..widthOfXAxisLabel = widthOfXAxisLabel;
+      ..yAxisRulerHeight = yAxisRulerHeight;
   }
 }
 
@@ -65,37 +45,13 @@ class RenderBarChartLabel extends RenderBox {
   ///
   /// The [context] parameter provides the painting context, and the [offset]
   /// parameter specifies the offset at which to paint the axes.
-  double renderHeightOfXAxisLabel;
   double renderXAxisRulerHeight;
   double renderYAxisRulerHeight;
-  double renderXAxisLabelOffset;
-  double renderWidthOfYAxisLabel;
-  double renderHeightOfYAxisLabel;
-  double renderWidthOfXAxisLabel;
   RenderBarChartLabel(
-      {required double heightOfXAxisLabel,
-      required double xAxisRulerHeight,
-      required double yAxisRulerHeight,
-      required double xAxisLabelOffset,
-      required double widthOfYAxisLabel,
-      required double heightOfYAxisLabel,
-      required double widthOfXAxisLabel})
-      : renderHeightOfXAxisLabel = heightOfXAxisLabel,
-        renderXAxisRulerHeight = xAxisRulerHeight,
+      {required double xAxisRulerHeight, required double yAxisRulerHeight})
+      : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
-        renderXAxisLabelOffset = xAxisLabelOffset,
-        renderWidthOfYAxisLabel = widthOfYAxisLabel,
-        renderHeightOfYAxisLabel = heightOfYAxisLabel,
-        renderWidthOfXAxisLabel = widthOfXAxisLabel,
         super();
-
-  double get heightOfXAxisLabel => renderHeightOfXAxisLabel;
-  set heightOfXAxisLabel(double value) {
-    if (renderHeightOfXAxisLabel != value) {
-      renderHeightOfXAxisLabel = value;
-      markNeedsLayout();
-    }
-  }
 
   double get xAxisRulerHeight => renderXAxisRulerHeight;
   set xAxisRulerHeight(double value) {
@@ -113,37 +69,16 @@ class RenderBarChartLabel extends RenderBox {
     }
   }
 
-  double get xAxisLabelOffset => renderXAxisLabelOffset;
-  set xAxisLabelOffset(double value) {
-    if (renderXAxisLabelOffset != value) {
-      renderXAxisLabelOffset = value;
-      markNeedsLayout();
-    }
-  }
-
-  double get widthOfYAxisLabel => renderWidthOfYAxisLabel;
-  set widthOfYAxisLabel(double value) {
-    if (renderWidthOfYAxisLabel != value) {
-      renderWidthOfYAxisLabel = value;
-      markNeedsLayout();
-    }
-  }
-
-  double get widthOfXAxisLabel => renderWidthOfXAxisLabel;
-  set widthOfXAxisLabel(double value) {
-    if (renderWidthOfXAxisLabel != value) {
-      renderWidthOfXAxisLabel = value;
-      markNeedsLayout();
-    }
-  }
-
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
     final double graphWidth = size.width;
     final double graphHeight = size.height - offset.dy;
     double heightOfYAxisLabel = 0;
-
+    double heightOfXAxisLabel = 0;
+    double widthOfXAxisLabel = 0;
+    double widthOfYAxisLabel = 0;
+    double xAxisLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
     List<AxesLabel> yAxesLabel = [];
     calculateLabelValues(0.0, 5.5, graphWidth, 100, xAxesLabel);
