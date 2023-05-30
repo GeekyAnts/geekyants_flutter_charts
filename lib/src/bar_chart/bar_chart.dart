@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_axes.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
 import 'bar_chart_label.dart';
@@ -27,7 +26,6 @@ class BarChart extends StatefulWidget {
   const BarChart({
     Key? key,
     this.barChartLabel = const BarChartLabel(),
-    this.barChartAxes = const BarChartAxes(),
     this.title = const BarChartTextTitle(
         text: 'Flutter Chart Base',
         textStyle: TextStyle(fontSize: 100, color: Colors.black)),
@@ -40,7 +38,7 @@ class BarChart extends StatefulWidget {
   final BarChartTextTitle title;
 
   /// Widget to display X and Y axes on the bar chart.
-  final BarChartAxes barChartAxes;
+  // final BarChartAxes barChartAxes;
 
   @override
   State<BarChart> createState() => _BarChartState();
@@ -73,7 +71,6 @@ class _BarChartState extends State<BarChart> {
     _barChartWidgets.clear();
     _addChild(widget.title);
     _addChild(widget.barChartLabel);
-    _addChild(widget.barChartAxes);
     return _barChartWidgets;
   }
 

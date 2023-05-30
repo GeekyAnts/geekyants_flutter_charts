@@ -7,29 +7,51 @@ import 'dart:math' as math;
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
 class BarChartLabel extends LeafRenderObjectWidget {
-  /// TextStyle for label text
-  final TextStyle textStyle;
+  final double heightOfXAxisLabel;
+  final double xAxisRulerHeight;
+  final double yAxisRulerHeight;
+  final double xAxisLabelOffset;
+  final double widthOfYAxisLabel;
+  final double heightOfYAxisLabel;
+  final double widthOfXAxisLabel;
 
   /// Creates a [BarChartLabel] widget.
   ///
   /// The [textStyle] parameter specifies the style of the label text.
 
-  const BarChartLabel({
-    Key? key,
-    this.textStyle = const TextStyle(color: Colors.black, fontSize: 12),
-  }) : super(key: key);
+  const BarChartLabel(
+      {Key? key,
+      this.heightOfXAxisLabel = 0,
+      this.xAxisRulerHeight = 5,
+      this.yAxisRulerHeight = 5,
+      this.xAxisLabelOffset = 0,
+      this.widthOfYAxisLabel = 0,
+      this.heightOfYAxisLabel = 0,
+      this.widthOfXAxisLabel = 0})
+      : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartLabel(
-      textStyle: textStyle,
-    );
+        heightOfXAxisLabel: heightOfXAxisLabel,
+        heightOfYAxisLabel: heightOfYAxisLabel,
+        widthOfXAxisLabel: widthOfXAxisLabel,
+        widthOfYAxisLabel: widthOfYAxisLabel,
+        xAxisLabelOffset: xAxisLabelOffset,
+        xAxisRulerHeight: xAxisRulerHeight,
+        yAxisRulerHeight: yAxisRulerHeight);
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartLabel renderObject) {
-    renderObject.textStyle = textStyle;
+    renderObject
+      ..heightOfXAxisLabel = heightOfXAxisLabel
+      ..xAxisRulerHeight = xAxisRulerHeight
+      ..yAxisRulerHeight = yAxisRulerHeight
+      ..xAxisLabelOffset = xAxisLabelOffset
+      ..widthOfYAxisLabel = widthOfYAxisLabel
+      ..widthOfXAxisLabel = widthOfXAxisLabel;
   }
 }
 
@@ -39,157 +61,196 @@ class BarChartLabel extends LeafRenderObjectWidget {
 /// the chart, as well as the number of axis points and the bar width. It then draws
 /// the horizontal and vertical axes of the chart.
 class RenderBarChartLabel extends RenderBox {
-  TextStyle rendertextStyle;
-  RenderBarChartLabel({
-    required TextStyle textStyle,
-  })  : rendertextStyle = textStyle,
-        super();
-
-  /// The text styles for label text
-
-  TextStyle get textStyle => rendertextStyle;
-
-  set textStyle(TextStyle value) {
-    if (rendertextStyle != value) {
-      rendertextStyle = value;
-      markNeedsPaint();
-    }
-  }
-
   /// Paints the axes of the bar chart.
   ///
   /// The [context] parameter provides the painting context, and the [offset]
   /// parameter specifies the offset at which to paint the axes.
+  double renderHeightOfXAxisLabel;
+  double renderXAxisRulerHeight;
+  double renderYAxisRulerHeight;
+  double renderXAxisLabelOffset;
+  double renderWidthOfYAxisLabel;
+  double renderHeightOfYAxisLabel;
+  double renderWidthOfXAxisLabel;
+  RenderBarChartLabel(
+      {required double heightOfXAxisLabel,
+      required double xAxisRulerHeight,
+      required double yAxisRulerHeight,
+      required double xAxisLabelOffset,
+      required double widthOfYAxisLabel,
+      required double heightOfYAxisLabel,
+      required double widthOfXAxisLabel})
+      : renderHeightOfXAxisLabel = heightOfXAxisLabel,
+        renderXAxisRulerHeight = xAxisRulerHeight,
+        renderYAxisRulerHeight = yAxisRulerHeight,
+        renderXAxisLabelOffset = xAxisLabelOffset,
+        renderWidthOfYAxisLabel = widthOfYAxisLabel,
+        renderHeightOfYAxisLabel = heightOfYAxisLabel,
+        renderWidthOfXAxisLabel = widthOfXAxisLabel,
+        super();
+
+  double get heightOfXAxisLabel => renderHeightOfXAxisLabel;
+  set heightOfXAxisLabel(double value) {
+    if (renderHeightOfXAxisLabel != value) {
+      renderHeightOfXAxisLabel = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get xAxisRulerHeight => renderXAxisRulerHeight;
+  set xAxisRulerHeight(double value) {
+    if (renderXAxisRulerHeight != value) {
+      renderXAxisRulerHeight = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get yAxisRulerHeight => renderYAxisRulerHeight;
+  set yAxisRulerHeight(double value) {
+    if (renderYAxisRulerHeight != value) {
+      renderYAxisRulerHeight = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get xAxisLabelOffset => renderXAxisLabelOffset;
+  set xAxisLabelOffset(double value) {
+    if (renderXAxisLabelOffset != value) {
+      renderXAxisLabelOffset = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get widthOfYAxisLabel => renderWidthOfYAxisLabel;
+  set widthOfYAxisLabel(double value) {
+    if (renderWidthOfYAxisLabel != value) {
+      renderWidthOfYAxisLabel = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get widthOfXAxisLabel => renderWidthOfXAxisLabel;
+  set widthOfXAxisLabel(double value) {
+    if (renderWidthOfXAxisLabel != value) {
+      renderWidthOfXAxisLabel = value;
+      markNeedsLayout();
+    }
+  }
+
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-    final double chartWidth = size.width;
-    final double chartHeight = size.height - offset.dy - 30;
-    double xAxisLabelHeight = 0;
-    double xAxisPadding = 10;
+    final double graphWidth = size.width;
+    final double graphHeight = size.height - offset.dy;
+    double heightOfYAxisLabel = 0;
 
-    List<double> axesValue = [];
-    // Draw x-axis points
-    Offset a = Offset(40, size.height - xAxisPadding - 12);
-    Offset b = Offset(size.width - 10, size.height - xAxisPadding - 12);
-    axesValue = calculateLabelValues(0, 5.5, chartWidth, 100);
+    List<AxesLabel> xAxesLabel = [];
+    List<AxesLabel> yAxesLabel = [];
+    calculateLabelValues(0.0, 5.5, graphWidth, 100, xAxesLabel);
+    calculateLabelValues(0.0, 5.5, graphHeight * 3, 100, yAxesLabel);
 
-    for (int i = 0; i < axesValue.length; i++) {
-      double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
-          b.dx * (i / (axesValue.length - 1));
-      double y = a.dy * (1 - ((i) / (axesValue.length - 1))) +
-          b.dy * (i / (axesValue.length - 1));
+    // To Find X Axis Beginning and end points
+    const labelTextStyle = TextStyle(
+      color: Colors.black,
+    );
+    var starLabelSize = getLabelSize(
+        textStyle: labelTextStyle, value: xAxesLabel.first.value.toString());
+    var endLabelSize = getLabelSize(
+        textStyle: labelTextStyle, value: xAxesLabel.last.value.toString());
 
-      TextSpan span = TextSpan(
-        text: axesValue[i].toString(),
-        style: const TextStyle(color: Colors.black, fontSize: 12),
+    // To Draw X Axis Label points
+    Offset a = Offset(starLabelSize.width, size.height);
+    Offset b = Offset(size.width - (endLabelSize.width), size.height);
+
+    for (int i = 0; i < xAxesLabel.length; i++) {
+      double x = a.dx * (1 - (i / (xAxesLabel.length - 1))) +
+          b.dx * (i / (xAxesLabel.length - 1));
+      double y = a.dy * (1 - (i / (xAxesLabel.length - 1))) +
+          b.dy * (i / (xAxesLabel.length - 1));
+      final TextSpan span = TextSpan(
+        text: xAxesLabel[i].value.toString(),
+        style: labelTextStyle,
       );
-      TextPainter tp = TextPainter(
+      final TextPainter tp = TextPainter(
         text: span,
-        textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, Offset(x - (tp.width / 2), y));
-      xAxisLabelHeight = tp.height;
-      if (i >= 1) {
-        canvas.drawLine(
-          Offset(x, y - (tp.height / 2) + 4),
-          Offset(x, y - (tp.height / 2) - 7),
-          Paint(),
-        );
-      }
+      tp.paint(canvas, Offset(x - 5, y - tp.height));
+      heightOfXAxisLabel = tp.height;
+      widthOfXAxisLabel = tp.width;
+
+      // To Draw x axis ruler offset
+      // TODO: Setting up offset
+      canvas.drawLine(
+          Offset(x + yAxisRulerHeight, y - tp.height - 8),
+          Offset(x + yAxisRulerHeight, y - tp.height + 2),
+          Paint()..color = Colors.blue);
     }
+    // To draw Y-axis
 
-    // Draw y-axis points
+    canvas.drawLine(
+        Offset(a.dx + xAxisRulerHeight, offset.dy),
+        Offset(a.dx + xAxisRulerHeight, size.height - heightOfXAxisLabel),
+        Paint()..color = Colors.deepOrangeAccent);
 
-    axesValue = calculateYLabelValues(0, 5.5, chartHeight * 3, 100);
+    starLabelSize = getLabelSize(
+        textStyle: labelTextStyle, value: yAxesLabel.first.value.toString());
+    endLabelSize = getLabelSize(
+        textStyle: labelTextStyle, value: yAxesLabel.last.value.toString());
 
-    a = Offset(xAxisPadding, offset.dy);
-    b = Offset(xAxisPadding, chartHeight + offset.dy - xAxisPadding);
+    // To Draw Y Axis Label points
+    a = Offset(xAxisLabelOffset, offset.dy);
+    b = Offset(
+        xAxisLabelOffset, graphHeight + offset.dy - (heightOfXAxisLabel * 2));
+
     Offset temp = a;
     a = b;
     b = temp;
 
-    for (int i = 0; i < axesValue.length; i++) {
-      double x = a.dx * (1 - ((i) / (axesValue.length - 1))) +
-          b.dx * (i / (axesValue.length - 1));
-      double y = a.dy * (1 - ((i) / (axesValue.length - 1))) +
-          b.dy * (i / (axesValue.length - 1));
-
-      TextSpan span = TextSpan(
-        text: axesValue[i].toString(),
-        style: const TextStyle(color: Colors.black, fontSize: 12),
+    for (int i = 0; i < yAxesLabel.length; i++) {
+      double x = a.dx * (1 - (i / (yAxesLabel.length - 1))) +
+          b.dx * (i / (yAxesLabel.length - 1));
+      double y = a.dy * (1 - (i / (yAxesLabel.length - 1))) +
+          b.dy * (i / (yAxesLabel.length - 1));
+      final TextSpan span = TextSpan(
+        text: yAxesLabel[i].value.toString(),
+        style: labelTextStyle,
       );
-      TextPainter tp = TextPainter(
+      final TextPainter tp = TextPainter(
         text: span,
-        textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
-      if (i >= 1) {
-        canvas.drawLine(
-          Offset(x - (tp.width / 2) + 40, y - (tp.height / 2) + 15),
-          Offset(x + (tp.width / 2) + 12, y - (tp.height / 2) + 15),
-          Paint(),
-        );
-      }
+
+      // To Draw Y axis ruler offset
+
+      canvas.drawLine(
+          Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
+              y + (heightOfXAxisLabel / 2)),
+          Offset(x + widthOfXAxisLabel, y + (heightOfXAxisLabel / 2)),
+          Paint()..color = Colors.orange);
+
+      widthOfYAxisLabel = tp.width;
+      heightOfYAxisLabel = tp.height;
     }
+    // To draw X-axis
+    canvas.drawLine(
+        Offset(a.dx + widthOfYAxisLabel + xAxisRulerHeight,
+            a.dy + (heightOfYAxisLabel / 2)),
+        Offset(size.width - (widthOfYAxisLabel / 2),
+            a.dy + (heightOfYAxisLabel / 2)),
+        Paint()..color = Colors.grey);
   }
 
-  /// Calculates the label values for the chart.
-  ///
-  /// The [getStart] parameter specifies the start value,
-  /// the [getEnd] parameter specifies the end value,
-  /// the [sizeValue] parameter specifies the size value,
-  /// and the [intervalSize] parameter specifies the interval size.
-  ///
-  /// Returns a list of calculated label values. Note: getStart and getEnd should have atleast difference of 3
-  List<double> calculateLabelValues(
-      double getStart, double getEnd, double sizeValue, double intervalSize) {
-    final List<double> labelValues = [];
-    // final double count = (sizeValue / intervalSize);
-    final double count = math.max(sizeValue / 100, 1.0);
-    double interval = (getEnd - getStart) / (sizeValue / 100);
-    final List<double> intervalDivisions = [10, 5, 2, 1];
-    late double currentInterval;
-    num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
-
-    for (final double intervalDivision in intervalDivisions) {
-      currentInterval = v * intervalDivision;
-
-      if (count < ((getEnd - getStart) / currentInterval)) {
-        break;
-      }
-      interval = currentInterval;
-    }
-
-    for (double i = getStart; i <= getEnd; i += interval) {
-      labelValues.add(i);
-    }
-
-    return labelValues;
-  }
-
-  /// Calculates the label values for the chart.
-  ///
-  /// The [getStart] parameter specifies the start value,
-  /// the [getEnd] parameter specifies the end value,
-  /// the [sizeValue] parameter specifies the size value,
-  /// and the [intervalSize] parameter specifies the interval size.
-  ///
-  /// Returns a list of calculated label values. Note: getStart and getEnd should have atleast difference of 3
-  List<double> calculateYLabelValues(
-      double getStart, double getEnd, double sizeValue, double intervalSize) {
-    final List<double> labelValues = [];
-    // final double count = (sizeValue / intervalSize);
+  void calculateLabelValues(double getStart, double getEnd, double sizeValue,
+      double intervalSize, List<AxesLabel> label) {
     final double count = math.max(sizeValue / intervalSize, 1.0);
     double interval = (getEnd - getStart) / (sizeValue / intervalSize);
     final List<double> intervalDivisions = [10, 5, 2, 1];
     late double currentInterval;
     num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
-
     for (final double intervalDivision in intervalDivisions) {
       currentInterval = v * intervalDivision;
 
@@ -200,23 +261,25 @@ class RenderBarChartLabel extends RenderBox {
     }
 
     for (double i = getStart; i <= getEnd; i += interval) {
-      labelValues.add(i);
+      label.add(AxesLabel(text: i.toString(), value: i));
     }
-
-    return labelValues;
   }
 
-  /// Computes the size of the render box.
-  ///
-  /// The [constraints] parameter represents the layout constraints
-  /// used to constrain the size of the render box.
-  ///
-  /// Returns the computed size of the render box.
+  Size getLabelSize({required TextStyle textStyle, required String? value}) {
+    final TextSpan textSpan = TextSpan(text: value!, style: textStyle);
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.text = textSpan;
+    textPainter.layout();
+
+    return Size(textPainter.width, textPainter.height);
+  }
+
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     final double chartWidth = constraints.maxWidth;
     final double chartHeight = constraints.maxHeight;
-
     return Size(chartWidth, chartHeight);
   }
 
@@ -224,4 +287,14 @@ class RenderBarChartLabel extends RenderBox {
   void performLayout() {
     size = computeDryLayout(constraints);
   }
+}
+
+class AxesLabel {
+  String? text;
+  double? value;
+
+  AxesLabel({
+    this.text,
+    this.value,
+  });
 }
