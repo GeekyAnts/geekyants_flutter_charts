@@ -132,7 +132,7 @@ class RenderBarChartLabel extends RenderBox {
       widthOfXAxisLabel = tp.width;
       // To Draw x axis ruler scale offset
       canvas.drawLine(
-          Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
+          Offset(x + (widthOfXAxisLabel / 2), y - xAxisRulerHeight),
           Offset(x + (widthOfXAxisLabel / 2), y),
           Paint()..color = Colors.black);
       // To Draw x axis rulers
@@ -189,16 +189,15 @@ class RenderBarChartLabel extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
-
-      // To Draw Y axis ruler scale offset
-      canvas.drawLine(
-          Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
-              y + (heightOfXAxisLabel / 2)),
-          Offset(x + widthOfXAxisLabel, y + (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.black);
-
       widthOfYAxisLabel = tp.width;
       heightOfYAxisLabel = tp.height;
+      // To Draw Y axis ruler scale offset
+      canvas.drawLine(
+          Offset(x + widthOfYAxisLabel + yAxisRulerHeight,
+              y + (heightOfYAxisLabel / 2)),
+          Offset(x + widthOfYAxisLabel, y + (heightOfYAxisLabel / 2)),
+          Paint()..color = Colors.black);
+
       // To Draw Y axis rulers
       canvas.drawLine(
           Offset(x + xAxisRulerHeight + (widthOfYAxisLabel),
