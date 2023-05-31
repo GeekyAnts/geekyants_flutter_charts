@@ -116,10 +116,17 @@ class RenderBarChartLabel extends RenderBox {
       tp.paint(canvas, Offset(x, y));
       heightOfXAxisLabel = tp.height;
       widthOfXAxisLabel = tp.width;
-      // To Draw x axis ruler offset
+      // To Draw x axis ruler scale offset
       canvas.drawLine(
           Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
           Offset(x + (widthOfXAxisLabel / 2), y - (heightOfXAxisLabel / 2)),
+          Paint()..color = Colors.purple);
+      // To Draw x axis rulers
+      canvas.drawLine(
+          Offset(x + (widthOfXAxisLabel / 2),
+              (size.height - heightOfXAxisLabel) - (yAxisRulerHeight)),
+          Offset(x + (widthOfXAxisLabel / 2),
+              offset.dy + (heightOfXAxisLabel / 2)),
           Paint()..color = Colors.purple);
     }
     // To draw Y Axis
@@ -128,7 +135,7 @@ class RenderBarChartLabel extends RenderBox {
             a.dx +
                 xAxisRulerHeight -
                 (xAxisRulerHeight - (widthOfXAxisLabel / 2)),
-            offset.dy),
+            offset.dy + (heightOfXAxisLabel / 2)),
         Offset(
             a.dx +
                 xAxisRulerHeight -
@@ -168,8 +175,8 @@ class RenderBarChartLabel extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
-      // To Draw Y axis ruler offset
 
+      // To Draw Y axis ruler scale offset
       canvas.drawLine(
           Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
               y + (heightOfXAxisLabel / 2)),
@@ -178,6 +185,13 @@ class RenderBarChartLabel extends RenderBox {
 
       widthOfYAxisLabel = tp.width;
       heightOfYAxisLabel = tp.height;
+      // To Draw Y axis rulers
+      canvas.drawLine(
+          Offset(x + xAxisRulerHeight + (widthOfYAxisLabel),
+              y + (heightOfYAxisLabel / 2)),
+          Offset(size.width - (widthOfXAxisLabel / 2),
+              y + (heightOfYAxisLabel / 2)),
+          Paint()..color = Colors.purple);
     }
     // To Draw X Axis
     canvas.drawLine(
