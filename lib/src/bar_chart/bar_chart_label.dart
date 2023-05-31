@@ -134,14 +134,14 @@ class RenderBarChartLabel extends RenderBox {
       canvas.drawLine(
           Offset(x + (widthOfXAxisLabel / 2), y - yAxisRulerHeight),
           Offset(x + (widthOfXAxisLabel / 2), y - (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.purple);
+          Paint()..color = Colors.black);
       // To Draw x axis rulers
       canvas.drawLine(
           Offset(x + (widthOfXAxisLabel / 2),
               (size.height - heightOfXAxisLabel) - (yAxisRulerHeight)),
           Offset(x + (widthOfXAxisLabel / 2),
               offset.dy + (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.purple);
+          Paint()..color = Colors.black);
     }
     // To draw Y Axis
     canvas.drawLine(
@@ -155,7 +155,7 @@ class RenderBarChartLabel extends RenderBox {
                 xAxisRulerHeight -
                 (xAxisRulerHeight - (widthOfXAxisLabel / 2)),
             size.height - heightOfXAxisLabel),
-        Paint()..color = Colors.deepOrangeAccent);
+        Paint()..color = Colors.black);
 
     starLabelSize = getLabelSize(
         textStyle: labelTextStyle, value: yAxesLabel.first.value.toString());
@@ -195,7 +195,7 @@ class RenderBarChartLabel extends RenderBox {
           Offset(x + widthOfXAxisLabel + xAxisRulerHeight,
               y + (heightOfXAxisLabel / 2)),
           Offset(x + widthOfXAxisLabel, y + (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.orange);
+          Paint()..color = Colors.black);
 
       widthOfYAxisLabel = tp.width;
       heightOfYAxisLabel = tp.height;
@@ -205,7 +205,7 @@ class RenderBarChartLabel extends RenderBox {
               y + (heightOfYAxisLabel / 2)),
           Offset(size.width - (widthOfXAxisLabel / 2),
               y + (heightOfYAxisLabel / 2)),
-          Paint()..color = Colors.purple);
+          Paint()..color = Colors.black);
     }
     // To Draw X Axis
     canvas.drawLine(
@@ -219,7 +219,7 @@ class RenderBarChartLabel extends RenderBox {
             a.dy -
                 (yAxisRulerHeight -
                     (yAxisRulerHeight + (heightOfYAxisLabel / 2)))),
-        Paint()..color = Colors.purple);
+        Paint()..color = Colors.black);
   }
 
   void calculateLabelValues(double getStart, double getEnd, double sizeValue,
