@@ -9,6 +9,7 @@ import 'dart:math' as math;
 class BarChartLabel extends LeafRenderObjectWidget {
   final double xAxisRulerHeight;
   final double yAxisRulerHeight;
+  final TextStyle labelTextStyle;
 
   /// Creates a [BarChartLabel] widget.
   ///
@@ -18,12 +19,15 @@ class BarChartLabel extends LeafRenderObjectWidget {
     Key? key,
     this.xAxisRulerHeight = 10,
     this.yAxisRulerHeight = 10,
+    this.labelTextStyle = const TextStyle(color: Colors.black, fontSize: 10),
   }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartLabel(
-        xAxisRulerHeight: xAxisRulerHeight, yAxisRulerHeight: yAxisRulerHeight);
+        xAxisRulerHeight: xAxisRulerHeight,
+        yAxisRulerHeight: yAxisRulerHeight,
+        labelTextStyle: labelTextStyle);
   }
 
   @override
@@ -31,7 +35,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
       BuildContext context, covariant RenderBarChartLabel renderObject) {
     renderObject
       ..xAxisRulerHeight = xAxisRulerHeight
-      ..yAxisRulerHeight = yAxisRulerHeight;
+      ..yAxisRulerHeight = yAxisRulerHeight
+      ..labelTextStyle = labelTextStyle;
   }
 }
 
@@ -47,10 +52,14 @@ class RenderBarChartLabel extends RenderBox {
   /// parameter specifies the offset at which to paint the axes.
   double renderXAxisRulerHeight;
   double renderYAxisRulerHeight;
+  TextStyle renderLabelTextStyle;
   RenderBarChartLabel(
-      {required double xAxisRulerHeight, required double yAxisRulerHeight})
+      {required double xAxisRulerHeight,
+      required double yAxisRulerHeight,
+      required TextStyle labelTextStyle})
       : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
+        renderLabelTextStyle = labelTextStyle,
         super();
 
   double get xAxisRulerHeight => renderXAxisRulerHeight;
@@ -65,6 +74,14 @@ class RenderBarChartLabel extends RenderBox {
   set yAxisRulerHeight(double value) {
     if (renderYAxisRulerHeight != value) {
       renderYAxisRulerHeight = value;
+      markNeedsLayout();
+    }
+  }
+
+  TextStyle get labelTextStyle => renderLabelTextStyle;
+  set labelTextStyle(TextStyle value) {
+    if (renderLabelTextStyle != value) {
+      renderLabelTextStyle = value;
       markNeedsLayout();
     }
   }
@@ -85,9 +102,6 @@ class RenderBarChartLabel extends RenderBox {
     calculateLabelValues(0.0, 5.5, graphHeight * 3, 100, yAxesLabel);
 
     // To Find X Axis Beginning and end points
-    const labelTextStyle = TextStyle(
-      color: Colors.black,
-    );
     var starLabelSize = getLabelSize(
         textStyle: labelTextStyle, value: xAxesLabel.first.value.toString());
     var endLabelSize = getLabelSize(
