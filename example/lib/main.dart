@@ -54,8 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
             // xAxisSteps: 90,
             // yAxisSteps: 90,
             // xAxisRulerOffset: 100,
-            // xAxisLabelOffset: 50
-            // showGrid: false
+            // xAxisLabelOffset: 50,
+            // xAxisGridRulerThickness: 2.0,
+            // yAxisGridRulerThickness: 1.0,
+            // xAxisGridRulerColor: Colors.blue,
+            // yAxisGridRulerColor: Colors.orange,
+            // showGridRuler: false
             ),
       ),
     );
