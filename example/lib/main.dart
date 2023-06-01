@@ -51,6 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // yAxisEndPoint: 120,
             // xAxisSteps: 90,
             // yAxisSteps: 90,
+            // yAxisLabelTextStyle: TextStyle(fontSize: 12, color: Colors.teal),
+            // xAxisLabelTextStyle:
+            //     TextStyle(fontSize: 12, color: Colors.purpleAccent),
             ),
       ),
     );
