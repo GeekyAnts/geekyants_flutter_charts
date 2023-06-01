@@ -33,10 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: BarChart(
-            title: BarChartTextTitle(
-      text: 'Flutter Chart Base',
-      textStyle: TextStyle(fontSize: 100, color: Colors.black),
-    )));
+      body: BarChart(
+        barChartLabel: BarChartLabel(
+            // showRulerGrid: false,
+            ),
+      ),
+    );
   }
 }
