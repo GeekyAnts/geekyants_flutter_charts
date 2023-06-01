@@ -36,6 +36,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: BarChart(
         barChartLabel: BarChartLabel(
             // showRulerGrid: false,
+            // xAxisRulerThickness: 2.0,
+            // xAxisRulerHeight: 35,
+            // yAxisRulerThickness: 1.0,
+            // xAxisRulerColor: Colors.deepOrangeAccent,
+            // yAxisRulerColor: Colors.purpleAccent,
+            // xAxisMainThickness: 1.3,
+            // yAxisMainThickness: 1.3,
+            // xAxisMainColor: Colors.deepPurpleAccent,
+            // yAxisMainColor: Colors.deepOrangeAccent,
+            // xAxisStartPoint: 10,
+            // xAxisEndPoint: 55,
+            // yAxisStartPoint: 20,
+            // yAxisEndPoint: 120,
+            // xAxisSteps: 90,
+            // yAxisSteps: 90,
             ),
       ),
     );
