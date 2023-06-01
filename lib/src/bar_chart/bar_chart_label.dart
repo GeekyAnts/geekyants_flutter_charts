@@ -154,7 +154,7 @@ class RenderBarChartLabel extends RenderBox {
       if (showRulerGrid) {
         canvas.drawLine(
             Offset(x + (widthOfXAxisLabel / 2),
-                (size.height - heightOfXAxisLabel) - (yAxisRulerHeight)),
+                (size.height - heightOfXAxisLabel) - (xAxisRulerHeight)),
             Offset(x + (widthOfXAxisLabel / 2),
                 offset.dy + (heightOfXAxisLabel / 2)),
             Paint()..color = Colors.grey);
@@ -164,13 +164,13 @@ class RenderBarChartLabel extends RenderBox {
     canvas.drawLine(
         Offset(
             a.dx +
-                xAxisRulerHeight -
-                (xAxisRulerHeight - (widthOfXAxisLabel / 2)),
+                yAxisRulerHeight -
+                (yAxisRulerHeight - (widthOfXAxisLabel / 2)),
             offset.dy + (heightOfXAxisLabel / 2)),
         Offset(
             a.dx +
-                xAxisRulerHeight -
-                (xAxisRulerHeight - (widthOfXAxisLabel / 2)),
+                yAxisRulerHeight -
+                (yAxisRulerHeight - (widthOfXAxisLabel / 2)),
             size.height - heightOfXAxisLabel),
         Paint()..color = Colors.black);
 
@@ -218,7 +218,7 @@ class RenderBarChartLabel extends RenderBox {
       // To Draw Y axis rulers
       if (showRulerGrid) {
         canvas.drawLine(
-            Offset(x + xAxisRulerHeight + (widthOfYAxisLabel),
+            Offset(x + yAxisRulerHeight + (widthOfYAxisLabel),
                 y + (heightOfYAxisLabel / 2)),
             Offset(size.width - (widthOfXAxisLabel / 2),
                 y + (heightOfYAxisLabel / 2)),
@@ -230,13 +230,13 @@ class RenderBarChartLabel extends RenderBox {
         Offset(
             a.dx + widthOfYAxisLabel,
             a.dy -
-                (yAxisRulerHeight -
-                    (yAxisRulerHeight + (heightOfYAxisLabel / 2)))),
+                (xAxisRulerHeight -
+                    (xAxisRulerHeight + (heightOfYAxisLabel / 2)))),
         Offset(
             size.width - (widthOfYAxisLabel / 2),
             a.dy -
-                (yAxisRulerHeight -
-                    (yAxisRulerHeight + (heightOfYAxisLabel / 2)))),
+                (xAxisRulerHeight -
+                    (xAxisRulerHeight + (heightOfYAxisLabel / 2)))),
         Paint()..color = Colors.black);
   }
 
