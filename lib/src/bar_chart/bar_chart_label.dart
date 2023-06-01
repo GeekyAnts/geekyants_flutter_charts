@@ -459,7 +459,7 @@ class RenderBarChartLabel extends RenderBox {
         canvas.drawLine(
             Offset(x + yAxisRulerHeight + (widthOfYAxisLabel),
                 y + (heightOfYAxisLabel / 2)),
-            Offset(size.width - (widthOfXAxisLabel / 2),
+            Offset(size.width - (widthOfYAxisLabel / 2),
                 y + (heightOfYAxisLabel / 2)),
             Paint()..color = Colors.grey);
       }
