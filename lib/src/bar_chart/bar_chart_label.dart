@@ -10,6 +10,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
   final double xAxisRulerHeight;
   final double yAxisRulerHeight;
   final TextStyle labelTextStyle;
+  final bool showRulerGrid;
 
   /// Creates a [BarChartLabel] widget.
   ///
@@ -20,6 +21,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
     this.xAxisRulerHeight = 10,
     this.yAxisRulerHeight = 10,
     this.labelTextStyle = const TextStyle(color: Colors.black, fontSize: 10),
+    this.showRulerGrid = true,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
     return RenderBarChartLabel(
         xAxisRulerHeight: xAxisRulerHeight,
         yAxisRulerHeight: yAxisRulerHeight,
-        labelTextStyle: labelTextStyle);
+        labelTextStyle: labelTextStyle,
+        showRulerGrid: showRulerGrid);
   }
 
   @override
@@ -36,7 +39,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
     renderObject
       ..xAxisRulerHeight = xAxisRulerHeight
       ..yAxisRulerHeight = yAxisRulerHeight
-      ..labelTextStyle = labelTextStyle;
+      ..labelTextStyle = labelTextStyle
+      ..showRulerGrid = showRulerGrid;
   }
 }
 
@@ -53,13 +57,16 @@ class RenderBarChartLabel extends RenderBox {
   double renderXAxisRulerHeight;
   double renderYAxisRulerHeight;
   TextStyle renderLabelTextStyle;
-  RenderBarChartLabel(
-      {required double xAxisRulerHeight,
-      required double yAxisRulerHeight,
-      required TextStyle labelTextStyle})
-      : renderXAxisRulerHeight = xAxisRulerHeight,
+  bool renderShowRulerGrid = true;
+  RenderBarChartLabel({
+    required double xAxisRulerHeight,
+    required double yAxisRulerHeight,
+    required TextStyle labelTextStyle,
+    required bool showRulerGrid,
+  })  : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
         renderLabelTextStyle = labelTextStyle,
+        renderShowRulerGrid = showRulerGrid,
         super();
 
   double get xAxisRulerHeight => renderXAxisRulerHeight;
@@ -82,6 +89,14 @@ class RenderBarChartLabel extends RenderBox {
   set labelTextStyle(TextStyle value) {
     if (renderLabelTextStyle != value) {
       renderLabelTextStyle = value;
+      markNeedsLayout();
+    }
+  }
+
+  bool get showRulerGrid => renderShowRulerGrid;
+  set showRulerGrid(bool value) {
+    if (renderShowRulerGrid != value) {
+      renderShowRulerGrid = value;
       markNeedsLayout();
     }
   }
@@ -136,12 +151,14 @@ class RenderBarChartLabel extends RenderBox {
           Offset(x + (widthOfXAxisLabel / 2), y),
           Paint()..color = Colors.black);
       // To Draw x axis rulers
-      canvas.drawLine(
-          Offset(x + (widthOfXAxisLabel / 2),
-              (size.height - heightOfXAxisLabel) - (yAxisRulerHeight)),
-          Offset(x + (widthOfXAxisLabel / 2),
-              offset.dy + (heightOfXAxisLabel / 2)),
-          Paint()..color = Colors.grey);
+      if (showRulerGrid) {
+        canvas.drawLine(
+            Offset(x + (widthOfXAxisLabel / 2),
+                (size.height - heightOfXAxisLabel) - (yAxisRulerHeight)),
+            Offset(x + (widthOfXAxisLabel / 2),
+                offset.dy + (heightOfXAxisLabel / 2)),
+            Paint()..color = Colors.grey);
+      }
     }
     // To draw Y Axis
     canvas.drawLine(
@@ -199,12 +216,14 @@ class RenderBarChartLabel extends RenderBox {
           Paint()..color = Colors.black);
 
       // To Draw Y axis rulers
-      canvas.drawLine(
-          Offset(x + xAxisRulerHeight + (widthOfYAxisLabel),
-              y + (heightOfYAxisLabel / 2)),
-          Offset(size.width - (widthOfXAxisLabel / 2),
-              y + (heightOfYAxisLabel / 2)),
-          Paint()..color = Colors.grey);
+      if (showRulerGrid) {
+        canvas.drawLine(
+            Offset(x + xAxisRulerHeight + (widthOfYAxisLabel),
+                y + (heightOfYAxisLabel / 2)),
+            Offset(size.width - (widthOfXAxisLabel / 2),
+                y + (heightOfYAxisLabel / 2)),
+            Paint()..color = Colors.grey);
+      }
     }
     // To Draw X Axis
     canvas.drawLine(
