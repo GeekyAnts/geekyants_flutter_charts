@@ -17,6 +17,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
   final double yAxisMainThickness;
   final Color xAxisMainColor;
   final Color yAxisMainColor;
+  final StrokeCap xAxisMainStrokeType;
+  final StrokeCap yAxisMainStrokeType;
   final double xAxisGridRulerThickness;
   final double yAxisGridRulerThickness;
   final Color xAxisGridRulerColor;
@@ -49,6 +51,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
     this.yAxisMainThickness = 0.5,
     this.xAxisMainColor = Colors.black,
     this.yAxisMainColor = Colors.black,
+    this.xAxisMainStrokeType = StrokeCap.round,
+    this.yAxisMainStrokeType = StrokeCap.round,
     this.xAxisGridRulerThickness = 0.5,
     this.yAxisGridRulerThickness = 0.5,
     this.xAxisGridRulerColor = Colors.grey,
@@ -81,6 +85,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
         yAxisMainThickness: yAxisMainThickness,
         xAxisMainColor: xAxisMainColor,
         yAxisMainColor: yAxisMainColor,
+        xAxisMainStrokeType: xAxisMainStrokeType,
+        yAxisMainStrokeType: yAxisMainStrokeType,
         xAxisGridRulerThickness: xAxisGridRulerThickness,
         yAxisGridRulerThickness: yAxisGridRulerThickness,
         xAxisGridRulerColor: xAxisGridRulerColor,
@@ -112,6 +118,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
       ..yAxisMainThickness = yAxisMainThickness
       ..xAxisMainColor = xAxisMainColor
       ..yAxisMainColor = yAxisMainColor
+      ..xAxisMainStrokeType = xAxisMainStrokeType
+      ..yAxisMainStrokeType = yAxisMainStrokeType
       ..xAxisGridRulerThickness = xAxisGridRulerThickness
       ..yAxisGridRulerThickness = yAxisGridRulerThickness
       ..xAxisGridRulerColor = xAxisGridRulerColor
@@ -153,6 +161,8 @@ class RenderBarChartLabel extends RenderBox {
   double renderYAxisMainThickness;
   Color renderXAxisMainColor;
   Color renderYAxisMainColor;
+  StrokeCap renderXAxisMainStrokeType;
+  StrokeCap renderYAxisMainStrokeType;
   double renderXAxisGridRulerThickness;
   double renderYAxisGridRulerThickness;
   Color renderXAxisGridRulerColor;
@@ -176,6 +186,8 @@ class RenderBarChartLabel extends RenderBox {
     required double yAxisMainThickness,
     required Color xAxisMainColor,
     required Color yAxisMainColor,
+    required StrokeCap xAxisMainStrokeType,
+    required StrokeCap yAxisMainStrokeType,
     required double xAxisGridRulerThickness,
     required double yAxisGridRulerThickness,
     required Color xAxisGridRulerColor,
@@ -201,6 +213,8 @@ class RenderBarChartLabel extends RenderBox {
         renderYAxisMainThickness = yAxisMainThickness,
         renderXAxisMainColor = xAxisMainColor,
         renderYAxisMainColor = yAxisMainColor,
+        renderXAxisMainStrokeType = xAxisMainStrokeType,
+        renderYAxisMainStrokeType = yAxisMainStrokeType,
         renderXAxisGridRulerThickness = xAxisGridRulerThickness,
         renderYAxisGridRulerThickness = yAxisGridRulerThickness,
         renderXAxisGridRulerColor = xAxisGridRulerColor,
@@ -297,6 +311,22 @@ class RenderBarChartLabel extends RenderBox {
   set yAxisMainColor(Color value) {
     if (renderYAxisMainColor != value) {
       renderYAxisMainColor = value;
+      markNeedsPaint();
+    }
+  }
+
+  StrokeCap get xAxisMainStrokeType => renderXAxisMainStrokeType;
+  set xAxisMainStrokeType(StrokeCap value) {
+    if (renderXAxisMainStrokeType != value) {
+      renderXAxisMainStrokeType = value;
+      markNeedsPaint();
+    }
+  }
+
+  StrokeCap get yAxisMainStrokeType => renderYAxisMainStrokeType;
+  set yAxisMainStrokeType(StrokeCap value) {
+    if (renderYAxisMainStrokeType != value) {
+      renderYAxisMainStrokeType = value;
       markNeedsPaint();
     }
   }
@@ -448,11 +478,11 @@ class RenderBarChartLabel extends RenderBox {
     final Paint xAxisMainPaint = Paint()
       ..color = xAxisMainColor
       ..strokeWidth = xAxisMainThickness
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = xAxisMainStrokeType;
     final Paint yAxisMainPaint = Paint()
       ..color = yAxisMainColor
       ..strokeWidth = yAxisMainThickness
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = yAxisMainStrokeType;
     final Paint xAxisGridRulerPaint = Paint()
       ..color = xAxisGridRulerColor
       ..strokeWidth = xAxisGridRulerThickness
@@ -632,7 +662,6 @@ class RenderBarChartLabel extends RenderBox {
     num v = math.pow(10, (math.log(interval) / math.log(10)).floor());
     for (final double intervalDivision in intervalDivisions) {
       currentInterval = v * intervalDivision;
-
       if (count < ((getEnd - getStart) / currentInterval)) {
         break;
       }

@@ -47,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // yAxisMainThickness: 1.3,
             // xAxisMainColor: Colors.deepPurpleAccent,
             // yAxisMainColor: Colors.deepOrangeAccent,
+            // xAxisMainStrokeType: StrokeCap.square,
+            // yAxisMainStrokeType: StrokeCap.butt,
             // xAxisStartPoint: 10,
             // xAxisEndPoint: 55,
             // yAxisStartPoint: 200,
