@@ -36,6 +36,8 @@ class BarChartLabel extends LeafRenderObjectWidget {
   final TextStyle xAxisLabelTextStyle;
   final TextStyle yAxisLabelTextStyle;
   final bool showGridRuler;
+  final List<double> xAxisData;
+  final List<double> yAxisData;
 
   /// Creates a [BarChartLabel] widget.
   ///
@@ -73,41 +75,46 @@ class BarChartLabel extends LeafRenderObjectWidget {
         const TextStyle(color: Colors.black, fontSize: 10),
     this.yAxisLabelTextStyle =
         const TextStyle(color: Colors.black, fontSize: 10),
+    this.xAxisData = const [],
+    this.yAxisData = const [],
     this.showGridRuler = true,
   }) : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartLabel(
-        xAxisRulerHeight: xAxisRulerHeight,
-        yAxisRulerHeight: yAxisRulerHeight,
-        xAxisRulerThickness: xAxisRulerThickness,
-        yAxisRulerThickness: yAxisRulerThickness,
-        xAxisRulerColor: xAxisRulerColor,
-        yAxisRulerColor: yAxisRulerColor,
-        xAxisMainThickness: xAxisMainThickness,
-        yAxisMainThickness: yAxisMainThickness,
-        xAxisMainColor: xAxisMainColor,
-        yAxisMainColor: yAxisMainColor,
-        xAxisMainStrokeType: xAxisMainStrokeType,
-        yAxisMainStrokeType: yAxisMainStrokeType,
-        xAxisGridRulerThickness: xAxisGridRulerThickness,
-        yAxisGridRulerThickness: yAxisGridRulerThickness,
-        xAxisGridRulerColor: xAxisGridRulerColor,
-        yAxisGridRulerColor: yAxisGridRulerColor,
-        xAxisStartPoint: xAxisStartPoint,
-        xAxisEndPoint: xAxisEndPoint,
-        yAxisStartPoint: yAxisStartPoint,
-        yAxisEndPoint: yAxisEndPoint,
-        xAxisSteps: xAxisSteps,
-        yAxisSteps: yAxisSteps,
-        xAxisRulerOffset: xAxisRulerOffset,
-        xAxisLabelOffset: xAxisLabelOffset,
-        yAxisRulerOffset: yAxisRulerOffset,
-        yAxisLabelOffset: yAxisLabelOffset,
-        xAxisLabelTextStyle: xAxisLabelTextStyle,
-        yAxisLabelTextStyle: yAxisLabelTextStyle,
-        showGridRuler: showGridRuler);
+      xAxisRulerHeight: xAxisRulerHeight,
+      yAxisRulerHeight: yAxisRulerHeight,
+      xAxisRulerThickness: xAxisRulerThickness,
+      yAxisRulerThickness: yAxisRulerThickness,
+      xAxisRulerColor: xAxisRulerColor,
+      yAxisRulerColor: yAxisRulerColor,
+      xAxisMainThickness: xAxisMainThickness,
+      yAxisMainThickness: yAxisMainThickness,
+      xAxisMainColor: xAxisMainColor,
+      yAxisMainColor: yAxisMainColor,
+      xAxisMainStrokeType: xAxisMainStrokeType,
+      yAxisMainStrokeType: yAxisMainStrokeType,
+      xAxisGridRulerThickness: xAxisGridRulerThickness,
+      yAxisGridRulerThickness: yAxisGridRulerThickness,
+      xAxisGridRulerColor: xAxisGridRulerColor,
+      yAxisGridRulerColor: yAxisGridRulerColor,
+      xAxisStartPoint: xAxisStartPoint,
+      xAxisEndPoint: xAxisEndPoint,
+      yAxisStartPoint: yAxisStartPoint,
+      yAxisEndPoint: yAxisEndPoint,
+      xAxisSteps: xAxisSteps,
+      yAxisSteps: yAxisSteps,
+      xAxisRulerOffset: xAxisRulerOffset,
+      xAxisLabelOffset: xAxisLabelOffset,
+      yAxisRulerOffset: yAxisRulerOffset,
+      yAxisLabelOffset: yAxisLabelOffset,
+      xAxisLabelTextStyle: xAxisLabelTextStyle,
+      yAxisLabelTextStyle: yAxisLabelTextStyle,
+      showGridRuler: showGridRuler,
+      xAxisData: xAxisData,
+      yAxisData: yAxisData,
+    );
   }
 
   @override
@@ -142,7 +149,9 @@ class BarChartLabel extends LeafRenderObjectWidget {
       ..yAxisLabelOffset = yAxisLabelOffset
       ..xAxisLabelTextStyle = xAxisLabelTextStyle
       ..yAxisLabelTextStyle = yAxisLabelTextStyle
-      ..showGridRuler = showGridRuler;
+      ..showGridRuler = showGridRuler
+      ..xAxisData = xAxisData
+      ..yAxisData = yAxisData;
   }
 }
 
@@ -185,6 +194,8 @@ class RenderBarChartLabel extends RenderBox {
   double renderXAxisLabelOffset;
   double renderYAxisRulerOffset;
   double renderYAxisLabelOffset;
+  List<double> renderXAxisData;
+  List<double> renderYAxisData;
   RenderBarChartLabel({
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
@@ -215,6 +226,8 @@ class RenderBarChartLabel extends RenderBox {
     required bool showGridRuler,
     required double xAxisSteps,
     required double yAxisSteps,
+    required List<double> xAxisData,
+    required List<double> yAxisData,
   })  : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
         renderXAxisRulerThickness = xAxisRulerThickness,
@@ -244,6 +257,8 @@ class RenderBarChartLabel extends RenderBox {
         renderXAxisLabelTextStyle = xAxisLabelTextStyle,
         renderYAxisLabelTextStyle = yAxisLabelTextStyle,
         rendershowGridRuler = showGridRuler,
+        renderXAxisData = xAxisData,
+        renderYAxisData = yAxisData,
         super();
   double _thicknessOfYAxis = 0;
   Size sizeOfXAxisLabel = Size.zero;
@@ -477,6 +492,22 @@ class RenderBarChartLabel extends RenderBox {
   set yAxisLabelOffset(double value) {
     if (renderYAxisLabelOffset != value) {
       renderYAxisLabelOffset = value;
+      markNeedsLayout();
+    }
+  }
+
+  List<double> get xAxisData => renderXAxisData;
+  set xAxisData(List<double> value) {
+    if (renderXAxisData != value) {
+      renderXAxisData = value;
+      markNeedsLayout();
+    }
+  }
+
+  List<double> get yAxisData => renderYAxisData;
+  set yAxisData(List<double> value) {
+    if (renderYAxisData != value) {
+      renderYAxisData = value;
       markNeedsLayout();
     }
   }
