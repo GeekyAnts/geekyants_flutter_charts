@@ -56,7 +56,7 @@ class RenderRBarChart extends RenderBox
           barChartOffset = child.size.height;
           childParentData.offset = const Offset(0, 0);
           break;
-        case RenderBarChartLabel:
+        case RenderBarChartAxis:
           childParentData.offset = Offset(0, barChartOffset);
           break;
       }

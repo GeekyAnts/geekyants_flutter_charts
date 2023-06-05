@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: BarChart(
-        barChartLabel: BarChartLabel(
+        barChartAxis: BarChartAxis(
             // xAxisLabelTextStyle: TextStyle(fontSize: 12, color: Colors.black),
             // yAxisLabelTextStyle: TextStyle(fontSize: 12, color: Colors.black),
             // xAxisRulerThickness: 2.0,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
-import 'bar_chart_label.dart';
+import 'bar_chart_axis.dart';
 import 'bar_chart_painter.dart';
 import 'bar_chart_title.dart';
 
 /// A widget that displays a bar chart.
 ///
-/// The `BarChart` widget is used to render a bar chart. It takes a [barChartLabel]
-/// as a parameter, which is an optional [BarChartLabel] widget used to display
+/// The `BarChart` widget is used to render a bar chart. It takes a [barChartAxis]
+/// as a parameter, which is an optional [BarChartAxis] widget used to display
 /// labels on the chart. The chart itself is rendered using the [RBarChartRenderer]
 /// widget.
 ///
@@ -22,17 +22,17 @@ import 'bar_chart_title.dart';
 class BarChart extends StatefulWidget {
   /// Creates a bar chart.
   ///
-  /// The [barChartLabel] parameter is optional and defaults to [BarChartLabel()].
+  /// The [barChartAxis] parameter is optional and defaults to [BarChartAxis()].
   const BarChart({
     Key? key,
-    this.barChartLabel = const BarChartLabel(),
+    this.barChartAxis = const BarChartAxis(),
     this.title = const BarChartTextTitle(
         text: 'Flutter Chart Base',
         textStyle: TextStyle(fontSize: 100, color: Colors.black)),
   }) : super(key: key);
 
   /// The label widget to display on the bar chart.
-  final BarChartLabel barChartLabel;
+  final BarChartAxis barChartAxis;
 
   /// The title widget to display on the bar chart.
   final BarChartTextTitle title;
@@ -70,7 +70,7 @@ class _BarChartState extends State<BarChart> {
   List<Widget> _buildChildWidgets(BuildContext context) {
     _barChartWidgets.clear();
     _addChild(widget.title);
-    _addChild(widget.barChartLabel);
+    _addChild(widget.barChartAxis);
     return _barChartWidgets;
   }
 

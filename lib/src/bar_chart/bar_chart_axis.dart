@@ -6,7 +6,7 @@ import 'dart:math' as math;
 /// This widget is used to draw the horizontal and vertical axes labels of a bar chart.
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
-class BarChartLabel extends LeafRenderObjectWidget {
+class BarChartAxis extends LeafRenderObjectWidget {
   final double xAxisRulerHeight;
   final double yAxisRulerHeight;
   final double xAxisRulerThickness;
@@ -41,11 +41,11 @@ class BarChartLabel extends LeafRenderObjectWidget {
   final List<double> xAxisData;
   final List<double> yAxisData;
 
-  /// Creates a [BarChartLabel] widget.
+  /// Creates a [BarChartAxis] widget.
   ///
   /// The [textStyle] parameter specifies the style of the label text.
 
-  const BarChartLabel({
+  const BarChartAxis({
     Key? key,
     this.xAxisRulerHeight = 10,
     this.yAxisRulerHeight = 10,
@@ -86,7 +86,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderBarChartLabel(
+    return RenderBarChartAxis(
       xAxisRulerHeight: xAxisRulerHeight,
       yAxisRulerHeight: yAxisRulerHeight,
       xAxisRulerThickness: xAxisRulerThickness,
@@ -124,7 +124,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderBarChartLabel renderObject) {
+      BuildContext context, covariant RenderBarChartAxis renderObject) {
     renderObject
       ..xAxisRulerHeight = xAxisRulerHeight
       ..yAxisRulerHeight = yAxisRulerHeight
@@ -166,7 +166,7 @@ class BarChartLabel extends LeafRenderObjectWidget {
 /// This render object takes several parameters that define the size and layout of
 /// the chart, as well as the number of axis points and the bar width. It then draws
 /// the horizontal and vertical axes of the chart.
-class RenderBarChartLabel extends RenderBox {
+class RenderBarChartAxis extends RenderBox {
   /// Paints the axes of the bar chart.
   ///
   /// The [context] parameter provides the painting context, and the [offset]
@@ -203,7 +203,7 @@ class RenderBarChartLabel extends RenderBox {
   double renderYAxisRulerOffset;
   double renderYAxisLabelOffset;
   List<double> renderYAxisData;
-  RenderBarChartLabel({
+  RenderBarChartAxis({
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
     required double xAxisRulerThickness,
