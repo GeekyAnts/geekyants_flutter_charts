@@ -489,6 +489,8 @@ class RenderBarChartLabel extends RenderBox {
     double yAxisMainLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
     List<AxesLabel> yAxesLabel = [];
+    List<double> xValues = [1, 2, 3, 4, 5];
+    List<double> yValues = [20, 50, 10, 30, 40];
     calculateLabelValues(
         xAxisStartPoint, xAxisEndPoint, graphWidth, xAxisSteps, xAxesLabel);
     sizeOfXAxisLabel = getLabelSize(
@@ -544,7 +546,7 @@ class RenderBarChartLabel extends RenderBox {
         showGridRuler);
 
     paintXAxisLabels(xAxesLabel, canvas, yStartLabelSize, xAxisRulerPaint,
-        xAxisMainPaint, xAxisGridRulerPaint, offset, showGridRuler);
+        xAxisMainPaint, xAxisGridRulerPaint, offset, showGridRuler, yAxesLabel);
   }
 
   void paintXAxisLabels(
@@ -555,7 +557,8 @@ class RenderBarChartLabel extends RenderBox {
       Paint xAxisMainPaint,
       Paint xAxisGridRulerPaint,
       Offset offset,
-      bool showGridRuler) {
+      bool showGridRuler,
+      List<AxesLabel> yAxesLabel) {
     var starLabelSize = getLabelSize(
         textStyle: xAxisLabelTextStyle,
         value: xAxesLabel.first.value.toString());
@@ -602,7 +605,52 @@ class RenderBarChartLabel extends RenderBox {
           xAxisGridRulerPaint,
         );
       }
+      // Draw the rectangle
+      // Start of the rectangle
+      // // To Draw Bars
+      List<double> xAxisData = [
+        0.2,
+        0.6,
+        1.4,
+        1.8,
+        2,
+        2.5,
+        2.8,
+        3.2,
+        3.5,
+        4,
+        5,
+        5.2
+      ];
+      List<double> yAxisData = [
+        2.5,
+        0.6,
+        1.8,
+        5.5,
+        1.4,
+        3.5,
+        2,
+        4,
+        0.2,
+        2.8,
+        5,
+        3.2
+      ];
+      // Find the corresponding x-axis and y-axis values for the current index
+      double currentX = xAxisData[i];
+      double currentY = yAxisData[i];
+
+      double rectLeft = x + (starLabelSize.width / 2) + (currentX * 100);
+      double rectTop = y - (currentY * 100);
+
+      // End of the rectangle
+      double rectRight = x + (starLabelSize.width / 2);
+      double rectBottom = y - yStartLabelSize.height / 2;
+
+      Rect rect = Rect.fromLTRB(rectLeft, rectTop, rectRight, rectBottom);
+      canvas.drawRect(rect, Paint()..color = Colors.blue);
     }
+    // To draw x axis main
     canvas.drawLine(
       Offset(a.dx + (starLabelSize.width / 2),
           a.dy - xAxisRulerHeight - xAxisRulerOffset),
