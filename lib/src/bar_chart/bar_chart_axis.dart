@@ -7,6 +7,12 @@ import 'dart:math' as math;
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
 class BarChartAxis extends LeafRenderObjectWidget {
+  final String legendTextXAxis;
+  final String legendTextYAxis;
+  final TextStyle legendTextXAxisStyle;
+  final TextStyle legendTextYAxisStyle;
+  final Color legendXAxisColor;
+  final Color legendYAxisColor;
   final double xAxisRulerHeight;
   final double yAxisRulerHeight;
   final double xAxisRulerThickness;
@@ -47,6 +53,14 @@ class BarChartAxis extends LeafRenderObjectWidget {
 
   const BarChartAxis({
     Key? key,
+    this.legendTextXAxis = "X-Axis",
+    this.legendTextYAxis = "Y-Axis Value",
+    this.legendTextXAxisStyle =
+        const TextStyle(color: Colors.black, fontSize: 10),
+    this.legendTextYAxisStyle =
+        const TextStyle(color: Colors.black, fontSize: 10),
+    this.legendXAxisColor = Colors.blue,
+    this.legendYAxisColor = Colors.black,
     this.xAxisRulerHeight = 10,
     this.yAxisRulerHeight = 10,
     this.xAxisRulerThickness = 0.2,
@@ -87,6 +101,12 @@ class BarChartAxis extends LeafRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartAxis(
+      legendTextXAxis: legendTextXAxis,
+      legendTextYAxis: legendTextYAxis,
+      legendTextXAxisStyle: legendTextXAxisStyle,
+      legendTextYAxisStyle: legendTextYAxisStyle,
+      legendXAxisColor: legendXAxisColor,
+      legendYAxisColor: legendYAxisColor,
       xAxisRulerHeight: xAxisRulerHeight,
       yAxisRulerHeight: yAxisRulerHeight,
       xAxisRulerThickness: xAxisRulerThickness,
@@ -126,6 +146,12 @@ class BarChartAxis extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, covariant RenderBarChartAxis renderObject) {
     renderObject
+      ..legendTextXAxis = legendTextXAxis
+      ..legendTextYAxis = legendTextYAxis
+      ..legendTextXAxisStyle = legendTextXAxisStyle
+      ..legendTextYAxisStyle = legendTextYAxisStyle
+      ..legendXAxisColor = legendXAxisColor
+      ..legendYAxisColor = legendYAxisColor
       ..xAxisRulerHeight = xAxisRulerHeight
       ..yAxisRulerHeight = yAxisRulerHeight
       ..xAxisRulerThickness = xAxisRulerThickness
@@ -171,6 +197,12 @@ class RenderBarChartAxis extends RenderBox {
   ///
   /// The [context] parameter provides the painting context, and the [offset]
   /// parameter specifies the offset at which to paint the axes.
+  String renderLegendTextXAxis;
+  String renderLegendTextYAxis;
+  TextStyle renderLegendTextXAxisStyle;
+  TextStyle renderLegendTextYAxisStyle;
+  Color renderLegendXAxisColor;
+  Color renderLegendYAxisColor;
   double renderXAxisRulerHeight;
   double renderYAxisRulerHeight;
   TextStyle renderXAxisLabelTextStyle;
@@ -204,6 +236,12 @@ class RenderBarChartAxis extends RenderBox {
   double renderYAxisLabelOffset;
   List<double> renderYAxisData;
   RenderBarChartAxis({
+    required String legendTextXAxis,
+    required String legendTextYAxis,
+    required TextStyle legendTextXAxisStyle,
+    required TextStyle legendTextYAxisStyle,
+    required Color legendXAxisColor,
+    required Color legendYAxisColor,
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
     required double xAxisRulerThickness,
@@ -236,7 +274,13 @@ class RenderBarChartAxis extends RenderBox {
     required double xAxisSteps,
     required double yAxisSteps,
     required List<double> yAxisData,
-  })  : renderXAxisRulerHeight = xAxisRulerHeight,
+  })  : renderLegendTextXAxis = legendTextXAxis,
+        renderLegendTextYAxis = legendTextYAxis,
+        renderLegendTextXAxisStyle = legendTextXAxisStyle,
+        renderLegendTextYAxisStyle = legendTextYAxisStyle,
+        renderLegendXAxisColor = legendXAxisColor,
+        renderLegendYAxisColor = legendYAxisColor,
+        renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
         renderXAxisRulerThickness = xAxisRulerThickness,
         renderYAxisRulerThickness = yAxisRulerThickness,
@@ -272,6 +316,54 @@ class RenderBarChartAxis extends RenderBox {
   double _thicknessOfYAxis = 0;
   Size sizeOfXAxisLabel = Size.zero;
   double extendXAxisStart = 0;
+
+  String get legendTextXAxis => renderLegendTextXAxis;
+  set legendTextXAxis(String value) {
+    if (renderLegendTextXAxis != value) {
+      renderLegendTextXAxis = value;
+      markNeedsLayout();
+    }
+  }
+
+  String get legendTextYAxis => renderLegendTextYAxis;
+  set legendTextYAxis(String value) {
+    if (renderLegendTextYAxis != value) {
+      renderLegendTextYAxis = value;
+      markNeedsLayout();
+    }
+  }
+
+  TextStyle get legendTextXAxisStyle => renderLegendTextXAxisStyle;
+  set legendTextXAxisStyle(TextStyle value) {
+    if (renderLegendTextXAxisStyle != value) {
+      renderLegendTextXAxisStyle = value;
+      markNeedsLayout();
+    }
+  }
+
+  TextStyle get legendTextYAxisStyle => renderLegendTextYAxisStyle;
+  set legendTextYAxisStyle(TextStyle value) {
+    if (renderLegendTextYAxisStyle != value) {
+      renderLegendTextYAxisStyle = value;
+      markNeedsLayout();
+    }
+  }
+
+  Color get legendXAxisColor => renderLegendXAxisColor;
+  set legendXAxisColor(Color value) {
+    if (renderLegendXAxisColor != value) {
+      renderLegendXAxisColor = value;
+      markNeedsPaint();
+    }
+  }
+
+  Color get legendYAxisColor => renderLegendYAxisColor;
+  set legendYAxisColor(Color value) {
+    if (renderLegendYAxisColor != value) {
+      renderLegendYAxisColor = value;
+      markNeedsPaint();
+    }
+  }
 
   double get xAxisRulerHeight => renderXAxisRulerHeight;
   set xAxisRulerHeight(double value) {
@@ -537,6 +629,7 @@ class RenderBarChartAxis extends RenderBox {
     double yAxisMainLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
     List<AxesLabel> yAxesLabel = [];
+    double legendWidth;
     calculateLabelValues(
         xAxisStartPoint, xAxisEndPoint, graphWidth, xAxisSteps, xAxesLabel);
     sizeOfXAxisLabel = getLabelSize(
@@ -578,7 +671,58 @@ class RenderBarChartAxis extends RenderBox {
       value: yAxesLabel.last.value.toString(),
     );
 
+    /// Legends for the chart
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+    final circlePaint = Paint();
+
+    final List<String> legendTexts = [legendTextXAxis, legendTextYAxis];
+    final List<TextStyle> legendTextStyles = [
+      legendTextXAxisStyle,
+      legendTextYAxisStyle
+    ];
+    double maxWidth = 0;
+
+    for (int i = 0; i < legendTexts.length; i++) {
+      textPainter.text =
+          TextSpan(text: legendTexts[i], style: legendTextStyles[i]);
+      textPainter.layout();
+
+      double width = textPainter.width;
+      if (width > maxWidth) {
+        maxWidth = width;
+      }
+    }
+
+    paintLegends(
+        canvas,
+        legendTextXAxis,
+        legendTextXAxisStyle,
+        Offset(size.width - maxWidth, size.height / 2),
+        legendXAxisColor,
+        textPainter,
+        circlePaint);
+
+    paintLegends(
+        canvas,
+        legendTextYAxis,
+        legendTextYAxisStyle,
+        Offset(
+            size.width - maxWidth, size.height / 2 + textPainter.height + 10),
+        legendYAxisColor,
+        textPainter,
+        circlePaint);
+
+    // Formula to find diameter of the circle
+    const circleWidth = 2 * math.pi * 3;
+
+    final legendWidthX = maxWidth + circleWidth;
+    final legendWidthY = maxWidth + circleWidth;
+
+    legendWidth = legendWidthX > legendWidthY ? legendWidthX : legendWidthY;
+
     paintYAxisLabels(
+        graphHeight,
+        graphWidth - legendWidth,
         yAxisMainLabelOffset,
         yAxisLabelOffset,
         yAxisRulerOffset,
@@ -593,6 +737,7 @@ class RenderBarChartAxis extends RenderBox {
         showYAxisGridRuler);
 
     paintXAxisLabels(
+        graphWidth - legendWidth,
         xAxesLabel,
         canvas,
         yStartLabelSize,
@@ -605,7 +750,28 @@ class RenderBarChartAxis extends RenderBox {
         yAxesLabel);
   }
 
+  void paintLegends(
+      Canvas canvas,
+      String text,
+      TextStyle textStyle,
+      Offset textOffset,
+      Color circleColor,
+      TextPainter textPainter,
+      Paint circlePaint) {
+    textPainter.text = TextSpan(text: text, style: textStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, textOffset);
+
+    final circleOffset = Offset(
+      textOffset.dx - textStyle.fontSize! / 2,
+      textOffset.dy + textPainter.height / 2,
+    );
+    circlePaint.color = circleColor;
+    canvas.drawCircle(circleOffset, 3, circlePaint);
+  }
+
   void paintXAxisLabels(
+      double graphWidth,
       List<AxesLabel> xAxesLabel,
       Canvas canvas,
       Size yStartLabelSize,
@@ -623,7 +789,7 @@ class RenderBarChartAxis extends RenderBox {
     Offset a = Offset(
         _thicknessOfYAxis - (starLabelSize.width / 2) + yAxisRulerOffset,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
-    Offset b = Offset(size.width - starLabelSize.width,
+    Offset b = Offset(graphWidth - starLabelSize.width,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
 
     for (int i = 0; i < xAxesLabel.length; i++) {
@@ -641,6 +807,19 @@ class RenderBarChartAxis extends RenderBox {
       );
       tp.layout();
       tp.paint(canvas, Offset(x, y));
+      // To set offset for the labels
+      if (yAxisData == []) {
+        tp.paint(canvas, Offset(x, y));
+      } else {
+        // if (i > 0) {
+        //   final widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length - 1)) -
+        //       (x + (starLabelSize.width)) +
+        //       (starLabelSize.width / 2);
+
+        //   tp.paint(canvas, Offset(x - (widthOfBar / 2), y));
+        // }
+      }
+
       canvas.drawLine(
         Offset(x + starLabelSize.width / 2, y - xAxisLabelOffset),
         Offset(x + starLabelSize.width / 2,
@@ -663,22 +842,24 @@ class RenderBarChartAxis extends RenderBox {
         );
       }
       // To Draw Bars
-      double currentY = yAxisData[i];
-      double rectLeft = x + (starLabelSize.width);
+      // if (i < xAxesLabel.length - 1) {
+      //   double currentY = yAxisData[i];
+      //   double rectLeft = x + (starLabelSize.width);
 
-      double rectTop = (currentY - yAxisStartPoint) *
-              (offset.dy -
-                  (y -
-                      xAxisRulerHeight -
-                      xAxisRulerOffset -
-                      (yStartLabelSize.height / 2))) /
-              (yAxisEndPoint - yAxisStartPoint) +
-          (y - (xAxisRulerHeight) - xAxisRulerOffset);
-      double rectRight = x + (b.dx - a.dx) / (xAxesLabel.length - 1);
-      double rectBottom = y - xAxisRulerHeight;
+      //   double rectTop = (currentY - yAxisStartPoint) *
+      //           (offset.dy -
+      //               (y -
+      //                   xAxisRulerHeight -
+      //                   xAxisRulerOffset -
+      //                   (yStartLabelSize.height / 2))) /
+      //           (yAxisEndPoint - yAxisStartPoint) +
+      //       (y - (xAxisRulerHeight) - xAxisRulerOffset);
+      //   double rectRight = x + (b.dx - a.dx) / (xAxesLabel.length - 1);
+      //   double rectBottom = y - xAxisRulerHeight;
 
-      Rect rect = Rect.fromLTRB(rectLeft, rectTop, rectRight, rectBottom);
-      canvas.drawRect(rect, barPaint);
+      //   Rect rect = Rect.fromLTRB(rectLeft, rectTop, rectRight, rectBottom);
+      //   canvas.drawRect(rect, barPaint);
+      // }
     }
     // To draw x axis main
     canvas.drawLine(
@@ -691,6 +872,8 @@ class RenderBarChartAxis extends RenderBox {
   }
 
   void paintYAxisLabels(
+      double graphHeight,
+      double graphWidth,
       double yAxisMainLabelOffset,
       double yAxisLabelOffset,
       double yAxisRulerOffset,
@@ -708,7 +891,7 @@ class RenderBarChartAxis extends RenderBox {
     a = Offset(yAxisMainLabelOffset, offset.dy);
     b = Offset(
         yAxisMainLabelOffset,
-        ((size.height - offset.dy) + offset.dy) -
+        ((graphHeight) + offset.dy) -
             yEndLabelSize.height -
             sizeOfXAxisLabel.height -
             xAxisRulerHeight -
@@ -748,7 +931,7 @@ class RenderBarChartAxis extends RenderBox {
           Offset(
               x + (yEndLabelSize.width + yAxisRulerHeight) + yAxisRulerOffset,
               y + yEndLabelSize.height / 2),
-          Offset(size.width - (xEndLabelSize.width / 2),
+          Offset(graphWidth - (xEndLabelSize.width / 2),
               y + yEndLabelSize.height / 2),
           yAxisGridRulerPaint,
         );
