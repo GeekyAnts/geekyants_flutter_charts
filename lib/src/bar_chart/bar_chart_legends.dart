@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'bar_chart_painter.dart';
+
 /// A widget for displaying legends in a bar chart.
 class BarChartLegends extends LeafRenderObjectWidget {
   /// The text to be displayed for the X-axis legend.
@@ -131,7 +133,9 @@ class BarChartLegendsRenderObject extends RenderBox {
   set legendYAxisColor(Color value) {
     if (renderLegendYAxisColor != value) {
       renderLegendYAxisColor = value;
-      markNeedsPaint();
+      if (owner != null && !owner!.debugDoingPaint) {
+        markNeedsPaint();
+      }
     }
   }
 
@@ -185,7 +189,8 @@ class BarChartLegendsRenderObject extends RenderBox {
       legendTextYAxisStyle
     ];
     double maxWidth = 0;
-
+    BarChartParentData parentDataRef = parentData as BarChartParentData;
+    legendYAxisColor = parentDataRef.yAxisColor!;
     for (int i = 0; i < legendTexts.length; i++) {
       textPainter.text =
           TextSpan(text: legendTexts[i], style: legendTextStyles[i]);

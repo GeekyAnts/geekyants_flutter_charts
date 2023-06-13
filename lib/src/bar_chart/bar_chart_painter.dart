@@ -4,8 +4,8 @@ import 'package:geekyants_flutter_charts/geekyants_flutter_charts.dart';
 /// A render object that displays a horizontal bar chart with axes and labels.
 class RenderRBarChart extends RenderBox
     with
-        ContainerRenderObjectMixin<RenderBox, MultiChildLayoutParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, MultiChildLayoutParentData>,
+        ContainerRenderObjectMixin<RenderBox, BarChartParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, BarChartParentData>,
         DebugOverflowIndicatorMixin {
   /// Creates a new instance of [RenderRBarChart].
   ///
@@ -24,7 +24,7 @@ class RenderRBarChart extends RenderBox
   /// )
   /// ```
   ///
-
+  Color? yAxisColor = const Color(0x00000000);
   @override
   void paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
@@ -47,18 +47,24 @@ class RenderRBarChart extends RenderBox
 
     RenderBox? child = firstChild;
     while (child != null) {
-      final childParentData = child.parentData as MultiChildLayoutParentData;
+      final childParentData = child.parentData as BarChartParentData;
+      BarChartTextTitleRenderObject? containerRef;
       child.layout(
         BoxConstraints(maxHeight: size.height, maxWidth: size.width),
         parentUsesSize: true,
       );
+
       switch (child.runtimeType) {
         case BarChartTextTitleRenderObject:
+          containerRef = child as BarChartTextTitleRenderObject;
+          yAxisColor = containerRef.renderTextStyle.color;
+          childParentData.yAxisColor = yAxisColor;
           barChartOffset = child.size.height;
           final double textOffset = size.width / 2 + child.size.width / 2;
           childParentData.offset = Offset((size.width - textOffset), 0);
           break;
         case BarChartLegendsRenderObject:
+          childParentData.yAxisColor = yAxisColor;
           barChartLegendOffset = child.size.width;
           childParentData.offset =
               Offset(size.width - barChartLegendOffset, size.height / 2);
@@ -73,10 +79,12 @@ class RenderRBarChart extends RenderBox
 
   @override
   void setupParentData(RenderBox child) {
-    if (child.parentData is! MultiChildLayoutParentData) {
-      child.parentData = MultiChildLayoutParentData();
+    if (child.parentData is! BarChartParentData) {
+      child.parentData = BarChartParentData();
     }
   }
 }
 
-class BarChartParentData extends MultiChildLayoutParentData {}
+class BarChartParentData extends MultiChildLayoutParentData {
+  Color? yAxisColor;
+}
