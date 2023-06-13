@@ -43,6 +43,7 @@ class RenderRBarChart extends RenderBox
   void performLayout() {
     size = computeDryLayout(constraints);
     double barChartOffset = 0;
+    double barChartLegendOffset = 0;
 
     RenderBox? child = firstChild;
     while (child != null) {
@@ -56,8 +57,13 @@ class RenderRBarChart extends RenderBox
           barChartOffset = child.size.height;
           childParentData.offset = const Offset(0, 0);
           break;
+        case BarChartLegendsRenderObject:
+          barChartLegendOffset = child.size.width;
+          childParentData.offset =
+              Offset(size.width - barChartLegendOffset, size.height / 2);
+          break;
         case RenderBarChartAxis:
-          childParentData.offset = Offset(0, barChartOffset);
+          childParentData.offset = Offset(barChartLegendOffset, barChartOffset);
           break;
       }
       child = childParentData.nextSibling;
@@ -71,3 +77,5 @@ class RenderRBarChart extends RenderBox
     }
   }
 }
+
+class BarChartParentData extends MultiChildLayoutParentData {}

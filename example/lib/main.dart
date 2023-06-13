@@ -34,13 +34,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: BarChart(
+        // title: BarChartTextTitle(
+        //     text: 'Flutter Chart',
+        //     textStyle: TextStyle(fontSize: 50, color: Colors.black)),
+        // barChartLegends: BarChartLegends(
+        //   legendTextXAxis: "X-Axis",
+        //   legendTextYAxis: "Y-Axis",
+        //   legendTextXAxisStyle: TextStyle(color: Colors.black, fontSize: 15),
+        //   legendTextYAxisStyle: TextStyle(color: Colors.black, fontSize: 15),
+        //   legendXAxisColor: Colors.black,
+        //   legendYAxisColor: Colors.black,
+        //   legendPointerRadius: 6,
+        // ),
         barChartAxis: BarChartAxis(
-            legendTextXAxis: "X-Axis Data",
-            legendTextYAxis: "Y-Axis Data",
-            legendTextXAxisStyle: TextStyle(color: Colors.black, fontSize: 20),
-            legendTextYAxisStyle: TextStyle(color: Colors.black, fontSize: 20),
-            legendXAxisColor: Colors.blue,
-            legendYAxisColor: Colors.black,
+            // legendTextXAxis: "X-Axis Data",
+            // legendTextYAxis: "Y-Axis Data",
+            // legendTextXAxisStyle: TextStyle(color: Colors.black, fontSize: 20),
+            // legendTextYAxisStyle: TextStyle(color: Colors.black, fontSize: 20),
+            // legendXAxisColor: Colors.blue,
+            // legendYAxisColor: Colors.black,
             // xAxisLabelTextStyle: TextStyle(fontSize: 12, color: Colors.black),
             // yAxisLabelTextStyle: TextStyle(fontSize: 12, color: Colors.black),
             // xAxisRulerThickness: 2.0,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_legends.dart';
 import 'package:geekyants_flutter_charts/src/bar_chart/bar_chart_scope.dart';
 
 import 'bar_chart_axis.dart';
@@ -29,6 +30,7 @@ class BarChart extends StatefulWidget {
     this.title = const BarChartTextTitle(
         text: 'Flutter Chart Base',
         textStyle: TextStyle(fontSize: 100, color: Colors.black)),
+    this.barChartLegends = const BarChartLegends(),
   }) : super(key: key);
 
   /// The label widget to display on the bar chart.
@@ -37,8 +39,8 @@ class BarChart extends StatefulWidget {
   /// The title widget to display on the bar chart.
   final BarChartTextTitle title;
 
-  /// Widget to display X and Y axes on the bar chart.
-  // final BarChartAxes barChartAxes;
+  /// The Legend widget to display on the bar chart.
+  final BarChartLegends barChartLegends;
 
   @override
   State<BarChart> createState() => _BarChartState();
@@ -70,6 +72,7 @@ class _BarChartState extends State<BarChart> {
   List<Widget> _buildChildWidgets(BuildContext context) {
     _barChartWidgets.clear();
     _addChild(widget.title);
+    _addChild(widget.barChartLegends);
     _addChild(widget.barChartAxis);
     return _barChartWidgets;
   }
@@ -93,7 +96,7 @@ class RBarChartRenderer extends MultiChildRenderObjectWidget {
   ///
   /// The [barChart] parameter is the corresponding [BarChart] widget.
   /// The [children] parameter is a list of child widgets to render.
-  RBarChartRenderer({
+  const RBarChartRenderer({
     Key? key,
     this.barChart,
     required List<Widget> children,
