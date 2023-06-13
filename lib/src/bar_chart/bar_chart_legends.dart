@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+/// A widget for displaying legends in a bar chart.
 class BarChartLegends extends LeafRenderObjectWidget {
+  /// The text to be displayed for the X-axis legend.
   final String legendTextXAxis;
+
+  /// The text to be displayed for the Y-axis legend.
   final String legendTextYAxis;
+
+  /// The style of the X-axis legend text.
   final TextStyle legendTextXAxisStyle;
+
+  /// The style of the Y-axis legend text.
   final TextStyle legendTextYAxisStyle;
+
+  /// The color of the X-axis legend.
   final Color legendXAxisColor;
+
+  /// The color of the Y-axis legend.
   final Color legendYAxisColor;
+
+  /// The radius of the legend pointer.
   final double legendPointerRadius;
 
+  /// Creates a BarChartLegends widget.
   const BarChartLegends({
     Key? key,
     this.legendTextXAxis = "X-Axis",
@@ -50,6 +65,7 @@ class BarChartLegends extends LeafRenderObjectWidget {
   }
 }
 
+/// The render object for the BarChartLegends widget.
 class BarChartLegendsRenderObject extends RenderBox {
   String renderLegendTextXAxis;
   String renderLegendTextYAxis;
@@ -58,6 +74,9 @@ class BarChartLegendsRenderObject extends RenderBox {
   Color renderLegendXAxisColor;
   Color renderLegendYAxisColor;
   double renderLegendPointerRadius;
+  double legendWidth = 0;
+
+  /// Creates a BarChartLegendsRenderObject.
   BarChartLegendsRenderObject({
     required this.renderLegendTextXAxis,
     required this.renderLegendTextYAxis,
@@ -67,6 +86,7 @@ class BarChartLegendsRenderObject extends RenderBox {
     required this.renderLegendYAxisColor,
     required this.renderLegendPointerRadius,
   });
+
   String get legendTextXAxis => renderLegendTextXAxis;
   set legendTextXAxis(String value) {
     if (renderLegendTextXAxis != value) {
@@ -122,8 +142,6 @@ class BarChartLegendsRenderObject extends RenderBox {
       markNeedsLayout();
     }
   }
-
-  double legendWidth = 0;
 
   @override
   void performLayout() {
