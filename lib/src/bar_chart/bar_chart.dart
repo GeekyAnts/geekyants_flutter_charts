@@ -27,9 +27,7 @@ class BarChart extends StatefulWidget {
   const BarChart({
     Key? key,
     this.barChartAxis = const BarChartAxis(),
-    this.title = const BarChartTextTitle(
-        text: 'Flutter Chart Base',
-        textStyle: TextStyle(fontSize: 100, color: Colors.black)),
+    this.title = const BarChartTextTitle(),
     this.barChartLegends = const BarChartLegends(),
   }) : super(key: key);
 

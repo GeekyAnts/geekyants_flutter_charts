@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class BarChartTextTitle extends LeafRenderObjectWidget {
   final String text;
@@ -8,11 +8,11 @@ class BarChartTextTitle extends LeafRenderObjectWidget {
   ///
   /// The [text] parameter is the title text to be displayed.
   /// The [textStyle] parameter specifies the style of the title text.
-  const BarChartTextTitle({
-    Key? key,
-    required this.text,
-    required this.textStyle,
-  }) : super(key: key);
+  const BarChartTextTitle(
+      {Key? key,
+      this.text = 'Flutter Chart Base',
+      this.textStyle = const TextStyle(fontSize: 100, color: Colors.black)})
+      : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -74,7 +74,7 @@ class BarChartTextTitleRenderObject extends RenderBox {
       maxWidth: constraints.maxWidth,
     );
 
-    size = Size(constraints.maxWidth, textPainter.height);
+    size = Size(textPainter.width, textPainter.height);
   }
 
   @override

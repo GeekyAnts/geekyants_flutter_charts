@@ -55,7 +55,8 @@ class RenderRBarChart extends RenderBox
       switch (child.runtimeType) {
         case BarChartTextTitleRenderObject:
           barChartOffset = child.size.height;
-          childParentData.offset = const Offset(0, 0);
+          final double textOffset = size.width / 2 + child.size.width / 2;
+          childParentData.offset = Offset((size.width - textOffset), 0);
           break;
         case BarChartLegendsRenderObject:
           barChartLegendOffset = child.size.width;
