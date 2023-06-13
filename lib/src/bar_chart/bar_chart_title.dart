@@ -11,7 +11,7 @@ class BarChartTextTitle extends LeafRenderObjectWidget {
   const BarChartTextTitle(
       {Key? key,
       this.text = 'Flutter Chart Base',
-      this.textStyle = const TextStyle(fontSize: 100, color: Colors.black)})
+      this.textStyle = const TextStyle(fontSize: 20, color: Colors.black)})
       : super(key: key);
 
   @override
