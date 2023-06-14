@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'bar_chart_painter.dart';
+
 /// A widget that represents the axes labels of a bar chart.
 ///
 /// This widget is used to draw the horizontal and vertical axes labels of a bar chart.
@@ -527,10 +529,13 @@ class RenderBarChartAxis extends RenderBox {
     }
   }
 
+  double? legendWidth = 0;
   @override
   void paint(PaintingContext context, Offset offset) {
+    BarChartParentData parentDataRef = parentData as BarChartParentData;
+    legendWidth = parentDataRef.legendWidth;
     final Canvas canvas = context.canvas;
-    final double graphWidth = size.width - offset.dx;
+    final double graphWidth = size.width;
     final double graphHeight = size.height - offset.dy;
     double yAxisMainLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
@@ -814,7 +819,7 @@ class RenderBarChartAxis extends RenderBox {
   Size computeDryLayout(BoxConstraints constraints) {
     final double chartWidth = constraints.maxWidth;
     final double chartHeight = constraints.maxHeight;
-    return Size(chartWidth, chartHeight);
+    return Size(chartWidth - (legendWidth as num), chartHeight);
   }
 
   @override

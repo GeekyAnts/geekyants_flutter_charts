@@ -157,6 +157,7 @@ class BarChartLegendsRenderObject extends RenderBox {
       legendTextYAxisStyle
     ];
     double maxWidth = 0;
+    double maxHeight = 0;
 
     for (int i = 0; i < legendTexts.length; i++) {
       textPainter.text =
@@ -167,15 +168,16 @@ class BarChartLegendsRenderObject extends RenderBox {
       if (width > maxWidth) {
         maxWidth = width;
       }
+      double height = textPainter.height;
+      maxHeight += height;
     }
-
     // Formula to find diameter of the circle
     final circleWidth = 2 * math.pi * legendPointerRadius;
     final legendWidthX = maxWidth + circleWidth;
     final legendWidthY = maxWidth + circleWidth;
 
     legendWidth = legendWidthX > legendWidthY ? legendWidthX : legendWidthY;
-    size = Size(legendWidth - (circleWidth / 2), textPainter.height * 2);
+    size = Size(legendWidth - (circleWidth / 2), maxHeight);
   }
 
   @override

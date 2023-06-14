@@ -66,11 +66,13 @@ class RenderRBarChart extends RenderBox
         case BarChartLegendsRenderObject:
           childParentData.yAxisColor = yAxisColor;
           barChartLegendOffset = child.size.width;
+          childParentData.legendWidth = barChartLegendOffset;
           childParentData.offset =
               Offset(size.width - barChartLegendOffset, size.height / 2);
           break;
         case RenderBarChartAxis:
-          childParentData.offset = Offset(barChartLegendOffset, barChartOffset);
+          childParentData.legendWidth = barChartLegendOffset;
+          childParentData.offset = Offset(0, barChartOffset);
           break;
       }
       child = childParentData.nextSibling;
@@ -87,4 +89,5 @@ class RenderRBarChart extends RenderBox
 
 class BarChartParentData extends MultiChildLayoutParentData {
   Color? yAxisColor;
+  double? legendWidth;
 }
