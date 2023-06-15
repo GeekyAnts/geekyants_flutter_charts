@@ -75,7 +75,11 @@ class BarChartAxis extends LeafRenderObjectWidget {
         const TextStyle(color: Colors.black, fontSize: 10),
     this.showXAxisGridRuler = true,
     this.showYAxisGridRuler = true,
-  }) : super(key: key);
+  })  : assert(xAxisStartPoint < xAxisEndPoint,
+            "X-Axis start point should be always lesser than end point"),
+        assert(yAxisStartPoint < yAxisEndPoint,
+            "Y-Axis start point should be always lesser than end point"),
+        super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
