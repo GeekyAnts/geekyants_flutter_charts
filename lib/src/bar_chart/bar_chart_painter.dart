@@ -49,6 +49,7 @@ class RenderRBarChart extends RenderBox
     while (child != null) {
       final childParentData = child.parentData as BarChartParentData;
       BarChartTextTitleRenderObject? containerRef;
+      RenderBarChartAxis barChartAxisRender;
       child.layout(
         BoxConstraints(maxHeight: size.height, maxWidth: size.width),
         parentUsesSize: true,
@@ -66,12 +67,14 @@ class RenderRBarChart extends RenderBox
         case BarChartLegendsRenderObject:
           childParentData.yAxisColor = yAxisColor;
           barChartLegendOffset = child.size.width;
-          childParentData.legendWidth = barChartLegendOffset;
           childParentData.offset =
               Offset(size.width - barChartLegendOffset, size.height / 2);
           break;
         case RenderBarChartAxis:
-          childParentData.legendWidth = barChartLegendOffset;
+          barChartAxisRender = child as RenderBarChartAxis;
+          child.layout(BoxConstraints(
+              maxHeight: constraints.maxHeight,
+              maxWidth: constraints.maxWidth - barChartLegendOffset));
           childParentData.offset = Offset(0, barChartOffset);
           break;
       }
@@ -89,5 +92,4 @@ class RenderRBarChart extends RenderBox
 
 class BarChartParentData extends MultiChildLayoutParentData {
   Color? yAxisColor;
-  double? legendWidth;
 }

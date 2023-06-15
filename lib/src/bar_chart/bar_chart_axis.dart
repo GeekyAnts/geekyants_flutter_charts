@@ -532,8 +532,6 @@ class RenderBarChartAxis extends RenderBox {
   double? legendWidth = 0;
   @override
   void paint(PaintingContext context, Offset offset) {
-    BarChartParentData parentDataRef = parentData as BarChartParentData;
-    legendWidth = parentDataRef.legendWidth;
     final Canvas canvas = context.canvas;
     final double graphWidth = size.width;
     final double graphHeight = size.height - offset.dy;
@@ -816,15 +814,10 @@ class RenderBarChartAxis extends RenderBox {
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) {
+  void performLayout() {
     final double chartWidth = constraints.maxWidth;
     final double chartHeight = constraints.maxHeight;
-    return Size(chartWidth - (legendWidth as num), chartHeight);
-  }
-
-  @override
-  void performLayout() {
-    size = computeDryLayout(constraints);
+    size = Size(chartWidth, chartHeight);
   }
 }
 
