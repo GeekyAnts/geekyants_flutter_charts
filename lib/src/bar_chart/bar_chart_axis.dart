@@ -623,7 +623,8 @@ class RenderBarChartAxis extends RenderBox {
     Offset a = Offset(
         _thicknessOfYAxis - (starLabelSize.width / 2) + yAxisRulerOffset,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
-    Offset b = Offset(graphWidth - starLabelSize.width,
+    // TODO: To remove the hardcoded value with proper calculation
+    Offset b = Offset(graphWidth - starLabelSize.width + 125,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
     // Setting x-axis based on yaxis data
     xAxesLabel.length =
@@ -703,11 +704,12 @@ class RenderBarChartAxis extends RenderBox {
         canvas.drawRect(rect, Paint()..color = verticalBarColor);
       }
     }
+    // TODO: To remove the hardcoded value with proper calculation
     // To draw x axis main
     canvas.drawLine(
       Offset(a.dx + (starLabelSize.width / 2),
           a.dy - xAxisRulerHeight - xAxisRulerOffset),
-      Offset(b.dx + (starLabelSize.width / 2),
+      Offset(b.dx + (starLabelSize.width / 2) - 125,
           b.dy - xAxisRulerHeight - xAxisRulerOffset),
       xAxisMainPaint,
     );
