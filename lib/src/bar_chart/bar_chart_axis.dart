@@ -37,12 +37,9 @@ class BarChartAxis extends LeafRenderObjectWidget {
   final TextStyle yAxisLabelTextStyle;
   final bool showXAxisGridRuler;
   final bool showYAxisGridRuler;
-  final Color verticalBarColor;
-  final List<double> yAxisData;
 
   /// Creates a [BarChartAxis] widget.
   ///
-  /// The [textStyle] parameter specifies the style of the label text.
 
   const BarChartAxis({
     Key? key,
@@ -78,8 +75,6 @@ class BarChartAxis extends LeafRenderObjectWidget {
         const TextStyle(color: Colors.black, fontSize: 10),
     this.showXAxisGridRuler = true,
     this.showYAxisGridRuler = true,
-    this.yAxisData = const [],
-    this.verticalBarColor = Colors.blue,
   }) : super(key: key);
 
   @override
@@ -115,8 +110,6 @@ class BarChartAxis extends LeafRenderObjectWidget {
       yAxisLabelTextStyle: yAxisLabelTextStyle,
       showXAxisGridRuler: showXAxisGridRuler,
       showYAxisGridRuler: showYAxisGridRuler,
-      yAxisData: yAxisData,
-      verticalBarColor: verticalBarColor,
     );
   }
 
@@ -153,9 +146,7 @@ class BarChartAxis extends LeafRenderObjectWidget {
       ..xAxisLabelTextStyle = xAxisLabelTextStyle
       ..yAxisLabelTextStyle = yAxisLabelTextStyle
       ..showXAxisGridRuler = showXAxisGridRuler
-      ..showYAxisGridRuler = showYAxisGridRuler
-      ..yAxisData = yAxisData
-      ..verticalBarColor = verticalBarColor;
+      ..showYAxisGridRuler = showYAxisGridRuler;
   }
 }
 
@@ -199,8 +190,6 @@ class RenderBarChartAxis extends RenderBox {
   double renderXAxisLabelOffset;
   double renderYAxisRulerOffset;
   double renderYAxisLabelOffset;
-  List<double> renderYAxisData;
-  Color renderVerticalBarColor;
   RenderBarChartAxis({
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
@@ -232,8 +221,6 @@ class RenderBarChartAxis extends RenderBox {
     required bool showYAxisGridRuler,
     required double xAxisSteps,
     required double yAxisSteps,
-    required List<double> yAxisData,
-    required Color verticalBarColor,
   })  : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
         renderXAxisRulerThickness = xAxisRulerThickness,
@@ -264,8 +251,6 @@ class RenderBarChartAxis extends RenderBox {
         renderYAxisLabelTextStyle = yAxisLabelTextStyle,
         renderShowXAxisGridRuler = showXAxisGridRuler,
         renderShowYAxisGridRuler = showYAxisGridRuler,
-        renderYAxisData = yAxisData,
-        renderVerticalBarColor = verticalBarColor,
         super();
   double _thicknessOfYAxis = 0;
   Size sizeOfXAxisLabel = Size.zero;
@@ -511,22 +496,6 @@ class RenderBarChartAxis extends RenderBox {
     }
   }
 
-  List<double> get yAxisData => renderYAxisData;
-  set yAxisData(List<double> value) {
-    if (renderYAxisData != value) {
-      renderYAxisData = value;
-      markNeedsLayout();
-    }
-  }
-
-  Color get verticalBarColor => renderVerticalBarColor;
-  set verticalBarColor(Color value) {
-    if (renderVerticalBarColor != value) {
-      renderVerticalBarColor = value;
-      markNeedsPaint();
-    }
-  }
-
   double? legendWidth = 0;
   @override
   void paint(PaintingContext context, Offset offset) {
@@ -536,13 +505,13 @@ class RenderBarChartAxis extends RenderBox {
     double yAxisMainLabelOffset = 0;
     List<AxesLabel> xAxesLabel = [];
     List<AxesLabel> yAxesLabel = [];
-    calculateLabelValues(
-        xAxisStartPoint, xAxisEndPoint, graphWidth, xAxisSteps, xAxesLabel);
+    calculateLabelValues(xAxisStartPoint, xAxisEndPoint, graphWidth, xAxisSteps,
+        xAxesLabel, "x");
     sizeOfXAxisLabel = getLabelSize(
         textStyle: xAxisLabelTextStyle, value: xAxesLabel.first.text);
 
     calculateLabelValues(yAxisStartPoint, yAxisEndPoint, graphHeight * 3,
-        yAxisSteps, yAxesLabel);
+        yAxisSteps, yAxesLabel, "y");
     final Paint xAxisRulerPaint = Paint()
       ..color = xAxisRulerColor
       ..strokeWidth = xAxisRulerThickness
@@ -598,7 +567,6 @@ class RenderBarChartAxis extends RenderBox {
         xAxisRulerPaint,
         xAxisMainPaint,
         xAxisGridRulerPaint,
-        verticalBarColor,
         offset,
         showXAxisGridRuler,
         yAxesLabel);
@@ -612,28 +580,23 @@ class RenderBarChartAxis extends RenderBox {
       Paint xAxisRulerPaint,
       Paint xAxisMainPaint,
       Paint xAxisGridRulerPaint,
-      Color verticalBarColor,
       Offset offset,
       bool showXAxisGridRuler,
       List<AxesLabel> yAxesLabel) {
     var starLabelSize = getLabelSize(
         textStyle: xAxisLabelTextStyle,
         value: xAxesLabel.first.value.toString());
-
     Offset a = Offset(
         _thicknessOfYAxis - (starLabelSize.width / 2) + yAxisRulerOffset,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
     Offset b = Offset(graphWidth - starLabelSize.width,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
-    // Setting x-axis based on yaxis data
-    xAxesLabel.length =
-        yAxisData.isNotEmpty ? yAxisData.length : xAxesLabel.length;
 
     for (int i = 0; i < xAxesLabel.length; i++) {
-      double x = a.dx * (1 - (i / (xAxesLabel.length))) +
-          b.dx * (i / (xAxesLabel.length));
-      double y = a.dy * (1 - (i / (xAxesLabel.length))) +
-          b.dy * (i / (xAxesLabel.length));
+      double x = a.dx * (1 - (i / (xAxesLabel.length - 1))) +
+          b.dx * (i / (xAxesLabel.length - 1));
+      double y = a.dy * (1 - (i / (xAxesLabel.length - 1))) +
+          b.dy * (i / (xAxesLabel.length - 1));
       final TextSpan span = TextSpan(
         text: xAxesLabel[i].value.toString(),
         style: xAxisLabelTextStyle,
@@ -643,15 +606,7 @@ class RenderBarChartAxis extends RenderBox {
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      // To set offset for the labels
-      if (yAxisData.isNotEmpty) {
-        final widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length)) -
-            (x + (starLabelSize.width)) +
-            (starLabelSize.width / 2);
-        tp.paint(canvas, Offset(x + (widthOfBar / 2), y));
-      } else {
-        tp.paint(canvas, Offset(x, y));
-      }
+      tp.paint(canvas, Offset(x, y));
 
       canvas.drawLine(
         Offset(x + starLabelSize.width / 2, y - xAxisLabelOffset),
@@ -661,14 +616,7 @@ class RenderBarChartAxis extends RenderBox {
       );
       // To Draw Grid rulers from x-axis
       if (showXAxisGridRuler) {
-        final bool hasYAxisData = yAxisData.isNotEmpty;
-        final double widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length)) -
-            (x + (starLabelSize.width)) +
-            (starLabelSize.width / 2);
-
-        final double xPosition = hasYAxisData
-            ? x + (starLabelSize.width) + widthOfBar
-            : x + (starLabelSize.width / 2);
+        final double xPosition = x + (starLabelSize.width / 2);
         final double yPosition = y -
             ((size.height -
                 (starLabelSize.height) -
@@ -681,26 +629,6 @@ class RenderBarChartAxis extends RenderBox {
           Offset(xPosition, yEndPosition),
           xAxisGridRulerPaint,
         );
-      }
-
-      // To Draw Bars
-      if (yAxisData.isNotEmpty && i < xAxesLabel.length) {
-        double currentY = yAxisData[i].toDouble();
-        double rectLeft = x + (starLabelSize.width);
-
-        double rectTop = (currentY - yAxisStartPoint) *
-                (offset.dy -
-                    (y -
-                        xAxisRulerHeight -
-                        xAxisRulerOffset -
-                        (yStartLabelSize.height / 2))) /
-                (yAxisEndPoint - yAxisStartPoint) +
-            (y - (xAxisRulerHeight) - xAxisRulerOffset);
-
-        double rectRight = x + (b.dx - a.dx) / (xAxesLabel.length);
-        double rectBottom = y - (xAxisRulerOffset + xAxisRulerHeight);
-        Rect rect = Rect.fromLTRB(rectLeft, rectTop, rectRight, rectBottom);
-        canvas.drawRect(rect, Paint()..color = verticalBarColor);
       }
     }
     // To draw x axis main
@@ -792,7 +720,7 @@ class RenderBarChartAxis extends RenderBox {
   }
 
   void calculateLabelValues(double getStart, double getEnd, double sizeValue,
-      double intervalSize, List<AxesLabel> label) {
+      double intervalSize, List<AxesLabel> label, String axisName) {
     final double count = math.max(sizeValue / intervalSize, 1.0);
     double interval = (getEnd - getStart) / (sizeValue / intervalSize);
     final List<double> intervalDivisions = [10, 5, 2, 1];
