@@ -625,12 +625,15 @@ class RenderBarChartAxis extends RenderBox {
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
     Offset b = Offset(graphWidth - starLabelSize.width,
         size.height - starLabelSize.height - (yStartLabelSize.height / 2));
+    // Setting x-axis based on yaxis data
+    xAxesLabel.length =
+        yAxisData.isNotEmpty ? yAxisData.length : xAxesLabel.length;
 
     for (int i = 0; i < xAxesLabel.length; i++) {
-      double x = a.dx * (1 - (i / (xAxesLabel.length - 1))) +
-          b.dx * (i / (xAxesLabel.length - 1));
-      double y = a.dy * (1 - (i / (xAxesLabel.length - 1))) +
-          b.dy * (i / (xAxesLabel.length - 1));
+      double x = a.dx * (1 - (i / (xAxesLabel.length))) +
+          b.dx * (i / (xAxesLabel.length));
+      double y = a.dy * (1 - (i / (xAxesLabel.length))) +
+          b.dy * (i / (xAxesLabel.length));
       final TextSpan span = TextSpan(
         text: xAxesLabel[i].value.toString(),
         style: xAxisLabelTextStyle,
@@ -642,10 +645,10 @@ class RenderBarChartAxis extends RenderBox {
       tp.layout();
       // To set offset for the labels
       if (yAxisData.isNotEmpty) {
-        final widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length - 1)) -
+        final widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length)) -
             (x + (starLabelSize.width)) +
             (starLabelSize.width / 2);
-        tp.paint(canvas, Offset(x - (widthOfBar / 2), y));
+        tp.paint(canvas, Offset(x + (widthOfBar / 2), y));
       } else {
         tp.paint(canvas, Offset(x, y));
       }
@@ -658,21 +661,30 @@ class RenderBarChartAxis extends RenderBox {
       );
       // To Draw Grid rulers from x-axis
       if (showXAxisGridRuler) {
+        final bool hasYAxisData = yAxisData.isNotEmpty;
+        final double widthOfBar = (x + (b.dx - a.dx) / (xAxesLabel.length)) -
+            (x + (starLabelSize.width)) +
+            (starLabelSize.width / 2);
+
+        final double xPosition = hasYAxisData
+            ? x + (starLabelSize.width) + widthOfBar
+            : x + (starLabelSize.width / 2);
+        final double yPosition = y -
+            ((size.height -
+                (starLabelSize.height) -
+                offset.dy -
+                yStartLabelSize.height));
+        final double yEndPosition = y - xAxisRulerHeight - xAxisRulerOffset;
+
         canvas.drawLine(
-          Offset(
-              x + (starLabelSize.width / 2),
-              y -
-                  ((size.height -
-                      (starLabelSize.height) -
-                      offset.dy -
-                      yStartLabelSize.height))),
-          Offset(x + (starLabelSize.width / 2),
-              y - xAxisRulerHeight - xAxisRulerOffset),
+          Offset(xPosition, yPosition),
+          Offset(xPosition, yEndPosition),
           xAxisGridRulerPaint,
         );
       }
+
       // To Draw Bars
-      if (yAxisData.isNotEmpty && i < xAxesLabel.length - 1) {
+      if (yAxisData.isNotEmpty && i < xAxesLabel.length) {
         double currentY = yAxisData[i].toDouble();
         double rectLeft = x + (starLabelSize.width);
 
@@ -685,7 +697,7 @@ class RenderBarChartAxis extends RenderBox {
                 (yAxisEndPoint - yAxisStartPoint) +
             (y - (xAxisRulerHeight) - xAxisRulerOffset);
 
-        double rectRight = x + (b.dx - a.dx) / (xAxesLabel.length - 1);
+        double rectRight = x + (b.dx - a.dx) / (xAxesLabel.length);
         double rectBottom = y - (xAxisRulerOffset + xAxisRulerHeight);
         Rect rect = Rect.fromLTRB(rectLeft, rectTop, rectRight, rectBottom);
         canvas.drawRect(rect, Paint()..color = verticalBarColor);
