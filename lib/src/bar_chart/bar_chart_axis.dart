@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'bar_chart_painter.dart';
-
 /// A widget that represents the axes labels of a bar chart.
 ///
 /// This widget is used to draw the horizontal and vertical axes labels of a bar chart.

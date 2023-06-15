@@ -49,7 +49,6 @@ class RenderRBarChart extends RenderBox
     while (child != null) {
       final childParentData = child.parentData as BarChartParentData;
       BarChartTextTitleRenderObject? containerRef;
-      RenderBarChartAxis barChartAxisRender;
       child.layout(
         BoxConstraints(maxHeight: size.height, maxWidth: size.width),
         parentUsesSize: true,
@@ -71,7 +70,6 @@ class RenderRBarChart extends RenderBox
               Offset(size.width - barChartLegendOffset, size.height / 2);
           break;
         case RenderBarChartAxis:
-          barChartAxisRender = child as RenderBarChartAxis;
           child.layout(BoxConstraints(
               maxHeight: constraints.maxHeight,
               maxWidth: constraints.maxWidth - barChartLegendOffset));
