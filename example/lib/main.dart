@@ -34,9 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: BarChart(
-        title: BarChartTextTitle(
-            text: 'Flutter Chart',
-            textStyle: TextStyle(fontSize: 50, color: Colors.teal)),
+        // title: BarChartTextTitle(
+        //     text: 'Flutter Chart',
+        //     textStyle: TextStyle(fontSize: 50, color: Colors.teal)),
         // barChartLegends: BarChartLegends(
         //   legendTextXAxis: "X-Axis",
         //   legendTextYAxis: "Y-Axis",
@@ -61,8 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
           //     yAxisMainColor: Colors.deepOrangeAccent,
           //     xAxisMainStrokeType: StrokeCap.square,
           //     yAxisMainStrokeType: StrokeCap.butt,
-          xAxisStartPoint: 0,
-          xAxisEndPoint: 5.5,
+          // xAxisStartPoint: 0.0,
+          // xAxisEndPoint: 10.0,
           //     yAxisStartPoint: 0,
           //     yAxisEndPoint: 100,
           // xAxisSteps: 90,
@@ -71,27 +71,29 @@ class _MyHomePageState extends State<MyHomePage> {
           //     xAxisLabelOffset: 80,
           //     yAxisRulerOffset: 100,
           //     yAxisLabelOffset: 50,
-          xAxisGridRulerThickness: 2.0,
-          //     yAxisGridRulerThickness: 1.0,
-          xAxisGridRulerColor: Colors.purple,
+          // xAxisGridRulerThickness: 2.0,
+          // yAxisGridRulerThickness: 1.0,
+          // xAxisGridRulerColor: Colors.purple,
           //     yAxisGridRulerColor: Colors.orange,
           //     verticalBarColor: Colors.orange,
-          // yAxisData: [
-          // 1.5,
-          // 0.6,
-          // 4.8,
-          // 5.0,
-          // 2.2,
-          // 1.8,
-          // 0.3,
-          // 4.2,
-          // 5.2,
-          // 2.5,
-          // 3.3,
-          //1.2
-          // ],
-          //     showXAxisGridRuler: false
+          // showXAxisGridRuler: false,
           // showYAxisGridRuler: false,
+          yAxisData: [
+            0.5,
+            2.5,
+            3.2,
+            4.0,
+            5.0,
+            1.0,
+            2.0,
+            3.0,
+            4.0,
+            5.0,
+            2.2,
+            1.8,
+            1.2,
+          ],
+          verticalBarColor: Colors.orange,
         ),
       ),
     );
