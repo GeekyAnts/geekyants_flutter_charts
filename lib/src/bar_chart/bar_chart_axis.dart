@@ -37,8 +37,8 @@ class BarChartAxis extends LeafRenderObjectWidget {
   final TextStyle yAxisLabelTextStyle;
   final bool showXAxisGridRuler;
   final bool showYAxisGridRuler;
-  final Color verticalBarColor;
   final List<double> yAxisData;
+  final Color verticalBarColor;
 
   /// Creates a [BarChartAxis] widget.
   ///
@@ -202,8 +202,9 @@ class RenderBarChartAxis extends RenderBox {
   double renderXAxisLabelOffset;
   double renderYAxisRulerOffset;
   double renderYAxisLabelOffset;
-  List<double> renderYAxisData;
   Color renderVerticalBarColor;
+  List<double> renderYAxisData;
+
   RenderBarChartAxis({
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
@@ -524,6 +525,7 @@ class RenderBarChartAxis extends RenderBox {
   }
 
   Color get verticalBarColor => renderVerticalBarColor;
+
   set verticalBarColor(Color value) {
     if (renderVerticalBarColor != value) {
       renderVerticalBarColor = value;
@@ -668,6 +670,14 @@ class RenderBarChartAxis extends RenderBox {
           xAxisRulerPaint,
         );
       }
+      tp.paint(canvas, Offset(x, y));
+
+      canvas.drawLine(
+        Offset(x + starLabelSize.width / 2, y - xAxisLabelOffset),
+        Offset(x + starLabelSize.width / 2,
+            (y - xAxisLabelOffset) - xAxisRulerHeight),
+        xAxisRulerPaint,
+      );
       // To Draw Grid rulers from x-axis
       if (showXAxisGridRuler) {
         final double xPosition = x + (starLabelSize.width / 2);
