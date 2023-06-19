@@ -711,8 +711,12 @@ class RenderBarChartAxis extends RenderBox {
         final barBottom = y - (xAxisRulerOffset + xAxisRulerHeight);
 
         // Calculate the left and right coordinates of the bar
-        double barLeft = x + (starLabelSize.width) - (barWidth / 2);
-        double barRight = barLeft + barWidth - (starLabelSize.width);
+        double barLeft =
+            x + (starLabelSize.width) - (barWidth / 2) + (_thicknessOfYAxis);
+        double barRight = barLeft +
+            barWidth -
+            (starLabelSize.width) -
+            (_thicknessOfYAxis * 2);
         // Draw the bar rectangle
         final Rect barRect =
             Rect.fromLTRB(barLeft, barTop, barRight, barBottom);
