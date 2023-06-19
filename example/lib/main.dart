@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //     yAxisMainStrokeType: StrokeCap.butt,
             // xAxisStartPoint: 0,
             // xAxisEndPoint: 5.5,
+            // xAxisIntervalRange: 0.5,
             //     yAxisStartPoint: 0,
             //     yAxisEndPoint: 100,
             // xAxisSteps: 90,

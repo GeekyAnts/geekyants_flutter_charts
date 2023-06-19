@@ -25,6 +25,7 @@ class BarChartAxis extends LeafRenderObjectWidget {
   final Color yAxisGridRulerColor;
   final double xAxisStartPoint;
   final double xAxisEndPoint;
+  final double xAxisIntervalRange;
   final double yAxisStartPoint;
   final double yAxisEndPoint;
   final double xAxisSteps;
@@ -63,6 +64,7 @@ class BarChartAxis extends LeafRenderObjectWidget {
     this.yAxisGridRulerColor = Colors.grey,
     this.xAxisStartPoint = 0.0,
     this.xAxisEndPoint = 5.5,
+    this.xAxisIntervalRange = 0.5,
     this.yAxisStartPoint = 0.0,
     this.yAxisEndPoint = 5.5,
     this.xAxisSteps = 100,
@@ -106,6 +108,7 @@ class BarChartAxis extends LeafRenderObjectWidget {
       yAxisGridRulerColor: yAxisGridRulerColor,
       xAxisStartPoint: xAxisStartPoint,
       xAxisEndPoint: xAxisEndPoint,
+      xAxisIntervalRange: xAxisIntervalRange,
       yAxisStartPoint: yAxisStartPoint,
       yAxisEndPoint: yAxisEndPoint,
       xAxisSteps: xAxisSteps,
@@ -145,6 +148,7 @@ class BarChartAxis extends LeafRenderObjectWidget {
       ..yAxisGridRulerColor = yAxisGridRulerColor
       ..xAxisStartPoint = xAxisStartPoint
       ..xAxisEndPoint = xAxisEndPoint
+      ..xAxisIntervalRange = xAxisIntervalRange
       ..yAxisStartPoint = yAxisStartPoint
       ..yAxisEndPoint = yAxisEndPoint
       ..xAxisSteps = xAxisSteps
@@ -194,6 +198,7 @@ class RenderBarChartAxis extends RenderBox {
   Color renderYAxisGridRulerColor;
   double renderXAxisStartPoint;
   double renderXAxisEndPoint;
+  double renderXAxisIntervalRange;
   double renderYAxisStartPoint;
   double renderYAxisEndPoint;
   double renderXAxisSteps;
@@ -224,6 +229,7 @@ class RenderBarChartAxis extends RenderBox {
     required Color yAxisGridRulerColor,
     required double xAxisStartPoint,
     required double xAxisEndPoint,
+    required double xAxisIntervalRange,
     required double yAxisStartPoint,
     required double yAxisEndPoint,
     required TextStyle xAxisLabelTextStyle,
@@ -256,6 +262,7 @@ class RenderBarChartAxis extends RenderBox {
         renderYAxisGridRulerColor = yAxisGridRulerColor,
         renderXAxisStartPoint = xAxisStartPoint,
         renderXAxisEndPoint = xAxisEndPoint,
+        renderXAxisIntervalRange = xAxisIntervalRange,
         renderYAxisStartPoint = yAxisStartPoint,
         renderYAxisEndPoint = yAxisEndPoint,
         renderXAxisSteps = xAxisSteps,
@@ -452,6 +459,14 @@ class RenderBarChartAxis extends RenderBox {
     }
   }
 
+  double get xAxisIntervalRange => renderXAxisIntervalRange;
+  set xAxisIntervalRange(double value) {
+    if (renderXAxisIntervalRange != value) {
+      renderXAxisIntervalRange = value;
+      markNeedsLayout();
+    }
+  }
+
   double get yAxisStartPoint => renderYAxisStartPoint;
   set yAxisStartPoint(double value) {
     if (renderYAxisStartPoint != value) {
@@ -518,6 +533,8 @@ class RenderBarChartAxis extends RenderBox {
 
   List<double> get yAxisData => renderYAxisData;
   set yAxisData(List<double> value) {
+    assert(value.length <= (xAxisEndPoint - xAxisStartPoint) + 1,
+        "Y-Axis data length should be always lesser than X-Axis range");
     if (renderYAxisData != value) {
       renderYAxisData = value;
       markNeedsLayout();
@@ -827,11 +844,15 @@ class RenderBarChartAxis extends RenderBox {
       interval = currentInterval;
     }
     if (yAxisData.isNotEmpty && axisName == "x") {
-      /// TODO: To Map the X Axis Values as pet the yAxisData.length
+      int length = yAxisData.length;
+      List<double> xAxisData = [];
 
-      for (int i = getStart.toInt(); i < yAxisData.length; i++) {
-        double value = yAxisData[i].toDouble();
-        label.add(AxesLabel(text: value.toString(), value: i.toDouble()));
+      for (int i = getStart.toInt(); i < length; i++) {
+        double value = getStart + (i * xAxisIntervalRange);
+        xAxisData.add(value);
+        double labelValue = xAxisData[i].toDouble();
+        label.add(AxesLabel(
+            text: labelValue.toString(), value: labelValue.toDouble()));
       }
     } else {
       for (double i = getStart; i <= getEnd; i += interval) {
