@@ -45,7 +45,8 @@ class BarChartAxis extends LeafRenderObjectWidget {
   final Color verticalBarBorderColor;
   final double verticalBarBorderWidth;
   final double verticalBarBorderRadius;
-
+  // final Color hoverVerticalBarColor;
+  // final Color hoverVerticalBarBorderColor;
   /// Creates a [BarChartAxis] widget.
   ///
 
@@ -831,6 +832,7 @@ class RenderBarChartAxis extends RenderBox {
           ..strokeWidth = verticalBarBorderWidth;
         canvas.drawRRect(barBorder, paintBorder);
         final Paint paint = Paint();
+        // Check if the mouse is hovering over the rect
         final RRect bar = RRect.fromRectAndCorners(barRect,
             topLeft: Radius.circular(verticalBarBorderRadius),
             topRight: Radius.circular(verticalBarBorderRadius));
