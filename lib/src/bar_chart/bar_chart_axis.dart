@@ -533,7 +533,9 @@ class RenderBarChartAxis extends RenderBox {
 
   List<double> get yAxisData => renderYAxisData;
   set yAxisData(List<double> value) {
-    assert(value.length <= (xAxisEndPoint - xAxisStartPoint) + 1,
+    assert(
+        value.length <=
+            ((xAxisEndPoint - xAxisStartPoint) / xAxisIntervalRange + 1).ceil(),
         "Y-Axis data length should be always lesser than X-Axis range");
     if (renderYAxisData != value) {
       renderYAxisData = value;
