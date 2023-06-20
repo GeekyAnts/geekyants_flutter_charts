@@ -40,48 +40,62 @@ class BarChartAxis extends LeafRenderObjectWidget {
   final bool showYAxisGridRuler;
   final List<double> yAxisData;
   final Color verticalBarColor;
+  final Gradient verticalBarGradientShader;
+  final bool showGradientBars;
+  final Color verticalBarBorderColor;
+  final double verticalBarBorderWidth;
+  final double verticalBarBorderRadius;
 
   /// Creates a [BarChartAxis] widget.
   ///
 
-  const BarChartAxis({
-    Key? key,
-    this.xAxisRulerHeight = 10,
-    this.yAxisRulerHeight = 10,
-    this.xAxisRulerThickness = 0.2,
-    this.yAxisRulerThickness = 0.2,
-    this.xAxisRulerColor = Colors.black,
-    this.yAxisRulerColor = Colors.black,
-    this.xAxisMainThickness = 0.5,
-    this.yAxisMainThickness = 0.5,
-    this.xAxisMainColor = Colors.black,
-    this.yAxisMainColor = Colors.black,
-    this.xAxisMainStrokeType = StrokeCap.round,
-    this.yAxisMainStrokeType = StrokeCap.round,
-    this.xAxisGridRulerThickness = 0.5,
-    this.yAxisGridRulerThickness = 0.5,
-    this.xAxisGridRulerColor = Colors.grey,
-    this.yAxisGridRulerColor = Colors.grey,
-    this.xAxisStartPoint = 0.0,
-    this.xAxisEndPoint = 5.5,
-    this.xAxisIntervalRange = 0.5,
-    this.yAxisStartPoint = 0.0,
-    this.yAxisEndPoint = 5.5,
-    this.xAxisSteps = 100,
-    this.yAxisSteps = 100,
-    this.xAxisRulerOffset = 0,
-    this.xAxisLabelOffset = 0,
-    this.yAxisRulerOffset = 0,
-    this.yAxisLabelOffset = 0,
-    this.xAxisLabelTextStyle =
-        const TextStyle(color: Colors.black, fontSize: 10),
-    this.yAxisLabelTextStyle =
-        const TextStyle(color: Colors.black, fontSize: 10),
-    this.showXAxisGridRuler = true,
-    this.showYAxisGridRuler = true,
-    this.yAxisData = const [],
-    this.verticalBarColor = Colors.blue,
-  })  : assert(xAxisStartPoint < xAxisEndPoint,
+  const BarChartAxis(
+      {Key? key,
+      this.xAxisRulerHeight = 10,
+      this.yAxisRulerHeight = 10,
+      this.xAxisRulerThickness = 0.2,
+      this.yAxisRulerThickness = 0.2,
+      this.xAxisRulerColor = Colors.black,
+      this.yAxisRulerColor = Colors.black,
+      this.xAxisMainThickness = 0.5,
+      this.yAxisMainThickness = 0.5,
+      this.xAxisMainColor = Colors.black,
+      this.yAxisMainColor = Colors.black,
+      this.xAxisMainStrokeType = StrokeCap.round,
+      this.yAxisMainStrokeType = StrokeCap.round,
+      this.xAxisGridRulerThickness = 0.5,
+      this.yAxisGridRulerThickness = 0.5,
+      this.xAxisGridRulerColor = Colors.grey,
+      this.yAxisGridRulerColor = Colors.grey,
+      this.xAxisStartPoint = 0.0,
+      this.xAxisEndPoint = 5.5,
+      this.xAxisIntervalRange = 0.5,
+      this.yAxisStartPoint = 0.0,
+      this.yAxisEndPoint = 5.5,
+      this.xAxisSteps = 100,
+      this.yAxisSteps = 100,
+      this.xAxisRulerOffset = 0,
+      this.xAxisLabelOffset = 0,
+      this.yAxisRulerOffset = 0,
+      this.yAxisLabelOffset = 0,
+      this.xAxisLabelTextStyle =
+          const TextStyle(color: Colors.black, fontSize: 10),
+      this.yAxisLabelTextStyle =
+          const TextStyle(color: Colors.black, fontSize: 10),
+      this.showXAxisGridRuler = true,
+      this.showYAxisGridRuler = true,
+      this.yAxisData = const [],
+      this.showGradientBars = false,
+      this.verticalBarColor = Colors.blue,
+      this.verticalBarGradientShader = const LinearGradient(
+        colors: [Colors.blue, Colors.green],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+      this.verticalBarBorderColor = Colors.transparent,
+      this.verticalBarBorderWidth = 0.0,
+      this.verticalBarBorderRadius = 0.0})
+      : assert(xAxisStartPoint < xAxisEndPoint,
             "X-Axis start point should be always lesser than end point"),
         assert(yAxisStartPoint < yAxisEndPoint,
             "Y-Axis start point should be always lesser than end point"),
@@ -90,40 +104,44 @@ class BarChartAxis extends LeafRenderObjectWidget {
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartAxis(
-      xAxisRulerHeight: xAxisRulerHeight,
-      yAxisRulerHeight: yAxisRulerHeight,
-      xAxisRulerThickness: xAxisRulerThickness,
-      yAxisRulerThickness: yAxisRulerThickness,
-      xAxisRulerColor: xAxisRulerColor,
-      yAxisRulerColor: yAxisRulerColor,
-      xAxisMainThickness: xAxisMainThickness,
-      yAxisMainThickness: yAxisMainThickness,
-      xAxisMainColor: xAxisMainColor,
-      yAxisMainColor: yAxisMainColor,
-      xAxisMainStrokeType: xAxisMainStrokeType,
-      yAxisMainStrokeType: yAxisMainStrokeType,
-      xAxisGridRulerThickness: xAxisGridRulerThickness,
-      yAxisGridRulerThickness: yAxisGridRulerThickness,
-      xAxisGridRulerColor: xAxisGridRulerColor,
-      yAxisGridRulerColor: yAxisGridRulerColor,
-      xAxisStartPoint: xAxisStartPoint,
-      xAxisEndPoint: xAxisEndPoint,
-      xAxisIntervalRange: xAxisIntervalRange,
-      yAxisStartPoint: yAxisStartPoint,
-      yAxisEndPoint: yAxisEndPoint,
-      xAxisSteps: xAxisSteps,
-      yAxisSteps: yAxisSteps,
-      xAxisRulerOffset: xAxisRulerOffset,
-      xAxisLabelOffset: xAxisLabelOffset,
-      yAxisRulerOffset: yAxisRulerOffset,
-      yAxisLabelOffset: yAxisLabelOffset,
-      xAxisLabelTextStyle: xAxisLabelTextStyle,
-      yAxisLabelTextStyle: yAxisLabelTextStyle,
-      showXAxisGridRuler: showXAxisGridRuler,
-      showYAxisGridRuler: showYAxisGridRuler,
-      yAxisData: yAxisData,
-      verticalBarColor: verticalBarColor,
-    );
+        xAxisRulerHeight: xAxisRulerHeight,
+        yAxisRulerHeight: yAxisRulerHeight,
+        xAxisRulerThickness: xAxisRulerThickness,
+        yAxisRulerThickness: yAxisRulerThickness,
+        xAxisRulerColor: xAxisRulerColor,
+        yAxisRulerColor: yAxisRulerColor,
+        xAxisMainThickness: xAxisMainThickness,
+        yAxisMainThickness: yAxisMainThickness,
+        xAxisMainColor: xAxisMainColor,
+        yAxisMainColor: yAxisMainColor,
+        xAxisMainStrokeType: xAxisMainStrokeType,
+        yAxisMainStrokeType: yAxisMainStrokeType,
+        xAxisGridRulerThickness: xAxisGridRulerThickness,
+        yAxisGridRulerThickness: yAxisGridRulerThickness,
+        xAxisGridRulerColor: xAxisGridRulerColor,
+        yAxisGridRulerColor: yAxisGridRulerColor,
+        xAxisStartPoint: xAxisStartPoint,
+        xAxisEndPoint: xAxisEndPoint,
+        xAxisIntervalRange: xAxisIntervalRange,
+        yAxisStartPoint: yAxisStartPoint,
+        yAxisEndPoint: yAxisEndPoint,
+        xAxisSteps: xAxisSteps,
+        yAxisSteps: yAxisSteps,
+        xAxisRulerOffset: xAxisRulerOffset,
+        xAxisLabelOffset: xAxisLabelOffset,
+        yAxisRulerOffset: yAxisRulerOffset,
+        yAxisLabelOffset: yAxisLabelOffset,
+        xAxisLabelTextStyle: xAxisLabelTextStyle,
+        yAxisLabelTextStyle: yAxisLabelTextStyle,
+        showXAxisGridRuler: showXAxisGridRuler,
+        showYAxisGridRuler: showYAxisGridRuler,
+        yAxisData: yAxisData,
+        verticalBarColor: verticalBarColor,
+        verticalBarGradientShader: verticalBarGradientShader,
+        showGradientBars: showGradientBars,
+        verticalBarBorderColor: verticalBarBorderColor,
+        verticalBarBorderRadius: verticalBarBorderRadius,
+        verticalBarBorderWidth: verticalBarBorderWidth);
   }
 
   @override
@@ -162,7 +180,12 @@ class BarChartAxis extends LeafRenderObjectWidget {
       ..showXAxisGridRuler = showXAxisGridRuler
       ..showYAxisGridRuler = showYAxisGridRuler
       ..yAxisData = yAxisData
-      ..verticalBarColor = verticalBarColor;
+      ..verticalBarColor = verticalBarColor
+      ..verticalBarGradientShader = verticalBarGradientShader
+      ..showGradientBars = showGradientBars
+      ..verticalBarBorderColor = verticalBarBorderColor
+      ..verticalBarBorderRadius = verticalBarBorderRadius
+      ..verticalBarBorderWidth = verticalBarBorderWidth;
   }
 }
 
@@ -182,6 +205,7 @@ class RenderBarChartAxis extends RenderBox {
   TextStyle renderYAxisLabelTextStyle;
   bool renderShowXAxisGridRuler = true;
   bool renderShowYAxisGridRuler = true;
+  bool renderShowGradientBars = false;
   double renderXAxisRulerThickness;
   double renderYAxisRulerThickness;
   Color renderXAxisRulerColor;
@@ -208,8 +232,11 @@ class RenderBarChartAxis extends RenderBox {
   double renderYAxisRulerOffset;
   double renderYAxisLabelOffset;
   Color renderVerticalBarColor;
+  Gradient renderVerticalBarGradientShader;
   List<double> renderYAxisData;
-
+  Color renderVerticalBarBorderColor;
+  double renderVerticalBarBorderWidth;
+  double renderVerticalBarBorderRadius;
   RenderBarChartAxis({
     required double xAxisRulerHeight,
     required double yAxisRulerHeight,
@@ -240,10 +267,15 @@ class RenderBarChartAxis extends RenderBox {
     required double yAxisLabelOffset,
     required bool showXAxisGridRuler,
     required bool showYAxisGridRuler,
+    required bool showGradientBars,
     required double xAxisSteps,
     required double yAxisSteps,
     required List<double> yAxisData,
     required Color verticalBarColor,
+    required Gradient verticalBarGradientShader,
+    required Color verticalBarBorderColor,
+    required double verticalBarBorderWidth,
+    required double verticalBarBorderRadius,
   })  : renderXAxisRulerHeight = xAxisRulerHeight,
         renderYAxisRulerHeight = yAxisRulerHeight,
         renderXAxisRulerThickness = xAxisRulerThickness,
@@ -275,8 +307,13 @@ class RenderBarChartAxis extends RenderBox {
         renderYAxisLabelTextStyle = yAxisLabelTextStyle,
         renderShowXAxisGridRuler = showXAxisGridRuler,
         renderShowYAxisGridRuler = showYAxisGridRuler,
+        renderShowGradientBars = showGradientBars,
         renderYAxisData = yAxisData,
         renderVerticalBarColor = verticalBarColor,
+        renderVerticalBarGradientShader = verticalBarGradientShader,
+        renderVerticalBarBorderColor = verticalBarBorderColor,
+        renderVerticalBarBorderWidth = verticalBarBorderWidth,
+        renderVerticalBarBorderRadius = verticalBarBorderRadius,
         super();
   double _thicknessOfYAxis = 0;
   Size sizeOfXAxisLabel = Size.zero;
@@ -443,6 +480,14 @@ class RenderBarChartAxis extends RenderBox {
     }
   }
 
+  bool get showGradientBars => renderShowGradientBars;
+  set showGradientBars(bool value) {
+    if (renderShowGradientBars != value) {
+      renderShowGradientBars = value;
+      markNeedsLayout();
+    }
+  }
+
   double get xAxisStartPoint => renderXAxisStartPoint;
   set xAxisStartPoint(double value) {
     if (renderXAxisStartPoint != value) {
@@ -549,6 +594,40 @@ class RenderBarChartAxis extends RenderBox {
     if (renderVerticalBarColor != value) {
       renderVerticalBarColor = value;
       markNeedsPaint();
+    }
+  }
+
+  Gradient get verticalBarGradientShader => renderVerticalBarGradientShader;
+
+  set verticalBarGradientShader(Gradient value) {
+    if (renderVerticalBarGradientShader != value) {
+      renderVerticalBarGradientShader = value;
+      markNeedsPaint();
+    }
+  }
+
+  Color get verticalBarBorderColor => renderVerticalBarBorderColor;
+
+  set verticalBarBorderColor(Color value) {
+    if (renderVerticalBarBorderColor != value) {
+      renderVerticalBarBorderColor = value;
+      markNeedsPaint();
+    }
+  }
+
+  double get verticalBarBorderRadius => renderVerticalBarBorderRadius;
+  set verticalBarBorderRadius(double value) {
+    if (renderVerticalBarBorderRadius != value) {
+      renderVerticalBarBorderRadius = value;
+      markNeedsLayout();
+    }
+  }
+
+  double get verticalBarBorderWidth => renderVerticalBarBorderWidth;
+  set verticalBarBorderWidth(double value) {
+    if (renderVerticalBarBorderWidth != value) {
+      renderVerticalBarBorderWidth = value;
+      markNeedsLayout();
     }
   }
 
@@ -739,7 +818,27 @@ class RenderBarChartAxis extends RenderBox {
         // Draw the bar rectangle
         final Rect barRect =
             Rect.fromLTRB(barLeft, barTop, barRight, barBottom);
-        canvas.drawRect(barRect, Paint()..color = verticalBarColor);
+
+        final RRect barBorder = RRect.fromRectAndCorners(
+          barRect,
+          topLeft: Radius.circular(verticalBarBorderRadius),
+          topRight: Radius.circular(verticalBarBorderRadius),
+        );
+
+        final Paint paintBorder = Paint()
+          ..style = PaintingStyle.stroke
+          ..color = verticalBarBorderColor
+          ..strokeWidth = verticalBarBorderWidth;
+        canvas.drawRRect(barBorder, paintBorder);
+        final Paint paint = Paint();
+        final RRect bar = RRect.fromRectAndCorners(barRect,
+            topLeft: Radius.circular(verticalBarBorderRadius),
+            topRight: Radius.circular(verticalBarBorderRadius));
+        showGradientBars
+            // Create a paint object and set the shader to the gradient
+            ? canvas.drawRRect(bar,
+                paint..shader = verticalBarGradientShader.createShader(barRect))
+            : canvas.drawRRect(bar, paint..color = renderVerticalBarColor);
       }
     }
 
