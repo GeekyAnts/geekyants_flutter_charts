@@ -7,147 +7,233 @@ import 'dart:math' as math;
 /// It takes several parameters that define the size and layout of the chart, as
 /// well as the number of axis points and the bar width.
 class BarChartAxis extends LeafRenderObjectWidget {
+  /// The height of the x-axis ruler.
   final double xAxisRulerHeight;
+
+  /// The height of the y-axis ruler.
   final double yAxisRulerHeight;
+
+  /// The thickness of the x-axis ruler.
   final double xAxisRulerThickness;
+
+  /// The thickness of the y-axis ruler.
   final double yAxisRulerThickness;
+
+  /// The color of the x-axis ruler.
   final Color xAxisRulerColor;
+
+  /// The color of the y-axis ruler.
   final Color yAxisRulerColor;
+
+  /// The thickness of the main x-axis.
   final double xAxisMainThickness;
+
+  /// The thickness of the main y-axis.
   final double yAxisMainThickness;
+
+  /// The color of the main x-axis.
   final Color xAxisMainColor;
+
+  /// The color of the main y-axis.
   final Color yAxisMainColor;
+
+  /// The stroke type of the main x-axis.
   final StrokeCap xAxisMainStrokeType;
+
+  /// The stroke type of the main y-axis.
   final StrokeCap yAxisMainStrokeType;
+
+  /// The thickness of the x-axis grid ruler.
   final double xAxisGridRulerThickness;
+
+  /// The thickness of the y-axis grid ruler.
   final double yAxisGridRulerThickness;
+
+  /// The color of the x-axis grid ruler.
   final Color xAxisGridRulerColor;
+
+  /// The color of the y-axis grid ruler.
   final Color yAxisGridRulerColor;
+
+  /// The starting point of the x-axis.
   final double xAxisStartPoint;
+
+  /// The ending point of the x-axis.
   final double xAxisEndPoint;
+
+  /// The interval range of the x-axis.
   final double xAxisIntervalRange;
+
+  /// The starting point of the y-axis.
   final double yAxisStartPoint;
+
+  /// The ending point of the y-axis.
   final double yAxisEndPoint;
+
+  /// The number of steps on the x-axis.
   final double xAxisSteps;
+
+  /// The number of steps on the y-axis.
   final double yAxisSteps;
+
+  /// The offset of the x-axis ruler.
   final double xAxisRulerOffset;
+
+  /// The offset of the x-axis label.
   final double xAxisLabelOffset;
+
+  /// The offset of the y-axis ruler.
   final double yAxisRulerOffset;
+
+  /// The offset of the y-axis label.
   final double yAxisLabelOffset;
+
+  /// The text style of the x-axis labels.
   final TextStyle xAxisLabelTextStyle;
+
+  /// The text style of the y-axis labels.
   final TextStyle yAxisLabelTextStyle;
+
+  /// Indicates whether to show the x-axis grid ruler.
   final bool showXAxisGridRuler;
+
+  /// Indicates whether to show the y-axis grid ruler.
   final bool showYAxisGridRuler;
+
+  /// The data for the y-axis.
   final List<double> yAxisData;
+
+  /// The color of the vertical bars.
   final Color verticalBarColor;
+
+  /// The gradient shader for the vertical bars.
   final Gradient verticalBarGradientShader;
+
+  /// Indicates whether to show gradient bars.
   final bool showGradientBars;
+
+  /// The color of the border for the vertical bars.
   final Color verticalBarBorderColor;
+
+  /// The width of the border for the vertical bars.
   final double verticalBarBorderWidth;
+
+  /// The border radius of the vertical bars.
   final double verticalBarBorderRadius;
-  // final Color hoverVerticalBarColor;
-  // final Color hoverVerticalBarBorderColor;
+
   /// Creates a [BarChartAxis] widget.
   ///
-
-  const BarChartAxis(
-      {Key? key,
-      this.xAxisRulerHeight = 10,
-      this.yAxisRulerHeight = 10,
-      this.xAxisRulerThickness = 0.2,
-      this.yAxisRulerThickness = 0.2,
-      this.xAxisRulerColor = Colors.black,
-      this.yAxisRulerColor = Colors.black,
-      this.xAxisMainThickness = 0.5,
-      this.yAxisMainThickness = 0.5,
-      this.xAxisMainColor = Colors.black,
-      this.yAxisMainColor = Colors.black,
-      this.xAxisMainStrokeType = StrokeCap.round,
-      this.yAxisMainStrokeType = StrokeCap.round,
-      this.xAxisGridRulerThickness = 0.5,
-      this.yAxisGridRulerThickness = 0.5,
-      this.xAxisGridRulerColor = Colors.grey,
-      this.yAxisGridRulerColor = Colors.grey,
-      this.xAxisStartPoint = 0.0,
-      this.xAxisEndPoint = 5.5,
-      this.xAxisIntervalRange = 0.5,
-      this.yAxisStartPoint = 0.0,
-      this.yAxisEndPoint = 5.5,
-      this.xAxisSteps = 100,
-      this.yAxisSteps = 100,
-      this.xAxisRulerOffset = 0,
-      this.xAxisLabelOffset = 0,
-      this.yAxisRulerOffset = 0,
-      this.yAxisLabelOffset = 0,
-      this.xAxisLabelTextStyle =
-          const TextStyle(color: Colors.black, fontSize: 10),
-      this.yAxisLabelTextStyle =
-          const TextStyle(color: Colors.black, fontSize: 10),
-      this.showXAxisGridRuler = true,
-      this.showYAxisGridRuler = true,
-      this.yAxisData = const [],
-      this.showGradientBars = false,
-      this.verticalBarColor = Colors.blue,
-      this.verticalBarGradientShader = const LinearGradient(
-        colors: [Colors.blue, Colors.green],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ),
-      this.verticalBarBorderColor = Colors.transparent,
-      this.verticalBarBorderWidth = 0.0,
-      this.verticalBarBorderRadius = 0.0})
-      : assert(xAxisStartPoint < xAxisEndPoint,
-            "X-Axis start point should be always lesser than end point"),
-        assert(yAxisStartPoint < yAxisEndPoint,
-            "Y-Axis start point should be always lesser than end point"),
+  /// The [xAxisStartPoint] should always be lesser than the [xAxisEndPoint].
+  /// The [yAxisStartPoint] should always be lesser than the [yAxisEndPoint].
+  const BarChartAxis({
+    Key? key,
+    this.xAxisRulerHeight = 10,
+    this.yAxisRulerHeight = 10,
+    this.xAxisRulerThickness = 0.2,
+    this.yAxisRulerThickness = 0.2,
+    this.xAxisRulerColor = Colors.black,
+    this.yAxisRulerColor = Colors.black,
+    this.xAxisMainThickness = 0.5,
+    this.yAxisMainThickness = 0.5,
+    this.xAxisMainColor = Colors.black,
+    this.yAxisMainColor = Colors.black,
+    this.xAxisMainStrokeType = StrokeCap.round,
+    this.yAxisMainStrokeType = StrokeCap.round,
+    this.xAxisGridRulerThickness = 0.5,
+    this.yAxisGridRulerThickness = 0.5,
+    this.xAxisGridRulerColor = Colors.grey,
+    this.yAxisGridRulerColor = Colors.grey,
+    this.xAxisStartPoint = 0.0,
+    this.xAxisEndPoint = 5.5,
+    this.xAxisIntervalRange = 0.5,
+    this.yAxisStartPoint = 0.0,
+    this.yAxisEndPoint = 5.5,
+    this.xAxisSteps = 100,
+    this.yAxisSteps = 100,
+    this.xAxisRulerOffset = 0,
+    this.xAxisLabelOffset = 0,
+    this.yAxisRulerOffset = 0,
+    this.yAxisLabelOffset = 0,
+    this.xAxisLabelTextStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 10,
+    ),
+    this.yAxisLabelTextStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 10,
+    ),
+    this.showXAxisGridRuler = true,
+    this.showYAxisGridRuler = true,
+    this.yAxisData = const [],
+    this.showGradientBars = false,
+    this.verticalBarColor = Colors.blue,
+    this.verticalBarGradientShader = const LinearGradient(
+      colors: [Colors.blue, Colors.green],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    ),
+    this.verticalBarBorderColor = Colors.transparent,
+    this.verticalBarBorderWidth = 0.0,
+    this.verticalBarBorderRadius = 0.0,
+  })  : assert(
+          xAxisStartPoint < xAxisEndPoint,
+          "X-Axis start point should be always lesser than end point",
+        ),
+        assert(
+          yAxisStartPoint < yAxisEndPoint,
+          "Y-Axis start point should be always lesser than end point",
+        ),
         super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return RenderBarChartAxis(
-        xAxisRulerHeight: xAxisRulerHeight,
-        yAxisRulerHeight: yAxisRulerHeight,
-        xAxisRulerThickness: xAxisRulerThickness,
-        yAxisRulerThickness: yAxisRulerThickness,
-        xAxisRulerColor: xAxisRulerColor,
-        yAxisRulerColor: yAxisRulerColor,
-        xAxisMainThickness: xAxisMainThickness,
-        yAxisMainThickness: yAxisMainThickness,
-        xAxisMainColor: xAxisMainColor,
-        yAxisMainColor: yAxisMainColor,
-        xAxisMainStrokeType: xAxisMainStrokeType,
-        yAxisMainStrokeType: yAxisMainStrokeType,
-        xAxisGridRulerThickness: xAxisGridRulerThickness,
-        yAxisGridRulerThickness: yAxisGridRulerThickness,
-        xAxisGridRulerColor: xAxisGridRulerColor,
-        yAxisGridRulerColor: yAxisGridRulerColor,
-        xAxisStartPoint: xAxisStartPoint,
-        xAxisEndPoint: xAxisEndPoint,
-        xAxisIntervalRange: xAxisIntervalRange,
-        yAxisStartPoint: yAxisStartPoint,
-        yAxisEndPoint: yAxisEndPoint,
-        xAxisSteps: xAxisSteps,
-        yAxisSteps: yAxisSteps,
-        xAxisRulerOffset: xAxisRulerOffset,
-        xAxisLabelOffset: xAxisLabelOffset,
-        yAxisRulerOffset: yAxisRulerOffset,
-        yAxisLabelOffset: yAxisLabelOffset,
-        xAxisLabelTextStyle: xAxisLabelTextStyle,
-        yAxisLabelTextStyle: yAxisLabelTextStyle,
-        showXAxisGridRuler: showXAxisGridRuler,
-        showYAxisGridRuler: showYAxisGridRuler,
-        yAxisData: yAxisData,
-        verticalBarColor: verticalBarColor,
-        verticalBarGradientShader: verticalBarGradientShader,
-        showGradientBars: showGradientBars,
-        verticalBarBorderColor: verticalBarBorderColor,
-        verticalBarBorderRadius: verticalBarBorderRadius,
-        verticalBarBorderWidth: verticalBarBorderWidth);
+      xAxisRulerHeight: xAxisRulerHeight,
+      yAxisRulerHeight: yAxisRulerHeight,
+      xAxisRulerThickness: xAxisRulerThickness,
+      yAxisRulerThickness: yAxisRulerThickness,
+      xAxisRulerColor: xAxisRulerColor,
+      yAxisRulerColor: yAxisRulerColor,
+      xAxisMainThickness: xAxisMainThickness,
+      yAxisMainThickness: yAxisMainThickness,
+      xAxisMainColor: xAxisMainColor,
+      yAxisMainColor: yAxisMainColor,
+      xAxisMainStrokeType: xAxisMainStrokeType,
+      yAxisMainStrokeType: yAxisMainStrokeType,
+      xAxisGridRulerThickness: xAxisGridRulerThickness,
+      yAxisGridRulerThickness: yAxisGridRulerThickness,
+      xAxisGridRulerColor: xAxisGridRulerColor,
+      yAxisGridRulerColor: yAxisGridRulerColor,
+      xAxisStartPoint: xAxisStartPoint,
+      xAxisEndPoint: xAxisEndPoint,
+      xAxisIntervalRange: xAxisIntervalRange,
+      yAxisStartPoint: yAxisStartPoint,
+      yAxisEndPoint: yAxisEndPoint,
+      xAxisSteps: xAxisSteps,
+      yAxisSteps: yAxisSteps,
+      xAxisRulerOffset: xAxisRulerOffset,
+      xAxisLabelOffset: xAxisLabelOffset,
+      yAxisRulerOffset: yAxisRulerOffset,
+      yAxisLabelOffset: yAxisLabelOffset,
+      xAxisLabelTextStyle: xAxisLabelTextStyle,
+      yAxisLabelTextStyle: yAxisLabelTextStyle,
+      showXAxisGridRuler: showXAxisGridRuler,
+      showYAxisGridRuler: showYAxisGridRuler,
+      yAxisData: yAxisData,
+      verticalBarColor: verticalBarColor,
+      verticalBarGradientShader: verticalBarGradientShader,
+      showGradientBars: showGradientBars,
+      verticalBarBorderColor: verticalBarBorderColor,
+      verticalBarBorderRadius: verticalBarBorderRadius,
+      verticalBarBorderWidth: verticalBarBorderWidth,
+    );
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderBarChartAxis renderObject) {
+    BuildContext context,
+    covariant RenderBarChartAxis renderObject,
+  ) {
     renderObject
       ..xAxisRulerHeight = xAxisRulerHeight
       ..yAxisRulerHeight = yAxisRulerHeight
