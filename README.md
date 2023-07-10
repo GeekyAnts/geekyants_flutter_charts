@@ -142,38 +142,13 @@ BarChartAxis(
 
 ## Demo Shots
 
-<div style="display: flex;">
-  <div style="flex: 1 1 auto;margin-right: 10px;">
-    <img src="example/demo_shots/base_chart.png" alt="Image 1" width="500px">
-  </div>
-  <div style="flex: 1 1 auto;">
-    <img src="example/demo_shots/title_customization.png" alt="Image 2" width="500px">
-  </div>
-</div>
+<img src="example/demo_shots/base_chart.png" alt="Image 1" width="500px"> <img src="example/demo_shots/title_customization.png" alt="Image 2" width="500px">
 
-<div style="display: flex;">
-  <div style="flex: 1 1 auto;margin-right: 10px;">
-    <img src="example/demo_shots/bar_chart_size.png" alt="Image 1" width="500px">
-  </div>
-  <div style="flex: 1 1 auto;">
-    <img src="example/demo_shots/size_customization.png" alt="Image 2" width="500px">
-  </div>
-</div>
+<img src="example/demo_shots/bar_chart_size.png" alt="Image 1" width="500px"> <img src="example/demo_shots/size_customization.png" alt="Image 2" width="500px">
 
-<div style="display: flex;">
-  <div style="flex: 1 1 auto;margin-right: 10px;">
-    <img src="example/demo_shots/vertical_bar_chart.png" alt="Image 1" width="500px">
-  </div>
-  <div style="flex: 1 1 auto;">
-    <img src="example/demo_shots/gradient_bars.png" alt="Image 2" width="500px">
-  </div>
-</div>
+<img src="example/demo_shots/vertical_bar_chart.png" alt="Image 1" width="500px"> <img src="example/demo_shots/gradient_bars.png" alt="Image 2" width="500px">
 
-<div style="display: flex;">
-  <div style="flex: 1 1 auto;">
-    <img src="example/demo_shots/customized.png" alt="Image 1" width="500px">
-  </div>
-</div>
+<img src="example/demo_shots/customized.png" alt="Image 1" width="500px">
 
 ## License
 
