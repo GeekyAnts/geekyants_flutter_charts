@@ -163,3 +163,5 @@ BarChartAxis(
 ## Credits
 
 Made with ❤️ by <a href="https://geekyants.com/" ><img src="https://s3.ap-southeast-1.amazonaws.com/cdn.elitmus.com/sy0zfezmfdovlb4vaz6siv1l7g30" height="17"/></a>
+
+<b>Warning: This is an alpha release. The package is under active development, and there might be breaking changes in future updates. Please use with caution and be prepared to update your code accordingly.</b>
