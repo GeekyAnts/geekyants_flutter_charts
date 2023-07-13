@@ -1,46 +1,93 @@
 import 'package:flutter/material.dart';
 
-// TODO: To Add all required parameters and functions.
+class BarChartTextTitle extends LeafRenderObjectWidget {
+  final String text;
+  final TextStyle textStyle;
 
-class BarChartTitle extends LeafRenderObjectWidget {
-  final double value;
-
-  const BarChartTitle({
-    super.key,
-    required this.value,
-  });
+  /// Creates a widget that displays a text title for a bar chart.
+  ///
+  /// The [text] parameter is the title text to be displayed.
+  /// The [textStyle] parameter specifies the style of the title text.
+  const BarChartTextTitle(
+      {Key? key,
+      this.text = 'Flutter Chart Base',
+      this.textStyle = const TextStyle(fontSize: 20, color: Colors.black)})
+      : super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderBarChartTitle(
-      value: value,
+    return BarChartTextTitleRenderObject(
+      renderText: text,
+      renderTextStyle: textStyle,
     );
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, RenderBarChartTitle renderObject) {
-    renderObject.value = value;
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    final barChartTextTitleRenderObject =
+        renderObject as BarChartTextTitleRenderObject;
+    barChartTextTitleRenderObject.text = text;
+    barChartTextTitleRenderObject.textStyle = textStyle;
   }
 }
 
-class RenderBarChartTitle extends RenderBox {
-  double _value;
+class BarChartTextTitleRenderObject extends RenderBox {
+  String renderText;
+  TextStyle renderTextStyle;
 
-  RenderBarChartTitle({
-    required double value,
-  }) : _value = value;
+  /// Creates a render object that displays a text title for a bar chart.
+  ///
+  /// The [text] parameter is the title text to be displayed.
+  /// The [textStyle] parameter specifies the style of the title text.
+  BarChartTextTitleRenderObject({
+    required this.renderText,
+    required this.renderTextStyle,
+  });
 
-  double get value => _value;
-  set value(double value) {
-    if (_value == value) return;
-    _value = value;
-    markNeedsLayout();
+  String get text => renderText;
+
+  set text(String value) {
+    if (renderText != value) {
+      renderText = value;
+      markNeedsLayout();
+    }
+  }
+
+  TextStyle get textStyle => renderTextStyle;
+
+  set textStyle(TextStyle value) {
+    if (renderTextStyle != value) {
+      renderTextStyle = value;
+      markNeedsLayout();
+    }
   }
 
   @override
   void performLayout() {
-    // Implement layout here
-    super.performLayout();
+    final constraints = this.constraints;
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      maxWidth: constraints.maxWidth,
+    );
+
+    size = Size(textPainter.width, textPainter.height);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      maxWidth: size.width,
+    );
+
+    textPainter.paint(context.canvas, offset);
   }
 }
